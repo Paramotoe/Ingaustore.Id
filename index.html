@@ -277,13 +277,13 @@ Committed to quality, trust, and customer satisfaction.
  <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        /* ==========================================
+       /* ==========================================
            KEAMANAN TINGKAT TINGGI (SHA-256 HASHING)
            ========================================== */
         
         // HASH dari. Password asli TIDAK ADA di dalam kode ini.
-        const TARGET_USER_HASH = '609b552345511b0e3532f8319f6bb1e0fa3b8cf3bc5e2d67ea5561a340b03f0d';
-        const TARGET_PASS_HASH = 'c02118337722956cf3878b30f40dcf9063595905d5272a27ffb2a75cdb21e855';
+        const TARGET_USER_HASH = '9aecdc2473eec89ec840c869547e036362b11b7b095e8cc1353f8393c6c3f670';
+        const TARGET_PASS_HASH = 'e522248dc219d9257348dc2d54f94300d544f86f05e642d19c67a640aa51dc3f';
 
         // Fungsi Hash Kriptografi Web API
         async function hashData(text) {
@@ -733,7 +733,7 @@ Committed to quality, trust, and customer satisfaction.
                     document.getElementById('empty-desc').textContent = "Algoritma tidak menemukan barang dengan kode tersebut.";
                 } else {
                     document.getElementById('empty-title').textContent = "Katalog Kosong";
-                    document.getElementById('empty-desc').textContent = "Belum ada barang di database. Login admin untuk injeksi data.";
+                    document.getElementById('empty-desc').textContent = "Belum ada barang yang tersedia.";
                 }
                 return;
             }
