@@ -21,36 +21,36 @@
 
     <style>
         body { 
-            background-color: #f4f4f9;
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-color: #f8fafc;
+            background-image: radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
             transition: background 0.8s ease;
         }
         
         /* Modern Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.5); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.8); }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.4); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.7); }
         
         /* Premium Glassmorphism */
         .glass-nav { 
-            background: rgba(255, 255, 255, 0.8); 
+            background: rgba(255, 255, 255, 0.85); 
             backdrop-filter: blur(20px) saturate(200%); 
             -webkit-backdrop-filter: blur(20px) saturate(200%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
         }
         .glass-modal {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.2s;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.25s;
             transform-style: preserve-3d;
         }
 
@@ -81,72 +81,74 @@
             transform: translateY(0);
         }
 
-        /* Lightbox Image */
         .cursor-zoom { cursor: zoom-in; }
     </style>
 </head>
-<body class="text-gray-800 min-h-screen flex flex-col antialiased relative">
+<body class="text-slate-800 min-h-screen flex flex-col antialiased relative selection:bg-brand-500 selection:text-white">
 
     <!-- Global Toast Notification -->
-    <div id="toast-container" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 translate-y-32 z-[100] bg-gray-900/95 backdrop-blur text-white px-6 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 font-semibold text-sm transition-transform duration-500 cubic-bezier(0.68, -0.55, 0.265, 1.55)">
+    <div id="toast-container" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 translate-y-32 z-[100] bg-slate-900/95 backdrop-blur text-white px-6 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 font-semibold text-sm transition-transform duration-500 cubic-bezier(0.68, -0.55, 0.265, 1.55)">
         <i id="toast-icon" class="fa-solid fa-bell text-brand-400"></i>
         <span id="toast-message">Notifikasi</span>
     </div>
 
     <!-- Lightbox (Zoom Gambar) -->
-    <div id="lightbox" class="fixed inset-0 z-[70] hidden bg-black/90 backdrop-blur-md flex justify-center items-center opacity-0 transition-opacity duration-300 cursor-zoom-out" onclick="closeLightbox()">
-        <img id="lightbox-img" class="max-w-[95%] max-h-[95vh] rounded-xl shadow-2xl scale-90 transition-transform duration-300">
-        <p class="absolute bottom-5 text-white/50 text-sm font-medium"><i class="fa-solid fa-xmark mr-1"></i> Klik dimana saja untuk menutup</p>
+    <div id="lightbox" class="fixed inset-0 z-[70] hidden bg-slate-950/90 backdrop-blur-md flex justify-center items-center opacity-0 transition-opacity duration-300 cursor-zoom-out" onclick="closeLightbox()">
+        <img id="lightbox-img" class="max-w-[95%] max-h-[95vh] rounded-2xl shadow-2xl scale-90 transition-transform duration-300 border border-white/10">
+        <p class="absolute bottom-6 text-white/60 text-sm font-medium tracking-wide"><i class="fa-solid fa-xmark mr-1.5"></i> Klik di mana saja untuk menutup</p>
     </div>
 
-    <!-- Navigation -->
-    <header class="sticky top-0 z-50 w-full backdrop-blur-xl bg-white/70 border-b border-gray-200/50 shadow-sm transition-all ...">
-        <div class="max-w-6xl mx-auto w-full transition-all duration-500 ease-in-out">
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                <div id="shop-logo-container" class="w-10 h-10 rounded-full ig-gradient shadow-md flex items-center justify-center text-white overflow-hidden border-2 border-white ring-2 ring-pink-100 transition-transform duration-300 group-hover:scale-110">
+    <!-- Navigation (Cross-Platform Symmetrical Header) -->
+    <header class="sticky top-0 z-50 w-full glass-nav transition-all duration-300">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3.5 cursor-pointer group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <div id="shop-logo-container" class="w-11 h-11 rounded-2xl ig-gradient shadow-md flex items-center justify-center text-white overflow-hidden border-2 border-white ring-4 ring-pink-500/10 transition-transform duration-300 group-hover:scale-105 shrink-0">
                     <i id="default-logo-icon" class="fa-brands fa-instagram text-xl"></i>
                     <img id="custom-logo-img" src="" class="w-full h-full object-cover hidden" alt="Logo">
                 </div>
-                <h1 class="font-extrabold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">Ingaustore.id</h1>
+                <div>
+                    <h1 class="font-extrabold text-xl tracking-tight text-slate-900 leading-tight">Ingaustore.id</h1>
+                    <p class="text-[11px] font-semibold text-slate-400 tracking-wider uppercase">Exclusive Catalog</p>
+                </div>
             </div>
             
             <div class="flex items-center gap-4">
                 <div class="hidden md:flex relative group">
-                    <input type="text" id="search-desktop" oninput="cariBarang(this.value)" placeholder="Cari kode..." class="w-48 group-hover:w-64 transition-all duration-300 bg-gray-100/70 border border-gray-200 text-sm rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:bg-white shadow-inner">
-                    <i class="fa-solid fa-search absolute left-4 top-2.5 text-gray-400 text-sm"></i>
+                    <input type="text" id="search-desktop" oninput="cariBarang(this.value)" placeholder="Cari kode barang..." class="w-60 lg:w-72 transition-all duration-300 bg-slate-100/80 border border-slate-200 text-sm rounded-full py-2.5 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:bg-white shadow-inner font-medium text-slate-900 placeholder-slate-400">
+                    <i class="fa-solid fa-search absolute left-4 top-3 text-slate-400 text-sm"></i>
                 </div>
                 
-                <button onclick="toggleAdmin()" id="auth-btn" class="text-sm font-bold px-5 py-2 rounded-full bg-white shadow-sm border border-gray-200 text-gray-600 hover:text-brand-600 hover:border-brand-300 transition-all flex items-center gap-2 hover:shadow-md">
-                    <i class="fa-solid fa-shield-halved text-xs"></i> <span id="auth-text">Admin</span>
+                <button onclick="toggleAdmin()" id="auth-btn" class="text-sm font-bold px-6 py-2.5 rounded-full bg-white shadow-sm border border-slate-200/80 text-slate-700 hover:text-brand-600 hover:border-brand-300 transition-all flex items-center gap-2 hover:shadow-md">
+                    <i class="fa-solid fa-shield-halved text-xs text-brand-500"></i> <span id="auth-text">Admin</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Admin Login Modal (Dengan Keamanan Anti-Bruteforce) -->
+    <!-- Admin Login Modal -->
     <div id="login-modal" class="fixed inset-0 z-50 hidden perspective-1000">
-        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-md" onclick="closeModal('login-modal')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-sm px-4">
-            <div class="glass-modal rounded-[2rem] p-8" id="login-modal-content">
-                <div class="text-center mb-7">
-                    <div class="w-16 h-16 bg-gradient-to-br from-brand-50 to-brand-100 text-brand-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner rotate-3">
+        <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md" onclick="closeModal('login-modal')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md px-4">
+            <div class="glass-modal rounded-[2.5rem] p-8 md:p-10 shadow-2xl" id="login-modal-content">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-br from-brand-50 to-brand-100 text-brand-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner">
                         <i class="fa-solid fa-lock text-2xl"></i>
                     </div>
-                    <h2 class="text-2xl font-extrabold text-gray-900">Security Login</h2>
-                    <p class="text-sm text-gray-500 mt-1 font-medium">Sistem Ingaustore</p>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Security Login</h2>
+                    <p class="text-sm text-slate-500 mt-1 font-medium">Otorisasi Akses Command Center</p>
                 </div>
                 
                 <form onsubmit="prosesLogin(event)" class="space-y-4">
                     <div class="relative">
-                        <i class="fa-regular fa-user absolute left-4 top-3.5 text-gray-400"></i>
-                        <input type="text" id="login-username" required class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:bg-white outline-none transition font-medium" placeholder="Username">
+                        <i class="fa-regular fa-user absolute left-4 top-4 text-slate-400"></i>
+                        <input type="text" id="login-username" required class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:bg-white outline-none transition font-medium text-slate-900" placeholder="Username">
                     </div>
                     <div class="relative">
-                        <i class="fa-solid fa-key absolute left-4 top-3.5 text-gray-400"></i>
-                        <input type="password" id="login-password" required class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:bg-white outline-none transition font-medium" placeholder="Password">
+                        <i class="fa-solid fa-key absolute left-4 top-4 text-slate-400"></i>
+                        <input type="password" id="login-password" required class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-500 focus:bg-white outline-none transition font-medium text-slate-900" placeholder="Password">
                     </div>
                     
-                    <button type="submit" id="btn-login-submit" class="w-full bg-gray-900 text-white font-bold py-3.5 rounded-xl hover:bg-black hover:shadow-xl hover:shadow-gray-900/20 transition-all flex justify-center items-center gap-2 mt-4">
+                    <button type="submit" id="btn-login-submit" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl hover:bg-black hover:shadow-xl hover:shadow-slate-900/20 transition-all flex justify-center items-center gap-2 mt-2">
                         <span>Otorisasi Akses</span> <i class="fa-solid fa-arrow-right text-sm"></i>
                     </button>
                     <p id="lockout-timer" class="text-center text-red-500 text-xs font-bold hidden mt-2"></p>
@@ -157,135 +159,138 @@
 
     <!-- Settings Modal -->
     <div id="settings-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-md" onclick="closeModal('settings-modal')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md px-4">
-            <div class="glass-modal rounded-[2rem] p-6 md:p-8" id="settings-modal-content">
+        <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md" onclick="closeModal('settings-modal')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg px-4">
+            <div class="glass-modal rounded-[2.5rem] p-6 md:p-10 shadow-2xl" id="settings-modal-content">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
-                        <i class="fa-solid fa-palette text-brand-500"></i> Desain Toko
+                    <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center"><i class="fa-solid fa-palette text-sm"></i></span> Desain Visual Toko
                     </h2>
-                    <button onclick="closeModal('settings-modal')" class="text-gray-400 hover:text-red-500 bg-gray-100 hover:bg-red-50 rounded-full w-9 h-9 flex items-center justify-center transition-colors">
+                    <button onclick="closeModal('settings-modal')" class="text-slate-400 hover:text-red-500 bg-slate-100 hover:bg-red-50 rounded-full w-9 h-9 flex items-center justify-center transition-colors">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
                 
                 <form id="settings-form" onsubmit="simpanPengaturan(event)" class="space-y-5">
-                    <div class="bg-gray-50/80 p-5 rounded-2xl border border-gray-200 shadow-sm">
-                        <label class="block text-sm font-bold text-gray-700 mb-3">Logo Profil (Square)</label>
+                    <div class="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-3">Logo Profil Toko (Square)</label>
                         <div class="flex items-center gap-4">
-                            <div class="w-16 h-16 rounded-full bg-white shadow-inner border border-gray-200 flex items-center justify-center overflow-hidden shrink-0 relative">
+                            <div class="w-16 h-16 rounded-2xl bg-white shadow-inner border border-slate-200 flex items-center justify-center overflow-hidden shrink-0 relative">
                                 <img id="settings-logo-preview" class="w-full h-full object-cover hidden z-10 relative">
-                                <i id="settings-logo-icon" class="fa-solid fa-image text-gray-300 text-2xl absolute"></i>
+                                <i id="settings-logo-icon" class="fa-solid fa-image text-slate-300 text-2xl absolute"></i>
                             </div>
-                            <input type="file" id="input-shop-logo" accept="image/*" onchange="previewGambar(this, 'settings-logo-preview', 'settings-logo-icon')" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-600 hover:file:bg-brand-100 cursor-pointer transition">
+                            <input type="file" id="input-shop-logo" accept="image/*" onchange="previewGambar(this, 'settings-logo-preview', 'settings-logo-icon')" class="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand-50 file:text-brand-600 hover:file:bg-brand-100 cursor-pointer transition">
                         </div>
                     </div>
 
-                    <div class="bg-gray-50/80 p-5 rounded-2xl border border-gray-200 shadow-sm">
-                        <label class="block text-sm font-bold text-gray-700 mb-3">Wallpaper Web</label>
-                        <input type="file" id="input-shop-bg" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-600 hover:file:bg-blue-100 cursor-pointer transition mb-3">
+                    <div class="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-3">Wallpaper Latar Belakang Web</label>
+                        <input type="file" id="input-shop-bg" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-200/70 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer transition mb-3">
                         <button type="button" onclick="hapusBackground()" id="btn-remove-bg" class="w-full text-xs text-red-500 hover:text-red-700 font-bold hidden flex items-center justify-center gap-2 bg-red-50 hover:bg-red-100 py-2.5 rounded-xl transition border border-red-100">
-                            <i class="fa-solid fa-trash-can"></i> Hapus Wallpaper
+                            <i class="fa-solid fa-trash-can"></i> Hapus Wallpaper Kustom
                         </button>
                     </div>
 
-                    <button type="submit" id="btn-save-settings" class="w-full bg-brand-600 text-white font-bold py-3.5 rounded-xl hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-500/30 transition-all flex items-center justify-center gap-2 mt-4">
-                        <i class="fa-solid fa-check-double"></i> Terapkan Perubahan
+                    <button type="submit" id="btn-save-settings" class="w-full bg-brand-600 text-white font-bold py-4 rounded-2xl hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-500/30 transition-all flex items-center justify-center gap-2 mt-2">
+                        <i class="fa-solid fa-check-double"></i> Terapkan Perubahan Visual
                     </button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <main class="flex-grow max-w-6xl mx-auto w-full px-4 py-8 relative z-10">
+    <!-- Main Content (Symmetrical Max-Width Container) -->
+    <main class="flex-grow max-w-[1440px] mx-auto w-full px-4 sm:px-6 lg:px-12 py-8 sm:py-12 relative z-10 flex flex-col">
         
+        <!-- Mobile Search Bar -->
         <div class="md:hidden relative mb-6">
-            <input type="text" oninput="cariBarang(this.value)" placeholder="Cari kode barang..." class="w-full bg-white/90 backdrop-blur border border-gray-200 text-sm rounded-2xl py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-brand-500/50 shadow-sm font-medium">
-            <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400"></i>
+            <input type="text" oninput="cariBarang(this.value)" placeholder="Cari kode barang..." class="w-full bg-white/90 backdrop-blur border border-slate-200 text-sm rounded-2xl py-3.5 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-brand-500/50 shadow-sm font-medium text-slate-900">
+            <i class="fa-solid fa-search absolute left-4 top-4 text-slate-400"></i>
         </div>
 
-        <!-- Admin Control Panel -->
-        <div id="admin-panel" class="hidden mb-10 glass-card p-6 md:p-8 rounded-[2rem] shadow-xl border border-white/80 fade-in-up">
-            <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4 border-b border-gray-200/60 pb-5">
+        <!-- Admin Control Panel (Command Center) -->
+        <div id="admin-panel" class="hidden mb-10 glass-card p-6 md:p-8 rounded-[2.5rem] shadow-xl border border-slate-200/80 fade-in-up">
+            <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4 border-b border-slate-200/60 pb-5">
                 <div>
-                    <h2 class="text-2xl font-extrabold text-gray-900 flex items-center gap-2">
-                        <i class="fa-solid fa-microchip text-brand-500"></i> Command Center
+                    <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2.5">
+                        <span class="w-9 h-9 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center"><i class="fa-solid fa-microchip text-sm"></i></span> Command Center
                     </h2>
-                    <p class="text-sm text-gray-500 mt-1 font-medium">Sistem terenkripsi untuk manajemen database barang.</p>
+                    <p class="text-sm text-slate-500 mt-1 font-medium">Sistem terenkripsi untuk manajemen database barang toko.</p>
                 </div>
-                <button onclick="bukaPengaturan()" class="text-sm bg-gray-900 hover:bg-black text-white font-bold py-2.5 px-6 rounded-xl transition flex items-center justify-center gap-2 shadow-lg">
-                    <i class="fa-solid fa-wand-magic-sparkles text-brand-300"></i> Visual Toko
+                <button onclick="bukaPengaturan()" class="text-sm bg-slate-900 hover:bg-black text-white font-bold py-3 px-6 rounded-2xl transition flex items-center justify-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-wand-magic-sparkles text-brand-300"></i> Desain Visual Toko
                 </button>
             </div>
             
             <form id="add-product-form" onsubmit="tambahBarang(event)" class="grid grid-cols-1 md:grid-cols-12 gap-5 items-end">
                 <div class="md:col-span-3">
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2"><i class="fa-solid fa-image mr-1"></i> 1. Foto</label>
-                    <input type="file" id="input-image-file" accept="image/*" required class="w-full text-sm text-gray-600 file:mr-0 file:w-full file:py-3 file:px-3 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer border border-gray-200 rounded-xl bg-white transition focus:ring-2 focus:ring-brand-500">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2"><i class="fa-solid fa-image mr-1.5 text-brand-500"></i> 1. Foto Produk</label>
+                    <input type="file" id="input-image-file" accept="image/*" required class="w-full text-xs text-slate-600 file:mr-0 file:w-full file:py-3 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer border border-slate-200 rounded-2xl bg-white transition focus:ring-2 focus:ring-brand-500">
                 </div>
                 <div class="md:col-span-3">
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2"><i class="fa-solid fa-barcode mr-1"></i> 2. Kode Unik</label>
-                    <input type="text" id="input-code" required class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none transition placeholder-gray-400 font-bold text-gray-900 uppercase" placeholder="IG-001">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2"><i class="fa-solid fa-barcode mr-1.5 text-brand-500"></i> 2. Kode Barang</label>
+                    <input type="text" id="input-code" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none transition placeholder-slate-400 font-bold text-slate-900 uppercase text-sm" placeholder="IG-001">
                 </div>
                 <div class="md:col-span-4">
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2"><i class="fa-solid fa-link mr-1"></i> 3. Link Marketplace</label>
-                    <input type="url" id="input-link" required class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none transition placeholder-gray-400 text-gray-900 font-medium" placeholder="https://shopee.co.id/...">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2"><i class="fa-solid fa-link mr-1.5 text-brand-500"></i> 3. Link Marketplace</label>
+                    <input type="url" id="input-link" required class="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-500 outline-none transition placeholder-slate-400 text-slate-900 font-medium text-sm" placeholder="https://shopee.co.id/...">
                 </div>
                 <div class="md:col-span-2">
-                    <button type="submit" id="btn-add-product" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition h-[50px] flex items-center justify-center gap-2 shadow-lg shadow-brand-500/30">
+                    <button type="submit" id="btn-add-product" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3.5 rounded-2xl transition h-[48px] flex items-center justify-center gap-2 shadow-lg shadow-brand-500/25 text-sm">
                         <i class="fa-solid fa-cloud-arrow-up"></i> Upload
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- Catalog Header -->
-        <div class="flex justify-between items-end mb-8 bg-white/70 backdrop-blur-md p-6 rounded-[2rem] border border-white shadow-sm fade-in-up">
+        <!-- Catalog Header Section -->
+        <div class="flex flex-col sm:flex-row justify-between sm:items-end mb-8 bg-white/80 backdrop-blur-md p-6 sm:p-8 rounded-[2.5rem] border border-slate-200/80 shadow-sm fade-in-up gap-4">
             <div>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Katalog Eksklusif</h2>
-                <p class="text-gray-500 font-medium text-sm md:text-base mt-2">Pilih barang incaranmu. Klik foto untuk memperbesar.</p>
+                <span class="inline-block px-3.5 py-1 bg-brand-50 text-brand-700 text-xs font-extrabold rounded-full tracking-widest uppercase mb-2 border border-brand-100">Katalog Resmi</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Katalog Eksklusif</h2>
+                <p class="text-slate-500 font-medium text-sm sm:text-base mt-1.5">Pilih barang incaranmu. Klik foto untuk memperbesar dengan detail.</p>
             </div>
-            <div id="item-count" class="hidden md:flex items-center justify-center bg-brand-50 border border-brand-100 text-brand-700 text-sm font-bold px-4 py-2 rounded-xl shadow-sm">
+            <div id="item-count" class="hidden sm:flex items-center justify-center bg-slate-100/80 border border-slate-200 text-slate-700 text-sm font-bold px-5 py-2.5 rounded-2xl shadow-inner shrink-0">
                 0 Barang
             </div>
         </div>
 
-        <!-- Product Grid -->
-        <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8 p-2">
+        <!-- Product Grid (Cross-Platform Responsive Symmetrical Layout) -->
+        <div id="product-grid" class="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6 lg:gap-8 transition-all duration-500">
             <!-- Data akan dimasukkan oleh JS -->
         </div>
         
         <!-- Empty / Not Found State -->
-        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-24 text-center glass-card rounded-[2rem] mt-4 border-dashed border-2 border-gray-300 bg-white/40 fade-in-up">
-            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm border border-gray-100 text-gray-300">
+        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-24 text-center glass-card rounded-[2.5rem] mt-4 border-dashed border-2 border-slate-300 bg-white/40 fade-in-up">
+            <div class="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mb-6 shadow-sm border border-slate-100 text-slate-300">
                 <i class="fa-solid fa-box-open text-4xl"></i>
             </div>
-            <h3 class="text-2xl font-extrabold text-gray-900" id="empty-title">Katalog Kosong</h3>
-            <p class="text-gray-500 text-base mt-2 font-medium max-w-md" id="empty-desc">Belum ada barang yang ditambahkan. Silakan login sebagai admin untuk memulai.</p>
+            <h3 class="text-2xl font-extrabold text-slate-900" id="empty-title">Katalog Kosong</h3>
+            <p class="text-slate-500 text-base mt-2 font-medium max-w-md px-4" id="empty-desc">Belum ada barang yang ditambahkan ke sistem.</p>
         </div>
     </main>
 
-    <footer class="glass-nav border-t border-gray-200/50 py-8 text-center mt-auto relative z-10">
-        <p class="text-gray-500 font-medium text-sm">
-            &copy; <span id="year"></span>
-<span class="font-extrabold text-gray-900">Ingaustore.id</span>.
-Committed to quality, trust, and customer satisfaction.
-        </p>
+    <!-- Footer (Symmetrical Full-Width Footer) -->
+    <footer class="glass-nav border-t border-slate-200/80 py-8 text-center mt-auto relative z-10">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-slate-500 font-medium text-sm">
+                &copy; <span id="year"></span> <span class="font-extrabold text-slate-900">Ingaustore.id</span>. All rights reserved.
+            </p>
+            <p class="text-xs text-slate-400 font-medium tracking-wide">
+                Professional E-Commerce Enterprise Framework
+            </p>
+        </div>
     </footer>
 
- <script>
+    <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
-       /* ==========================================
+        /* ==========================================
            KEAMANAN TINGKAT TINGGI (SHA-256 HASHING)
            ========================================== */
-        
-        // HASH dari. Password asli TIDAK ADA di dalam kode ini.
         const TARGET_USER_HASH = '9aecdc2473eec89ec840c869547e036362b11b7b095e8cc1353f8393c6c3f670';
         const TARGET_PASS_HASH = 'e522248dc219d9257348dc2d54f94300d544f86f05e642d19c67a640aa51dc3f';
 
-        // Fungsi Hash Kriptografi Web API
         async function hashData(text) {
             const msgUint8 = new TextEncoder().encode(text.trim());
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
@@ -293,10 +298,8 @@ Committed to quality, trust, and customer satisfaction.
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // Keamanan Anti Brute-Force (Cegah Hacker)
         let loginAttempts = 0;
         let lockUntil = 0;
-
 
         /* ==========================================
            DATABASE KOMPLEKS (INDEXED DB)
@@ -350,12 +353,9 @@ Committed to quality, trust, and customer satisfaction.
             });
         };
 
-
         /* ==========================================
            UI/UX KOMPLEKS & MICRO-INTERACTIONS
            ========================================== */
-
-        // 1. Toast Notification
         let toastTimeout;
         const showToast = (message, type = 'success') => {
             const toast = document.getElementById('toast-container');
@@ -371,7 +371,6 @@ Committed to quality, trust, and customer satisfaction.
             toastTimeout = setTimeout(() => { toast.style.transform = 'translate(-50%, 150px)'; }, 3500);
         };
 
-        // 2. Advanced Modals
         const openModal = (modalId) => {
             const modal = document.getElementById(modalId);
             const content = document.getElementById(`${modalId}-content`);
@@ -388,7 +387,6 @@ Committed to quality, trust, and customer satisfaction.
             setTimeout(() => { modal.classList.add('hidden'); }, 300);
         };
 
-        // 3. Lightbox (Zoom Image)
         function openLightbox(src) {
             const lb = document.getElementById('lightbox');
             const img = document.getElementById('lightbox-img');
@@ -405,7 +403,6 @@ Committed to quality, trust, and customer satisfaction.
             setTimeout(() => { lb.classList.add('hidden'); document.body.style.overflow = ''; }, 300);
         }
 
-        // 4. Scroll Animation Observer (Fade In Up)
         const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -416,9 +413,8 @@ Committed to quality, trust, and customer satisfaction.
             });
         }, observerOptions);
 
-        // 5. 3D Tilt Effect Logic
         function initTiltEffect() {
-            if(window.innerWidth < 768) return; // Hanya di Laptop/PC
+            if(window.innerWidth < 768) return;
             document.querySelectorAll('.tilt-card').forEach(card => {
                 card.addEventListener('mousemove', e => {
                     const rect = card.getBoundingClientRect();
@@ -426,8 +422,8 @@ Committed to quality, trust, and customer satisfaction.
                     const y = e.clientY - rect.top;
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg
-                    const rotateY = ((x - centerX) / centerX) * 10;
+                    const rotateX = ((y - centerY) / centerY) * -8;
+                    const rotateY = ((x - centerX) / centerX) * 8;
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
                 });
                 card.addEventListener('mouseleave', () => {
@@ -436,18 +432,16 @@ Committed to quality, trust, and customer satisfaction.
             });
         }
 
-
         /* ==========================================
            LOGIKA AUTH & PROSES GAMBAR
            ========================================== */
-
         function toggleAdmin() {
             if (isAdminLoggedIn) {
                 isAdminLoggedIn = false;
                 sessionStorage.removeItem('ingau_admin');
                 document.getElementById('auth-text').textContent = "Admin";
-                document.getElementById('auth-btn').innerHTML = '<i class="fa-solid fa-shield-halved text-xs"></i> <span id="auth-text">Admin</span>';
-                document.getElementById('auth-btn').className = "text-sm font-bold px-5 py-2 rounded-full bg-white shadow-sm border border-gray-200 text-gray-600 hover:text-brand-600 hover:border-brand-300 transition-all flex items-center gap-2 hover:shadow-md";
+                document.getElementById('auth-btn').innerHTML = '<i class="fa-solid fa-shield-halved text-xs text-brand-500"></i> <span id="auth-text">Admin</span>';
+                document.getElementById('auth-btn').className = "text-sm font-bold px-6 py-2.5 rounded-full bg-white shadow-sm border border-slate-200/80 text-slate-700 hover:text-brand-600 hover:border-brand-300 transition-all flex items-center gap-2 hover:shadow-md";
                 document.getElementById('admin-panel').classList.add('hidden');
                 showToast('Logout aman. Sesi diakhiri.', 'info');
                 renderKatalog(allProducts); 
@@ -458,10 +452,9 @@ Committed to quality, trust, and customer satisfaction.
             }
         }
 
-       async function prosesLogin(e) {
+        async function prosesLogin(e) {
             e.preventDefault();
             
-            // ANTI-BRUTEFORCE CHECK
             if (Date.now() < lockUntil) {
                 const sisaTunggu = Math.ceil((lockUntil - Date.now()) / 1000);
                 showToast(`Sistem terkunci. Coba lagi dalam ${sisaTunggu} detik.`, "error");
@@ -472,25 +465,23 @@ Committed to quality, trust, and customer satisfaction.
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Otorisasi Enkripsi...';
             btn.disabled = true;
             
-            // PERBAIKAN: Memaksa input menjadi huruf kecil dan membuang spasi otomatis
             const userPlain = document.getElementById('login-username').value.toLowerCase().trim();
             const passPlain = document.getElementById('login-password').value.trim();
 
             try {
-                // Proses Hash Kriptografi Asli
                 const userHash = await hashData(userPlain);
                 const passHash = await hashData(passPlain);
 
                 setTimeout(() => {
                     if (userHash === TARGET_USER_HASH && passHash === TARGET_PASS_HASH) {
-                        loginAttempts = 0; // Reset percobaan
+                        loginAttempts = 0; 
                         isAdminLoggedIn = true;
                         sessionStorage.setItem('ingau_admin', 'true');
                         closeModal('login-modal');
                         
                         const authBtn = document.getElementById('auth-btn');
                         authBtn.innerHTML = '<i class="fa-solid fa-lock-open text-xs"></i> <span id="auth-text">Logout</span>';
-                        authBtn.className = "text-sm font-bold px-5 py-2 rounded-full bg-gray-900 shadow-lg border border-gray-800 text-white hover:bg-black transition-all flex items-center gap-2";
+                        authBtn.className = "text-sm font-bold px-6 py-2.5 rounded-full bg-slate-900 shadow-lg border border-slate-800 text-white hover:bg-black transition-all flex items-center gap-2";
                         
                         const panel = document.getElementById('admin-panel');
                         panel.classList.remove('hidden');
@@ -501,7 +492,7 @@ Committed to quality, trust, and customer satisfaction.
                     } else {
                         loginAttempts++;
                         if (loginAttempts >= 3) {
-                            lockUntil = Date.now() + 30000; // Kunci 30 detik
+                            lockUntil = Date.now() + 30000;
                             showToast('Akses Ilegal! Sistem dikunci 30 detik untuk keamanan.', 'error');
                         } else {
                             showToast(`Akses ditolak! Sisa percobaan: ${3 - loginAttempts}`, 'error');
@@ -509,24 +500,22 @@ Committed to quality, trust, and customer satisfaction.
                     }
                     btn.innerHTML = '<span>Otorisasi Akses</span> <i class="fa-solid fa-arrow-right text-sm"></i>';
                     btn.disabled = false;
-                }, 500); // Simulasi delay
+                }, 500);
             } catch (err) {
                 showToast("Sistem Keamanan Error.", "error");
                 btn.disabled = false;
             }
         }
 
-        // Cek sesi saat refresh
         if (isAdminLoggedIn) {
             const authBtn = document.getElementById('auth-btn');
             authBtn.innerHTML = '<i class="fa-solid fa-lock-open text-xs"></i> <span id="auth-text">Logout</span>';
-            authBtn.className = "text-sm font-bold px-5 py-2 rounded-full bg-gray-900 shadow-lg border border-gray-800 text-white hover:bg-black transition-all flex items-center gap-2";
+            authBtn.className = "text-sm font-bold px-6 py-2.5 rounded-full bg-slate-900 shadow-lg border border-slate-800 text-white hover:bg-black transition-all flex items-center gap-2";
             const panel = document.getElementById('admin-panel');
             panel.classList.remove('hidden');
             setTimeout(() => panel.classList.add('visible'), 50);
         }
 
-        // Image Compressor & Cropper
         const processImage = (file, targetSize = 800) => {
             return new Promise((resolve, reject) => {
                 if (!file) return reject("Tidak ada file");
@@ -551,11 +540,9 @@ Committed to quality, trust, and customer satisfaction.
             });
         };
 
-
         /* ==========================================
            SETTINGS & VISUAL LOGIC
            ========================================== */
-
         const applyVisualSettings = (logoData, bgData) => {
             const customLogoImg = document.getElementById('custom-logo-img');
             const defaultLogoIcon = document.getElementById('default-logo-icon');
@@ -638,7 +625,7 @@ Committed to quality, trust, and customer satisfaction.
             } catch (error) {
                 showToast("Sistem gagal memproses format gambar.", "error");
             } finally {
-                btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Terapkan Perubahan';
+                btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Terapkan Perubahan Visual';
                 btn.disabled = false;
             }
         }
@@ -650,11 +637,9 @@ Committed to quality, trust, and customer satisfaction.
             showToast('Latar belakang dikembalikan ke default');
         }
 
-
         /* ==========================================
            PRODUCT CRUD & RENDER LOGIC
            ========================================== */
-
         const loadProducts = async () => {
             try {
                 const data = await dbGet(STORE_PRODUCTS);
@@ -733,7 +718,7 @@ Committed to quality, trust, and customer satisfaction.
                     document.getElementById('empty-desc').textContent = "Algoritma tidak menemukan barang dengan kode tersebut.";
                 } else {
                     document.getElementById('empty-title').textContent = "Katalog Kosong";
-                    document.getElementById('empty-desc').textContent = "Belum ada barang yang tersedia.";
+                    document.getElementById('empty-desc').textContent = "Belum ada barang yang tersedia di database.";
                 }
                 return;
             }
@@ -742,10 +727,9 @@ Committed to quality, trust, and customer satisfaction.
             emptyState.classList.remove('visible');
             grid.classList.remove('hidden');
 
-            dataArray.forEach((product, index) => {
+            dataArray.forEach((product) => {
                 const card = document.createElement('div');
-                // Tambahkan class tilt-card dan fade-in-up
-                card.className = "glass-card rounded-[1.5rem] shadow-sm overflow-hidden flex flex-col group relative bg-white fade-in-up tilt-card";
+                card.className = "glass-card rounded-[2rem] shadow-sm overflow-hidden flex flex-col group relative bg-white fade-in-up tilt-card";
                 
                 const deleteBtnHTML = isAdminLoggedIn 
                     ? `<button onclick="hapusBarang('${product.id}', '${product.code}')" class="absolute top-4 right-4 bg-red-500/95 backdrop-blur-md text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg z-20 hover:bg-red-600 hover:scale-110 transition-transform">
@@ -754,55 +738,47 @@ Committed to quality, trust, and customer satisfaction.
 
                 card.innerHTML = `
                     ${deleteBtnHTML}
-                    <div class="relative w-full aspect-square overflow-hidden bg-gray-100 cursor-zoom" onclick="openLightbox('${product.image}')">
+                    <div class="relative w-full aspect-square overflow-hidden bg-slate-100 cursor-zoom" onclick="openLightbox('${product.image}')">
                         <img src="${product.image}" alt="${product.code}" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" loading="lazy">
-                        <div class="absolute inset-0 bg-gray-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
-                            <div class="bg-white/90 backdrop-blur text-gray-900 rounded-full w-12 h-12 flex items-center justify-center shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                        <div class="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                            <div class="bg-white/90 backdrop-blur text-slate-900 rounded-full w-12 h-12 flex items-center justify-center shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                                 <i class="fa-solid fa-expand"></i>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="p-5 flex flex-col justify-between items-center bg-white border-t border-gray-100/50">
+                    <div class="p-5 flex flex-col justify-between items-center bg-white border-t border-slate-100">
                         <div class="w-full text-center mb-5">
                             <span class="inline-block px-3 py-1 bg-brand-50 text-brand-700 text-[10px] font-bold rounded-md tracking-widest mb-2 border border-brand-100">KODE BARANG</span>
-                            <h3 class="font-extrabold text-gray-900 text-xl tracking-tight truncate w-full">${product.code}</h3>
+                            <h3 class="font-extrabold text-slate-900 text-lg tracking-tight truncate w-full">${product.code}</h3>
                         </div>
                         
-                        <a href="${product.link}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-gray-900 text-white text-sm font-bold py-3.5 rounded-xl hover:bg-brand-600 hover:shadow-lg hover:shadow-brand-500/30 transition-all duration-300 flex items-center justify-center gap-2 group/btn">
+                        <a href="${product.link}" target="_blank" rel="noopener noreferrer" class="w-full text-center bg-slate-900 text-white text-sm font-bold py-3.5 rounded-xl hover:bg-brand-600 hover:shadow-lg hover:shadow-brand-500/30 transition-all duration-300 flex items-center justify-center gap-2 group/btn">
                             <i class="fa-solid fa-cart-shopping group-hover/btn:-rotate-12 transition-transform"></i> Eksekusi Pembelian
                         </a>
                     </div>
                 `;
                 grid.appendChild(card);
-                
-                // Daftarkan ke observer agar muncul dengan animasi perlahan
                 scrollObserver.observe(card);
             });
             
-            // Inisialisasi efek 3D Tilt setelah dirender
             initTiltEffect();
         }
 
-        // ==========================================
-        // INIT & BOOT
-        // ==========================================
         window.addEventListener('DOMContentLoaded', async () => {
             try {
                 await initDB();
                 await loadSettings();
                 await loadProducts();
                 
-                // Efek animasi pembuka pada UI atas
                 setTimeout(() => {
-                    const header = document.querySelector('.bg-white\\/70');
+                    const header = document.querySelector('header');
                     if(header) header.classList.add('visible');
                 }, 100);
             } catch(e) {
                 showToast("Sistem file rusak (Corrupt DB)", "error");
             }
         });
-
     </script>
 </body>
 </html>
