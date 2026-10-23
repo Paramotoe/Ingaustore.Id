@@ -367,17 +367,21 @@
                                 <img id="settings-logo-preview" class="w-full h-full object-cover hidden" alt="Pratinjau logo">
                                 <i id="settings-logo-icon" class="fa-solid fa-image text-xl" style="color:var(--muted)" aria-hidden="true"></i>
                             </div>
-                            <input type="file" id="input-logo" accept="image/png,image/jpeg,image/webp" onchange="previewGambar(this,'settings-logo-preview','settings-logo-icon')" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-pink-50 file:text-pink-600 cursor-pointer">
+                            <div class="flex-1 min-w-0">
+                                <input type="file" id="input-logo" accept="image/png,image/jpeg,image/webp" onchange="previewGambar(this,'settings-logo-preview','settings-logo-icon')" class="w-full file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-pink-50 file:text-pink-600 cursor-pointer border rounded-lg">
+                            </div>
                         </div>
                     </div>
                     <div class="p-4 rounded-2xl" style="background:var(--bg);border:1px solid var(--border)">
                         <label for="input-bg" class="block text-sm font-bold mb-2" style="color:var(--muted)">Wallpaper Latar Belakang</label>
-                        <input type="file" id="input-bg" accept="image/png,image/jpeg,image/webp" onchange="previewGambar(this,'settings-bg-preview','settings-bg-icon')" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-200 file:text-slate-700 cursor-pointer mb-2">
+                        <div class="flex-1 min-w-0">
+                                <input type="file" id="input-bg" accept="image/png,image/jpeg,image/webp" onchange="previewGambar(this,'settings-bg-preview','settings-bg-icon')" class="w-full file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-200 file:text-slate-700 cursor-pointer border rounded-lg">
+                            </div><div class="flex-1 min-w-0">
+                                <input type="file" id="input-bg" accept="image/png,image/jpeg,image/webp" onchange="previewGambar(this,'settings-bg-preview','settings-bg-icon')" class="w-full file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-200 file:text-slate-700 cursor-pointer border rounded-lg">
+                            </div>
                         <div id="settings-bg-preview-wrap" class="hidden rounded-xl overflow-hidden border mb-2" style="border-color:var(--border)">
                             <img id="settings-bg-preview" class="w-full h-28 object-cover" alt="Pratinjau wallpaper">
-                        </div>
-                        <span id="settings-bg-icon" class="hidden"></span>
-                        <button type="button" onclick="hapusBackground()" id="btn-remove-bg" class="w-full text-sm font-bold hidden flex items-center justify-center gap-2 py-2 rounded-xl" style="background:#fee2e2;color:#dc2626">
+                        </div>2 rounded-xl" style="background:#fee2e2;color:#dc2626">
                             <i class="fa-solid fa-trash-can" aria-hidden="true"></i> Hapus Wallpaper
                         </button>
                     </div>
