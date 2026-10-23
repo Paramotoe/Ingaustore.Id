@@ -127,7 +127,7 @@
         </div>
     </header>
 
-    <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 sm:px-6 py-5 sm:py-8 flex flex-col">
+    <main class="flex-grow w-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-5 sm:pt-8 pb-8 sm:pb-12 flex flex-col">
 
         <!-- Panel admin -->
         <div id="admin-panel" class="hidden mb-6 card p-5 sm:p-6 fade-in">
@@ -159,24 +159,24 @@
                 </div>
                 <div class="lg:col-span-3">
                     <label for="input-name" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">2. Nama Produk</label>
-                    <input type="text" id="input-name" required maxlength="80" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Kaos Katun Premium">
+                    <input type="text" id="input-name" required maxlength="80" class="w-full form-field focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="Kaos Katun Premium">
                 </div>
                 <div class="lg:col-span-2">
                     <label for="input-price" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">3. Harga (Rp)</label>
-                    <input type="number" id="input-price" min="0" max="999999999" step="500" inputmode="numeric" class="w-full px-3 py-2.5 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="150000">
+                    <input type="number" id="input-price" min="0" max="999999999" step="500" inputmode="numeric" class="w-full form-field font-semibold focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="150000">
                 </div>
                 <div class="lg:col-span-2">
                     <label for="input-category" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">4. Kategori</label>
-                    <input type="text" id="input-category" maxlength="32" list="category-list" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Atasan">
+                    <input type="text" id="input-category" maxlength="32" list="category-list" class="w-full form-field focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="Atasan">
                     <datalist id="category-list"></datalist>
                 </div>
                 <div class="lg:col-span-2">
                     <label for="input-code" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">5. Kode</label>
-                    <input type="text" id="input-code" required maxlength="32" pattern="[A-Za-z0-9\-]+" class="w-full px-3 py-2.5 rounded-xl font-bold uppercase focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="IG-001">
+                    <input type="text" id="input-code" required maxlength="32" pattern="[A-Za-z0-9\-]+" class="w-full form-field font-bold uppercase focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="IG-001">
                 </div>
                 <div class="lg:col-span-8">
                     <label for="input-link" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">6. Link Pembelian</label>
-                    <input type="url" id="input-link" required class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="https://shopee.co.id/...">
+                    <input type="url" id="input-link" required class="w-full form-field focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="https://shopee.co.id/...">
                 </div>
                 <div class="lg:col-span-4">
                     <button type="submit" id="btn-add" class="btn-primary w-full py-2.5 rounded-xl flex items-center justify-center gap-2 touch-lg">
@@ -266,11 +266,11 @@
                 <form onsubmit="prosesLogin(event)" class="space-y-3" autocomplete="on">
                     <div>
                         <label for="login-email" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Email</label>
-                        <input type="email" id="login-email" required maxlength="254" autocomplete="username" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="admin@ingaustore.id">
+                        <input type="email" id="login-email" required maxlength="254" autocomplete="username" class="w-full form-field focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="admin@ingaustore.id">
                     </div>
                     <div>
                         <label for="login-password" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Password</label>
-                        <input type="password" id="login-password" required maxlength="72" autocomplete="current-password" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Password">
+                        <input type="password" id="login-password" required maxlength="72" autocomplete="current-password" class="w-full form-field focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="Password">
                     </div>
                     <button type="submit" id="btn-login" class="btn-primary w-full py-3 rounded-xl flex justify-center items-center gap-2 touch-lg">
                         <span>Masuk</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
@@ -297,7 +297,7 @@
     <div id="edit-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="edit-title">
         <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md" onclick="closeModal('edit-modal')"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md px-4">
-            <div class="rounded-3xl p-6 shadow-2xl" style="background:var(--card)" id="edit-modal-content">
+            <div class="rounded-3xl p-6 sm:p-7 shadow-2xl" style="background:var(--card)" id="edit-modal-content">
                 <div class="flex justify-between items-center mb-4">
                     <h2 id="edit-title" class="text-lg font-extrabold flex items-center gap-2" style="color:var(--text)">
                         <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:#fce7f3;color:#db2777"><i class="fa-solid fa-pen" aria-hidden="true"></i></span>
@@ -311,25 +311,25 @@
                     <input type="hidden" id="edit-id">
                     <div>
                         <label for="edit-name" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Nama Produk</label>
-                        <input type="text" id="edit-name" required maxlength="80" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)">
+                        <input type="text" id="edit-name" required maxlength="80" class="w-full form-field focus:outline-none focus:ring-2 focus:ring-brand-500">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label for="edit-price" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Harga (Rp)</label>
-                            <input type="number" id="edit-price" min="0" max="999999999" step="500" inputmode="numeric" class="w-full px-3 py-2.5 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)">
+                            <input type="number" id="edit-price" min="0" max="999999999" step="500" inputmode="numeric" class="w-full form-field font-semibold focus:outline-none focus:ring-2 focus:ring-brand-500">
                         </div>
                         <div>
                             <label for="edit-category" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Kategori</label>
-                            <input type="text" id="edit-category" maxlength="32" list="category-list" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)">
+                            <input type="text" id="edit-category" maxlength="32" list="category-list" class="w-full form-field focus:outline-none focus:ring-2 focus:ring-brand-500">
                         </div>
                     </div>
                     <div>
                         <label for="edit-code" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Kode</label>
-                        <input type="text" id="edit-code" required maxlength="32" pattern="[A-Za-z0-9\-]+" class="w-full px-3 py-2.5 rounded-xl font-bold uppercase focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)">
+                        <input type="text" id="edit-code" required maxlength="32" pattern="[A-Za-z0-9\-]+" class="w-full form-field font-bold uppercase focus:outline-none focus:ring-2 focus:ring-brand-500">
                     </div>
                     <div>
                         <label for="edit-link" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Link Pembelian</label>
-                        <input type="url" id="edit-link" required class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)">
+                        <input type="url" id="edit-link" required class="w-full form-field focus:outline-none focus:ring-2 focus:ring-brand-500">
                     </div>
                     <div>
                         <label for="edit-images" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Foto (maks. 4)</label>
@@ -349,7 +349,7 @@
     <div id="settings-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title">
         <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md" onclick="closeModal('settings-modal')"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md px-4">
-            <div class="rounded-3xl p-6 shadow-2xl" style="background:var(--card)" id="settings-modal-content">
+            <div class="rounded-3xl p-6 sm:p-7 shadow-2xl" style="background:var(--card)" id="settings-modal-content">
                 <div class="flex justify-between items-center mb-4">
                     <h2 id="settings-title" class="text-lg font-extrabold flex items-center gap-2" style="color:var(--text)">
                         <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:#fce7f3;color:#db2777"><i class="fa-solid fa-palette" aria-hidden="true"></i></span>
@@ -393,11 +393,11 @@
                     <form id="password-form" onsubmit="ubahPassword(event)" class="space-y-2">
                         <div>
                             <label for="pass-baru" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Password Baru</label>
-                            <input type="password" id="pass-baru" required minlength="8" maxlength="72" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Minimal 8 karakter">
+                            <input type="password" id="pass-baru" required minlength="8" maxlength="72" autocomplete="new-password" class="w-full form-field focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="Minimal 8 karakter">
                         </div>
                         <div>
                             <label for="pass-ulang" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Ulangi Password Baru</label>
-                            <input type="password" id="pass-ulang" required minlength="8" maxlength="72" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Ulangi password">
+                            <input type="password" id="pass-ulang" required minlength="8" maxlength="72" autocomplete="new-password" class="w-full form-field focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="Ulangi password">
                         </div>
                         <button type="submit" id="btn-password" class="w-full py-2.5 rounded-xl font-bold flex items-center justify-center gap-2" style="background:var(--border);color:var(--text)">
                             <i class="fa-solid fa-key" aria-hidden="true"></i> Perbarui Password
