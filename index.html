@@ -153,7 +153,9 @@
             <form id="add-form" onsubmit="tambahBarang(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-end">
                 <div class="lg:col-span-3">
                     <label for="input-images" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">1. Foto (maks. 4)</label>
-                    <input type="file" id="input-images" accept="image/png,image/jpeg,image/webp" multiple required class="w-full text-sm file:mr-0 file:w-full file:py-2.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-100 file:text-slate-700 cursor-pointer border rounded-xl px-2 py-1.5" style="border-color:var(--border);background:var(--card);color:var(--text)">
+                    <input type="file" id="input-images" accept="image/png,image/jpeg,image/webp" multiple required onchange="tanganiPilihFoto(this)" class="w-full text-sm file:mr-0 file:w-full file:py-2.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-100 file:text-slate-700 cursor-pointer border rounded-xl px-2 py-1.5" style="border-color:var(--border);background:var(--card);color:var(--text)">
+                    <div id="preview-foto" class="grid grid-cols-4 gap-2 mt-2"></div>
+                    <p id="preview-hitung" class="hidden text-xs font-semibold mt-1.5" style="color:var(--muted)"></p>
                 </div>
                 <div class="lg:col-span-3">
                     <label for="input-name" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">2. Nama Produk</label>
@@ -275,6 +277,18 @@
                     </button>
                     <p id="lockout-timer" class="text-center text-sm font-bold hidden mt-2" style="color:#dc2626" role="alert"></p>
                 </form>
+
+                <!-- Penyedia lain: hanya tampil bila aktif di Supabase -->
+                <div id="wrap-provider" class="hidden">
+                    <div class="flex items-center gap-3 my-4">
+                        <span class="flex-1 h-px" style="background:var(--border)"></span>
+                        <span class="text-xs font-bold" style="color:var(--muted)">atau</span>
+                        <span class="flex-1 h-px" style="background:var(--border)"></span>
+                    </div>
+                    <button type="button" id="btn-google" onclick="masukGoogle()" class="hidden w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 touch-lg border" style="border-color:var(--border);background:var(--card);color:var(--text)">
+                        <i class="fa-brands fa-google" aria-hidden="true"></i> Masuk dengan Google
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -352,7 +366,11 @@
                     </div>
                     <div class="p-4 rounded-2xl" style="background:var(--bg);border:1px solid var(--border)">
                         <label for="input-bg" class="block text-sm font-bold mb-2" style="color:var(--muted)">Wallpaper Latar Belakang</label>
-                        <input type="file" id="input-bg" accept="image/png,image/jpeg,image/webp" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-200 file:text-slate-700 cursor-pointer mb-2">
+                        <input type="file" id="input-bg" accept="image/png,image/jpeg,image/webp" onchange="previewGambar(this,'settings-bg-preview','settings-bg-icon')" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-200 file:text-slate-700 cursor-pointer mb-2">
+                        <div id="settings-bg-preview-wrap" class="hidden rounded-xl overflow-hidden border mb-2" style="border-color:var(--border)">
+                            <img id="settings-bg-preview" class="w-full h-28 object-cover" alt="Pratinjau wallpaper">
+                        </div>
+                        <span id="settings-bg-icon" class="hidden"></span>
                         <button type="button" onclick="hapusBackground()" id="btn-remove-bg" class="w-full text-sm font-bold hidden flex items-center justify-center gap-2 py-2 rounded-xl" style="background:#fee2e2;color:#dc2626">
                             <i class="fa-solid fa-trash-can" aria-hidden="true"></i> Hapus Wallpaper
                         </button>

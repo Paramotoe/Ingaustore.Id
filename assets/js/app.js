@@ -19,6 +19,9 @@ const MAX_ATTEMPTS = 5;
 const LOCK_MS = 60 * 1000;
 const SEMUA_KATEGORI = 'Semua';
 
+let daftarFoto = [];
+let urlPreviewFoto = [];
+
 let sb = null;
 let isAdmin = false;
 let products = [];
@@ -70,7 +73,7 @@ function pesanKesalahan(err) {
     if (/should be different from the old password/i.test(m)) return 'Password baru harus berbeda dari yang lama.';
     if (/duplicate key|already exists/i.test(m)) return 'Kode produk tersebut sudah dipakai.';
     if (/row-level security|JWT|not authenticated/i.test(m)) return 'Akun ini tidak memiliki hak admin.';
-    if (/Failed to fetch|NetworkError|Load failed/i.test(m)) return 'Tidak dapat menghubungi server. Periksa koneksi internet.';
+    if (/Failed to fetch|NetworkError|Load failed|Failed to send a request/i.test(m)) return 'Tidak dapat menghubungi server. Periksa koneksi internet.';
     if (/maximum allowed size|Payload too large|exceeded/i.test(m)) return 'Ukuran berkas melebihi batas penyimpanan.';
     return m;
 }
@@ -319,6 +322,37 @@ async function prosesLogout() {
     }
 }
 
+async function cekPenyediaMasuk() {
+    try {
+        const res = await fetch(CFG.supabaseUrl.trim() + '/auth/v1/settings', {
+            headers: { apikey: CFG.supabaseAnonKey.trim() }
+        });
+        if (!res.ok) return;
+        const s = await res.json();
+        const eksternal = s.external || {};
+        if (!eksternal.google) return;
+        document.getElementById('wrap-provider').classList.remove('hidden');
+        document.getElementById('btn-google').classList.remove('hidden');
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function masukGoogle() {
+    const btn = document.getElementById('btn-google');
+    btn.disabled = true;
+    try {
+        const { error } = await sb.auth.signInWithProvider({
+            provider: 'google',
+            options: { redirectTo: location.origin + '/' }
+        });
+        if (error) throw error;
+    } catch (err) {
+        showToast(pesanKesalahan(err), 'error');
+        btn.disabled = false;
+    }
+}
+
 async function ubahPassword(e) {
     e.preventDefault();
     if (!isAdmin) {
@@ -414,6 +448,82 @@ function bacaFieldProduk(sumber) {
     return { code, name, price, category, link };
 }
 
+/* --------------------------------------------------------------------------
+   Pratinjau foto produk (maks. 4) di form Tambah
+   -------------------------------------------------------------------------- */
+
+function bersihkanPreviewFoto() {
+    urlPreviewFoto.forEach(url => URL.revokeObjectURL(url));
+    urlPreviewFoto = [];
+}
+
+function sinkronInputFoto() {
+    const dt = new DataTransfer();
+    daftarFoto.forEach(f => dt.items.add(f));
+    document.getElementById('input-images').files = dt.files;
+}
+
+function renderPreviewFoto() {
+    bersihkanPreviewFoto();
+    const wrap = document.getElementById('preview-foto');
+    const hitung = document.getElementById('preview-hitung');
+    wrap.innerHTML = '';
+    daftarFoto.forEach((file, i) => {
+        const url = URL.createObjectURL(file);
+        urlPreviewFoto.push(url);
+        const kotak = document.createElement('div');
+        kotak.className = 'relative rounded-xl overflow-hidden border aspect-square';
+        kotak.style.borderColor = 'var(--border)';
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = 'Pratinjau foto ' + (i + 1);
+        img.className = 'w-full h-full object-cover';
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'absolute top-1 right-1 w-7 h-7 rounded-full flex items-center justify-center shadow';
+        btn.style.background = '#ef4444';
+        btn.style.color = '#fff';
+        btn.setAttribute('aria-label', 'Hapus foto ' + (i + 1));
+        btn.innerHTML = '<i class="fa-solid fa-xmark text-xs" aria-hidden="true"></i>';
+        btn.addEventListener('click', () => {
+            daftarFoto.splice(i, 1);
+            sinkronInputFoto();
+            renderPreviewFoto();
+        });
+        kotak.append(img, btn);
+        wrap.appendChild(kotak);
+    });
+    hitung.classList.toggle('hidden', !daftarFoto.length);
+    hitung.textContent = daftarFoto.length + ' dari ' + MAX_FOTO + ' foto';
+}
+
+function tanganiPilihFoto(input) {
+    for (const f of input.files) {
+        if (daftarFoto.length >= MAX_FOTO) {
+            showToast('Maksimal ' + MAX_FOTO + ' foto per produk.', 'error');
+            break;
+        }
+        if (!ALLOWED_IMG.includes(f.type)) {
+            showToast('Format gambar harus PNG, JPG, atau WEBP.', 'error');
+            continue;
+        }
+        if (f.size > MAX_IMG) {
+            showToast('Ukuran gambar maksimal 5 MB.', 'error');
+            continue;
+        }
+        const kembar = daftarFoto.some(x => x.name === f.name && x.size === f.size && x.lastModified === f.lastModified);
+        if (!kembar) daftarFoto.push(f);
+    }
+    sinkronInputFoto();
+    renderPreviewFoto();
+}
+
+function resetFoto() {
+    daftarFoto = [];
+    sinkronInputFoto();
+    renderPreviewFoto();
+}
+
 async function tambahBarang(e) {
     e.preventDefault();
     if (!isAdmin) return;
@@ -441,6 +551,7 @@ async function tambahBarang(e) {
         if (error) throw error;
 
         form.reset();
+        resetFoto();
         showToast('Produk ' + field.code + ' berhasil ditambahkan.');
         await muatProduk();
         if (isAdmin) muatStatistik();
@@ -654,6 +765,7 @@ function bukaPengaturan() {
     openModal('settings-modal');
     document.getElementById('settings-logo-preview').classList.add('hidden');
     document.getElementById('settings-logo-icon').classList.remove('hidden');
+    document.getElementById('settings-bg-preview-wrap').classList.add('hidden');
     document.getElementById('settings-form').reset();
 }
 
@@ -733,6 +845,7 @@ async function hapusBackground() {
         if (error) throw error;
         await hapusBerkas([path]);
         document.getElementById('input-bg').value = '';
+        document.getElementById('settings-bg-preview-wrap').classList.add('hidden');
         await muatPengaturan();
         showToast('Wallpaper dihapus.');
     } catch (err) {
@@ -1214,6 +1327,8 @@ async function init() {
     sb.auth.onAuthStateChange((_event, session) => {
         setTimeout(() => terapkanSesi(session), 0);
     });
+
+    cekPenyediaMasuk();
 
     const { data } = await sb.auth.getSession();
     await terapkanSesi(data && data.session);
