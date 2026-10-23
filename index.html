@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ec4899">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Ingaustore.id - Katalog Produk</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,7 +17,7 @@
                     fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
                     colors: {
                         brand: { 50: '#fdf2f8', 100: '#fce7f3', 500: '#ec4899', 600: '#db2777', 700: '#be185d' },
-                        ink: { 900: '#0f172a', 700: '#334155', 500: '#64748b', 300: '#cbd5e1' }
+                        ink: { 900: '#0f172a', 700: '#334155', 500: '#64748b', 400: '#94a3b8' }
                     }
                 }
             }
@@ -25,138 +26,186 @@
 
     <style>
         :root {
-            --bg: #f1f5f9;
-            --surface: #ffffff;
-            --border: #e2e8f0;
-            --ink: #0f172a;
-            --muted: #64748b;
             --brand: #ec4899;
             --brand-dark: #db2777;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
         }
         @media (prefers-color-scheme: dark) {
-            :root { --bg: #0f172a; --surface: #1e293b; --border: #334155; --ink: #f1f5f9; --muted: #94a3b8; }
+            :root { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --muted: #94a3b8; --border: #334155; }
         }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         }
-        html { font-size: 17px; }
-        body { background: var(--bg); color: var(--ink); min-height: 100vh; }
-        body { background-image: radial-gradient(var(--border) 1px, transparent 1px); background-size: 24px 24px; }
+
+        html { font-size: 17px; scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 24px 24px;
+            transition: background-color 0.4s, color 0.4s;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         ::-webkit-scrollbar { width: 10px; height: 10px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.4); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.7); }
 
-        .surface { background: var(--surface); border: 1px solid var(--border); }
+        .glass-nav {
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+        }
+        @media (prefers-color-scheme: dark) {
+            .glass-nav { background: rgba(15,23,42,0.88); }
+        }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px -8px rgba(0,0,0,0.12); }
 
-        .modal-enter { animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .modal-leave { animation: modalFadeOut 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.94) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        @keyframes modalFadeOut { from { opacity: 1; transform: scale(1) translateY(0); } to { opacity: 0; transform: scale(0.96) translateY(8px); } }
+        .btn-primary {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            color: #fff;
+            font-weight: 700;
+            border-radius: 0.75rem;
+            transition: filter 0.15s, transform 0.15s;
+        }
+        .btn-primary:hover { filter: brightness(1.06); }
+        .btn-primary:active { transform: scale(0.98); }
 
-        .fade-in-up { opacity: 0; transform: translateY(20px); transition: opacity 0.45s ease-out, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
-        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+        .modal-enter { animation: modalIn 0.3s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .modal-leave { animation: modalOut 0.22s cubic-bezier(0.16,1,0.3,1) forwards; }
+        @keyframes modalIn { from { opacity:0; transform: scale(0.94) translateY(12px); } to { opacity:1; transform: scale(1) translateY(0); } }
+        @keyframes modalOut { from { opacity:1; transform: scale(1) translateY(0); } to { opacity:0; transform: scale(0.96) translateY(8px); } }
 
-        .cursor-zoom { cursor: zoom-in; }
-        .toast-enter { animation: toastIn 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; }
-        @keyframes toastIn { from { transform: translate(-50%, 100px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+        .fade-in { opacity:0; transform: translateY(16px); transition: opacity 0.45s ease, transform 0.45s ease; }
+        .fade-in.visible { opacity:1; transform: translateY(0); }
 
-        .card-hover { transition: transform 0.18s ease, box-shadow 0.18s; }
-        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 10px 24px -8px rgba(0,0,0,0.1); }
+        .toast { transition: transform 0.35s cubic-bezier(0.68,-0.55,0.265,1.55), opacity 0.35s; }
+        .toast.show { transform: translate(-50%,0); opacity:1; }
+        .toast.hide { transform: translate(-50%,120px); opacity:0; }
 
-        .btn-brand { background: var(--brand); color: #fff; }
-        .btn-brand:hover { background: var(--brand-dark); }
+        .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        :focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; border-radius: 10px; }
+        /* Tap targets */
+        button, a, input, select, textarea { min-height: 44px; }
+        .touch-lg { min-height: 52px; font-size: 1.05rem; }
 
-        button, a, input { min-height: 44px; }
-        .touch-lg { min-height: 50px; font-size: 1.05rem; }
+        /* Search dropdown */
+        .search-wrap { position: relative; }
+        .search-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
+        .search-suggestions {
+            position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+            background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem;
+            box-shadow: 0 12px 32px -8px rgba(0,0,0,0.15); z-index: 60;
+            max-height: 320px; overflow-y: auto;
+        }
 
-        /* Hidden admin trigger: fully invisible */
-        #admin-trigger { position: fixed; bottom: 0; right: 0; width: 24px; height: 24px; opacity: 0; cursor: default; z-index: 1; }
+        /* Hide scrollbar utility */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { scrollbar-width: none; }
+
+        :focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; border-radius: 8px; }
+
+        /* Admin secret entry: invisible */
+        .admin-secret { opacity: 0; width: 1px; height: 1px; overflow: hidden; position: absolute; pointer-events: none; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col">
 
     <!-- Toast -->
-    <div id="toast-container" role="status" aria-live="polite" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 translate-y-32 z-[100] bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 font-semibold text-base transition-transform duration-400">
-        <i id="toast-icon" class="fa-solid fa-bell text-pink-400 text-lg" aria-hidden="true"></i>
-        <span id="toast-message">Notifikasi</span>
+    <div id="toast" role="status" aria-live="polite"
+        class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[100] bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 font-semibold text-base toast hide pointer-events-none">
+        <i id="toast-icon" class="fa-solid fa-bell text-brand-400 text-lg" aria-hidden="true"></i>
+        <span id="toast-msg">Notifikasi</span>
     </div>
 
     <!-- Lightbox -->
-    <div id="lightbox" class="fixed inset-0 z-[70] hidden bg-slate-950/90 backdrop-blur-md flex justify-center items-center opacity-0 transition-opacity duration-300 cursor-zoom-out" onclick="closeLightbox()" role="dialog" aria-modal="true" aria-label="Perbesar gambar">
-        <img id="lightbox-img" class="max-w-[92%] max-h-[90vh] rounded-2xl shadow-2xl scale-95 transition-transform duration-300" alt="Preview produk">
-        <button onclick="closeLightbox()" class="absolute top-4 right-4 bg-white/20 hover:bg-white/30 text-white w-11 h-11 rounded-full flex items-center justify-center text-lg" aria-label="Tutup">
+    <div id="lightbox" class="fixed inset-0 z-[70] hidden bg-slate-950/92 backdrop-blur-md flex items-center justify-center opacity-0 transition-opacity duration-250" onclick="closeLightbox()" role="dialog" aria-modal="true" aria-label="Perbesar gambar">
+        <img id="lightbox-img" class="max-w-[92%] max-h-[88vh] rounded-2xl shadow-2xl scale-95 transition-transform duration-250" alt="Preview produk">
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 bg-white/15 hover:bg-white/25 text-white w-11 h-11 rounded-full flex items-center justify-center text-lg" aria-label="Tutup">
             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
     </div>
 
     <!-- Header -->
-    <header class="sticky top-0 z-50 w-full surface border-b">
-        <div class="max-w-[1100px] mx-auto px-4 sm:px-6 h-18 flex items-center gap-3 sm:gap-4 py-3">
-            <!-- Logo (tap 5x / long-press = admin entry) -->
-            <div id="logo-wrap" class="flex items-center gap-3 shrink-0 cursor-pointer select-none" onclick="handleLogoTap()" oncontextmenu="event.preventDefault(); bukaLogin();" title="">
-                <div id="shop-logo-container" class="w-11 h-11 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white overflow-hidden shrink-0">
-                    <i id="default-logo-icon" class="fa-brands fa-store text-lg" aria-hidden="true"></i>
-                    <img id="custom-logo-img" src="" class="w-full h-full object-cover hidden" alt="Logo toko">
+    <header class="sticky top-0 z-50 w-full glass-nav">
+        <div class="max-w-[1280px] mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center gap-3 sm:gap-5">
+            <!-- Logo (secret admin trigger: long press / 5 taps) -->
+            <div id="logo" class="flex items-center gap-2.5 sm:gap-3 shrink-0 cursor-pointer select-none" onclick="handleLogoTap()" role="button" tabindex="0" aria-label="Ingaustore">
+                <div id="logo-box" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl ig-gradient shadow-md flex items-center justify-center text-white overflow-hidden shrink-0 transition-transform">
+                    <i id="logo-icon" class="fa-brands fa-instagram text-lg sm:text-xl" aria-hidden="true"></i>
+                    <img id="logo-img" src="" class="w-full h-full object-cover hidden" alt="Logo toko">
                 </div>
                 <div class="hidden sm:block">
-                    <h1 class="font-extrabold text-lg sm:text-xl tracking-tight leading-tight" style="color:var(--ink)">Ingaustore.id</h1>
+                    <h1 class="font-extrabold text-lg sm:text-xl tracking-tight leading-tight" style="color:var(--text)">Ingaustore.id</h1>
                     <p class="text-xs font-medium" style="color:var(--muted)">Katalog Produk</p>
                 </div>
             </div>
 
             <!-- Search (ecommerce style) -->
-            <form onsubmit="doSearch(event)" class="flex-1 flex items-center gap-2 max-w-2xl">
-                <div class="flex-1 relative">
-                    <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2" style="color:var(--muted)" aria-hidden="true"></i>
-                    <input type="search" id="search-input" placeholder="Cari produk..." aria-label="Cari produk"
-                        class="w-full bg-slate-100 border border-slate-200 text-base rounded-full py-2.5 pl-11 pr-10 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:bg-white font-medium transition"
-                        style="background:var(--surface); color:var(--ink); border-color:var(--border)">
-                    <button type="button" onclick="clearSearch()" id="clear-btn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center" style="color:var(--muted)" aria-label="Hapus">
-                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            <div class="flex-1 search-wrap">
+                <form id="search-form" onsubmit="submitSearch(event)" class="flex items-center gap-2">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" aria-hidden="true"></i>
+                        <input type="search" id="search-input" oninput="liveSearch(this.value)" placeholder="Cari produk..." aria-label="Cari produk"
+                            class="w-full bg-slate-100 border border-slate-200 text-base rounded-full py-2.5 sm:py-3 pl-11 pr-10 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white font-medium transition" style="color:var(--text)">
+                        <button type="button" id="search-clear" onclick="clearSearch()" class="search-clear hidden text-slate-400 hover:text-slate-600 w-7 h-7 rounded-full flex items-center justify-center" aria-label="Hapus pencarian">
+                            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <button type="submit" class="btn-primary px-4 sm:px-6 py-2.5 sm:py-3 rounded-full flex items-center gap-2 shrink-0 touch-lg" aria-label="Cari">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        <span class="hidden sm:inline">Cari</span>
                     </button>
-                </div>
-                <button type="submit" class="btn-brand px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 touch-lg shrink-0">
-                    <i class="fa-solid fa-search" aria-hidden="true"></i> <span class="hidden sm:inline">Cari</span>
-                </button>
-            </form>
+                </form>
+                <div id="search-suggestions" class="search-suggestions hidden"></div>
+            </div>
         </div>
     </header>
 
-    <main class="flex-grow max-w-[1100px] mx-auto w-full px-4 sm:px-6 py-5 sm:py-8 flex flex-col">
+    <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 sm:px-6 py-5 sm:py-8 flex flex-col">
 
-        <!-- Admin Panel -->
-        <div id="admin-panel" class="hidden mb-6 surface rounded-2xl p-5 sm:p-6 fade-in-up">
+        <!-- Admin Panel (hidden until login) -->
+        <div id="admin-panel" class="hidden mb-6 card p-5 sm:p-6 fade-in">
             <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-3 border-b pb-4" style="border-color:var(--border)">
                 <div>
-                    <h2 class="text-lg font-extrabold flex items-center gap-2" style="color:var(--ink)">
-                        <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--bg); color:var(--brand)"><i class="fa-solid fa-gear" aria-hidden="true"></i></span>
+                    <h2 class="text-lg sm:text-xl font-extrabold flex items-center gap-2" style="color:var(--text)">
+                        <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:#fce7f3;color:#db2777"><i class="fa-solid fa-gear" aria-hidden="true"></i></span>
                         Kelola Produk
                     </h2>
                     <p class="text-sm mt-1" style="color:var(--muted)">Tambah atau hapus produk di katalog.</p>
                 </div>
-                <button onclick="bukaPengaturan()" class="text-sm font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 touch-lg" style="background:var(--bg); color:var(--ink)">
+                <button onclick="bukaPengaturan()" class="text-sm font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 touch-lg" style="background:var(--border);color:var(--text)">
                     <i class="fa-solid fa-palette" aria-hidden="true"></i> Atur Tampilan
                 </button>
             </div>
-
-            <form id="add-product-form" onsubmit="tambahBarang(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-end">
+            <form id="add-form" onsubmit="tambahBarang(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-end">
                 <div class="lg:col-span-3">
-                    <label class="block text-sm font-bold mb-1.5" style="color:var(--ink)">1. Foto Produk</label>
-                    <input type="file" id="input-image-file" accept="image/png,image/jpeg,image/webp" required class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-100 file:text-slate-700 cursor-pointer border rounded-xl py-2 px-2" style="border-color:var(--border); background:var(--surface)">
+                    <label class="block text-sm font-bold mb-1.5" style="color:var(--muted)">1. Foto Produk</label>
+                    <input type="file" id="input-image" accept="image/png,image/jpeg,image/webp" required class="w-full text-sm file:mr-0 file:w-full file:py-2.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-100 file:text-slate-700 cursor-pointer border rounded-xl px-2 py-1.5" style="border-color:var(--border);background:var(--card);color:var(--text)">
                 </div>
                 <div class="lg:col-span-3">
-                    <label class="block text-sm font-bold mb-1.5" style="color:var(--ink)">2. Kode Produk</label>
-                    <input type="text" id="input-code" required maxlength="32" pattern="[A-Za-z0-9\\-]+" class="w-full px-3 py-2.5 border rounded-xl focus:ring-2 focus:ring-pink-500 outline-none font-bold uppercase" style="border-color:var(--border); background:var(--surface); color:var(--ink)" placeholder="IG-001">
+                    <label class="block text-sm font-bold mb-1.5" style="color:var(--muted)">2. Kode Produk</label>
+                    <input type="text" id="input-code" required maxlength="32" pattern="[A-Za-z0-9\\-]+" class="w-full px-3 py-2.5 rounded-xl font-bold uppercase focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="IG-001">
                 </div>
                 <div class="lg:col-span-4">
-                    <label class="block text-sm font-bold mb-1.5" style="color:var(--ink)">3. Link Pembelian</label>
-                    <input type="url" id="input-link" required class="w-full px-3 py-2.5 border rounded-xl focus:ring-2 focus:ring-pink-500 outline-none" style="border-color:var(--border); background:var(--surface); color:var(--ink)" placeholder="https://shopee.co.id/...">
+                    <label class="block text-sm font-bold mb-1.5" style="color:var(--muted)">3. Link Pembelian</label>
+                    <input type="url" id="input-link" required class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="https://shopee.co.id/...">
                 </div>
                 <div class="lg:col-span-2">
-                    <button type="submit" id="btn-add-product" class="btn-brand w-full font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 touch-lg">
+                    <button type="submit" id="btn-add" class="btn-primary w-full py-2.5 rounded-xl flex items-center justify-center gap-2 touch-lg">
                         <i class="fa-solid fa-plus" aria-hidden="true"></i> Tambah
                     </button>
                 </div>
@@ -166,64 +215,70 @@
         <!-- Catalog header -->
         <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-2">
             <div>
-                <h2 class="text-xl sm:text-2xl font-extrabold" style="color:var(--ink)">Katalog Produk</h2>
-                <p class="text-sm mt-0.5" style="color:var(--muted)">Pilih produk yang Anda inginkan.</p>
+                <h2 class="text-xl sm:text-2xl font-extrabold" style="color:var(--text)">Katalog Produk</h2>
+                <p class="text-sm mt-0.5" style="color:var(--muted)">Pilih produk yang Anda inginkan. Ketuk foto untuk memperbesar.</p>
             </div>
-            <div id="item-count" class="hidden sm:inline-flex items-center justify-center text-sm font-bold px-3 py-1.5 rounded-lg shrink-0" style="background:var(--border); color:var(--ink)">
+            <div id="item-count" class="hidden sm:inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold" style="background:var(--border);color:var(--text)">
                 0 Produk
             </div>
         </div>
 
         <!-- Product Grid -->
-        <div id="product-grid" class="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 transition-all duration-300" aria-live="polite"></div>
+        <div id="product-grid" class="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-5" aria-live="polite"></div>
 
         <!-- Empty state -->
-        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-14 text-center surface rounded-2xl mt-4 fade-in-up">
-            <div class="w-24 h-24 rounded-full flex items-center justify-center mb-4" style="background:var(--bg); color:var(--brand)">
+        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-14 text-center card mt-4 fade-in">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center mb-4" style="background:#fce7f3;color:#db2777">
                 <i class="fa-solid fa-box-open text-4xl" aria-hidden="true"></i>
             </div>
-            <h3 class="text-xl font-extrabold" style="color:var(--ink)" id="empty-title">Katalog Masih Kosong</h3>
-            <p class="text-sm mt-1.5 font-medium max-w-md px-4" style="color:var(--muted)" id="empty-desc">Belum ada produk yang tersedia saat ini.</p>
+            <h3 class="text-xl font-extrabold" style="color:var(--text)" id="empty-title">Katalog Masih Kosong</h3>
+            <p class="text-sm mt-1.5 max-w-sm px-4" style="color:var(--muted)" id="empty-desc">Belum ada produk yang tersedia saat ini.</p>
+        </div>
+
+        <!-- Skeleton loading (shown briefly) -->
+        <div id="skeleton" class="hidden w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-5 mt-2">
+            <div class="card overflow-hidden"><div class="aspect-square skeleton"></div><div class="p-3 space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-9 skeleton rounded"></div></div></div>
+            <div class="card overflow-hidden"><div class="aspect-square skeleton"></div><div class="p-3 space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-9 skeleton rounded"></div></div></div>
+            <div class="card overflow-hidden"><div class="aspect-square skeleton"></div><div class="p-3 space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-9 skeleton rounded"></div></div></div>
+            <div class="card overflow-hidden"><div class="aspect-square skeleton"></div><div class="p-3 space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-9 skeleton rounded"></div></div></div>
         </div>
     </main>
 
-    <!-- Footer (minimal) -->
-    <footer class="py-6 mt-auto border-t" style="border-color:var(--border)">
-        <div class="max-w-[1100px] mx-auto px-4 sm:px-6 text-center">
-            <p class="text-sm font-medium" style="color:var(--muted)">
-                &copy; <span id="year"></span> <strong style="color:var(--ink)">Ingaustore.id</strong>. Semua hak dilindungi.
-            </p>
+    <!-- Footer (minimal, no conspicuous admin) -->
+    <footer class="py-6 mt-auto" style="border-top:1px solid var(--border)">
+        <div class="max-w-[1280px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm" style="color:var(--muted)">
+            <p>&copy; <span id="year"></span> <strong style="color:var(--text)">Ingaustore.id</strong>. Semua hak dilindungi.</p>
+            <p class="text-xs">Katalog Produk Online</p>
         </div>
+        <!-- Secret admin tap target: invisible -->
+        <button id="secret-admin" class="admin-secret" onclick="bukaLogin()" aria-hidden="true" tabindex="-1">.</button>
     </footer>
-
-    <!-- Invisible admin trigger (bottom-right corner, fully transparent) -->
-    <div id="admin-trigger" onclick="handleAdminTrigger()" aria-hidden="true" tabindex="-1"></div>
 
     <!-- Login Modal -->
     <div id="login-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="login-title">
         <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md" onclick="closeModal('login-modal')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-sm px-4">
-            <div class="surface rounded-2xl p-6 shadow-2xl" id="login-modal-content">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm px-4">
+            <div class="rounded-3xl p-6 sm:p-7 shadow-2xl" style="background:var(--card)" id="login-modal-content">
                 <div class="text-center mb-5">
-                    <div class="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-3" style="background:var(--bg); color:var(--brand)">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-3" style="background:#fce7f3;color:#db2777">
                         <i class="fa-solid fa-lock text-xl" aria-hidden="true"></i>
                     </div>
-                    <h2 id="login-title" class="text-xl font-extrabold" style="color:var(--ink)">Masuk Admin</h2>
+                    <h2 id="login-title" class="text-xl font-extrabold" style="color:var(--text)">Masuk Admin</h2>
                     <p class="text-sm mt-1" style="color:var(--muted)">Masukkan username dan password.</p>
                 </div>
                 <form onsubmit="prosesLogin(event)" class="space-y-3" autocomplete="off">
                     <div>
-                        <label class="block text-sm font-bold mb-1.5" style="color:var(--ink)">Username</label>
-                        <input type="text" id="login-username" required maxlength="32" class="w-full px-3 py-2.5 border rounded-xl focus:ring-2 focus:ring-pink-500 outline-none font-medium" style="border-color:var(--border); background:var(--surface); color:var(--ink)" placeholder="Username">
+                        <label class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Username</label>
+                        <input type="text" id="login-username" required maxlength="32" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Username">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-1.5" style="color:var(--ink)">Password</label>
-                        <input type="password" id="login-password" required maxlength="64" class="w-full px-3 py-2.5 border rounded-xl focus:ring-2 focus:ring-pink-500 outline-none font-medium" style="border-color:var(--border); background:var(--surface); color:var(--ink)" placeholder="Password">
+                        <label class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Password</label>
+                        <input type="password" id="login-password" required maxlength="64" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Password">
                     </div>
-                    <button type="submit" id="btn-login-submit" class="btn-brand w-full font-bold py-3 rounded-xl flex justify-center items-center gap-2 touch-lg">
+                    <button type="submit" id="btn-login" class="btn-primary w-full py-3 rounded-xl flex justify-center items-center gap-2 touch-lg">
                         <span>Masuk</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                     </button>
-                    <p id="lockout-timer" class="text-center text-red-500 text-sm font-bold hidden mt-2" role="alert"></p>
+                    <p id="lockout-timer" class="text-center text-sm font-bold hidden mt-2" style="color:#dc2626" role="alert"></p>
                 </form>
             </div>
         </div>
@@ -232,36 +287,36 @@
     <!-- Settings Modal -->
     <div id="settings-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title">
         <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md" onclick="closeModal('settings-modal')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md px-4">
-            <div class="surface rounded-2xl p-6 shadow-2xl" id="settings-modal-content">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md px-4">
+            <div class="rounded-3xl p-6 shadow-2xl" style="background:var(--card)" id="settings-modal-content">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 id="settings-title" class="text-lg font-extrabold flex items-center gap-2" style="color:var(--ink)">
-                        <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--bg); color:var(--brand)"><i class="fa-solid fa-palette" aria-hidden="true"></i></span>
+                    <h2 id="settings-title" class="text-lg font-extrabold flex items-center gap-2" style="color:var(--text)">
+                        <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:#fce7f3;color:#db2777"><i class="fa-solid fa-palette" aria-hidden="true"></i></span>
                         Atur Tampilan
                     </h2>
-                    <button onclick="closeModal('settings-modal')" class="w-9 h-9 rounded-full flex items-center justify-center" style="background:var(--bg); color:var(--muted)" aria-label="Tutup">
+                    <button onclick="closeModal('settings-modal')" class="w-9 h-9 rounded-full flex items-center justify-center" style="background:var(--border);color:var(--text)" aria-label="Tutup">
                         <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                     </button>
                 </div>
                 <form id="settings-form" onsubmit="simpanPengaturan(event)" class="space-y-4">
-                    <div class="p-4 rounded-xl" style="background:var(--bg)">
-                        <label class="block text-sm font-bold mb-2" style="color:var(--ink)">Logo Toko (Kotak)</label>
+                    <div class="p-4 rounded-2xl" style="background:var(--bg);border:1px solid var(--border)">
+                        <label class="block text-sm font-bold mb-2" style="color:var(--muted)">Logo Toko (Kotak)</label>
                         <div class="flex items-center gap-3">
-                            <div class="w-14 h-14 rounded-xl border flex items-center justify-center overflow-hidden shrink-0" style="border-color:var(--border); background:var(--surface)">
+                            <div class="w-14 h-14 rounded-xl border flex items-center justify-center overflow-hidden shrink-0" style="border-color:var(--border);background:var(--card)">
                                 <img id="settings-logo-preview" class="w-full h-full object-cover hidden" alt="Preview logo">
-                                <i id="settings-logo-icon" class="fa-solid fa-image text-2xl" style="color:var(--muted)" aria-hidden="true"></i>
+                                <i id="settings-logo-icon" class="fa-solid fa-image text-xl" style="color:var(--muted)" aria-hidden="true"></i>
                             </div>
-                            <input type="file" id="input-shop-logo" accept="image/*" onchange="previewGambar(this, 'settings-logo-preview', 'settings-logo-icon')" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-200 file:text-slate-700 cursor-pointer">
+                            <input type="file" id="input-logo" accept="image/*" onchange="previewGambar(this,'settings-logo-preview','settings-logo-icon')" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-pink-50 file:text-pink-600 cursor-pointer">
                         </div>
                     </div>
-                    <div class="p-4 rounded-xl" style="background:var(--bg)">
-                        <label class="block text-sm font-bold mb-2" style="color:var(--ink)">Wallpaper Latar Belakang</label>
-                        <input type="file" id="input-shop-bg" accept="image/*" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-200 file:text-slate-700 cursor-pointer mb-2">
-                        <button type="button" onclick="hapusBackground()" id="btn-remove-bg" class="w-full text-sm font-bold hidden flex items-center justify-center gap-2 py-2 rounded-lg border" style="color:#dc2626; border-color:#fecaca; background:#fef2f2">
+                    <div class="p-4 rounded-2xl" style="background:var(--bg);border:1px solid var(--border)">
+                        <label class="block text-sm font-bold mb-2" style="color:var(--muted)">Wallpaper Latar Belakang</label>
+                        <input type="file" id="input-bg" accept="image/*" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-200 file:text-slate-700 cursor-pointer mb-2">
+                        <button type="button" onclick="hapusBackground()" id="btn-remove-bg" class="w-full text-sm font-bold hidden flex items-center justify-center gap-2 py-2 rounded-xl" style="background:#fee2e2;color:#dc2626">
                             <i class="fa-solid fa-trash-can" aria-hidden="true"></i> Hapus Wallpaper
                         </button>
                     </div>
-                    <button type="submit" id="btn-save-settings" class="btn-brand w-full font-bold py-3 rounded-xl flex items-center justify-center gap-2 touch-lg">
+                    <button type="submit" id="btn-save" class="btn-primary w-full py-3 rounded-xl flex items-center justify-center gap-2 touch-lg">
                         <i class="fa-solid fa-check" aria-hidden="true"></i> Simpan
                     </button>
                 </form>
@@ -273,498 +328,164 @@
         document.getElementById('year').textContent = new Date().getFullYear();
 
         /* SECURITY UTILS */
-        const escapeHtml = (str) => {
-            if (str === null || str === undefined) return '';
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        const escapeHtml = (s) => {
+            if (s === null || s === undefined) return '';
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
         };
-        const sanitizeUrl = (url) => {
-            try { const u = new URL(url); if (u.protocol !== 'http:' && u.protocol !== 'https:') return null; return u.href; } catch (e) { return null; }
-        };
-        const sanitizeCode = (code) => {
-            const c = String(code).trim().toUpperCase();
-            if (!/^[A-Z0-9\-]{1,32}$/.test(c)) return null;
-            return c;
-        };
-        const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
-        const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+        const sanitizeUrl = (u) => { try { const x = new URL(u); return (x.protocol === 'http:' || x.protocol === 'https:') ? x.href : null; } catch { return null; } };
+        const sanitizeCode = (c) => { const v = String(c).trim().toUpperCase(); return /^[A-Z0-9\-]{1,32}$/.test(v) ? v : null; };
+        const MAX_IMG = 5 * 1024 * 1024;
+        const ALLOWED_IMG = ['image/png','image/jpeg','image/webp','image/gif'];
 
         /* AUTH */
-        const TARGET_USER_HASH = '9aecdc2473eec89ec840c869547e036362b11b7b095e8cc1353f8393c6c3f670';
-        const TARGET_PASS_HASH = 'e522248dc219d9257348dc2d54f94300d544f86f05e642d19c67a640aa51dc3f';
-        const SESSION_TOKEN_KEY = 'ingau_session_token';
-        const LOCK_UNTIL_KEY = 'ingau_lock_until';
-        const ATTEMPTS_KEY = 'ingau_attempts';
+        const USER_HASH = '9aecdc2473eec89ec840c869547e036362b11b7b095e8cc1353f8393c6c3f670';
+        const PASS_HASH = 'e522248dc219d9257348dc2d54f94300d544f86f05e642d19c67a640aa51dc3f';
+        const SESS_KEY = 'ingau_session_token';
+        const LOCK_KEY = 'ingau_lock_until';
+        const ATT_KEY = 'ingau_attempts';
 
-        async function hashData(text) {
-            const msgUint8 = new TextEncoder().encode(text.trim());
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        async function hashData(t) {
+            const b = new TextEncoder().encode(t.trim());
+            const h = await crypto.subtle.digest('SHA-256', b);
+            return Array.from(new Uint8Array(h)).map(x => x.toString(16).padStart(2,'0')).join('');
         }
-        function generateToken() {
-            const arr = new Uint8Array(32);
-            crypto.getRandomValues(arr);
-            return Array.from(arr).map(b => b.toString(16).padStart(2,'0')).join('');
-        }
+        function genToken() { const a = new Uint8Array(32); crypto.getRandomValues(a); return Array.from(a).map(x=>x.toString(16).padStart(2,'0')).join(''); }
 
-        let loginAttempts = parseInt(sessionStorage.getItem(ATTEMPTS_KEY) || '0', 10) || 0;
-        let lockUntil = parseInt(sessionStorage.getItem(LOCK_UNTIL_KEY) || '0', 10) || 0;
-        function persistLock() { sessionStorage.setItem(ATTEMPTS_KEY, String(loginAttempts)); sessionStorage.setItem(LOCK_UNTIL_KEY, String(lockUntil)); }
+        let loginAttempts = parseInt(sessionStorage.getItem(ATT_KEY) || '0', 10) || 0;
+        let lockUntil = parseInt(sessionStorage.getItem(LOCK_KEY) || '0', 10) || 0;
+        function persistLock() { sessionStorage.setItem(ATT_KEY, String(loginAttempts)); sessionStorage.setItem(LOCK_KEY, String(lockUntil)); }
 
-        let isAdminLoggedIn = false;
-        (function restoreSession() {
-            const token = sessionStorage.getItem(SESSION_TOKEN_KEY);
-            if (token && /^[a-f0-9]{64}$/.test(token)) isAdminLoggedIn = true;
-        })();
+        let isAdmin = false;
+        if (sessionStorage.getItem(SESS_KEY) && /^[a-f0-9]{64}$/.test(sessionStorage.getItem(SESS_KEY))) isAdmin = true;
 
         /* DB */
-        let allProducts = [];
-        const DB_NAME = 'IngauEnterpriseDB';
-        const DB_VERSION = 1;
-        const STORE_PRODUCTS = 'products_store';
-        const STORE_SETTINGS = 'settings_store';
+        let products = [];
+        const DB = 'IngauEnterpriseDB', DBV = 1, STP = 'products_store', STS = 'settings_store';
         let db;
-
-        const initDB = () => new Promise((resolve, reject) => {
-            const request = indexedDB.open(DB_NAME, DB_VERSION);
-            request.onupgradeneeded = (e) => {
+        const initDB = () => new Promise((res, rej) => {
+            const r = indexedDB.open(DB, DBV);
+            r.onupgradeneeded = (e) => {
                 db = e.target.result;
-                if (!db.objectStoreNames.contains(STORE_PRODUCTS)) db.createObjectStore(STORE_PRODUCTS, { keyPath: 'id' });
-                if (!db.objectStoreNames.contains(STORE_SETTINGS)) db.createObjectStore(STORE_SETTINGS, { keyPath: 'key' });
+                if (!db.objectStoreNames.contains(STP)) db.createObjectStore(STP, { keyPath: 'id' });
+                if (!db.objectStoreNames.contains(STS)) db.createObjectStore(STS, { keyPath: 'key' });
             };
-            request.onsuccess = (e) => { db = e.target.result; resolve(); };
-            request.onerror = (e) => reject(e.target.error);
+            r.onsuccess = (e) => { db = e.target.result; res(); };
+            r.onerror = (e) => rej(e.target.error);
         });
-        const dbPut = (storeName, data) => new Promise((resolve, reject) => {
-            const tx = db.transaction(storeName, 'readwrite');
-            tx.objectStore(storeName).put(data);
-            tx.oncomplete = () => resolve();
-            tx.onerror = () => reject(tx.error);
+        const dbPut = (store, data) => new Promise((res, rej) => {
+            const tx = db.transaction(store, 'readwrite'); tx.objectStore(store).put(data);
+            tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
         });
-        const dbGet = (storeName, key) => new Promise((resolve, reject) => {
-            const tx = db.transaction(storeName, 'readonly');
-            const request = key ? tx.objectStore(storeName).get(key) : tx.objectStore(storeName).getAll();
-            request.onsuccess = () => resolve(request.result);
-            request.onerror = () => reject(request.error);
+        const dbGet = (store, key) => new Promise((res, rej) => {
+            const tx = db.transaction(store, 'readonly');
+            const req = key ? tx.objectStore(store).get(key) : tx.objectStore(store).getAll();
+            req.onsuccess = () => res(req.result); req.onerror = () => rej(req.error);
         });
-        const dbDelete = (storeName, key) => new Promise((resolve, reject) => {
-            const tx = db.transaction(storeName, 'readwrite');
-            tx.objectStore(storeName).delete(key);
-            tx.oncomplete = () => resolve();
-            tx.onerror = () => reject(tx.error);
+        const dbDel = (store, key) => new Promise((res, rej) => {
+            const tx = db.transaction(store, 'readwrite'); tx.objectStore(store).delete(key);
+            tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
         });
 
         /* UI */
-        let toastTimeout;
-        const showToast = (message, type = 'success') => {
-            const toast = document.getElementById('toast-container');
-            document.getElementById('toast-message').textContent = message;
-            const icon = document.getElementById('toast-icon');
-            if (type === 'success') icon.className = 'fa-solid fa-circle-check text-green-400 text-lg';
-            else if (type === 'error') icon.className = 'fa-solid fa-circle-exclamation text-red-400 text-lg';
-            else icon.className = 'fa-solid fa-circle-info text-blue-400 text-lg';
-            toast.style.transform = 'translate(-50%, 0)';
-            toast.classList.add('toast-enter');
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => { toast.style.transform = 'translate(-50%, 100px)'; toast.classList.remove('toast-enter'); }, 3200);
-        };
-
-        const openModal = (modalId) => {
-            const modal = document.getElementById(modalId);
-            const content = document.getElementById(modalId + '-content');
-            modal.classList.remove('hidden');
-            content.classList.remove('modal-leave');
-            content.classList.add('modal-enter');
-            const first = modal.querySelector('input,button');
-            if (first) setTimeout(() => first.focus(), 50);
-        };
-        const closeModal = (modalId) => {
-            const modal = document.getElementById(modalId);
-            const content = document.getElementById(modalId + '-content');
-            content.classList.remove('modal-enter');
-            content.classList.add('modal-leave');
-            setTimeout(() => { modal.classList.add('hidden'); }, 200);
-        };
-
+        let toastTimer;
+        function showToast(msg, type = 'success') {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            const ic = document.getElementById('toast-icon');
+            ic.className = type === 'success' ? 'fa-solid fa-circle-check text-green-400 text-lg' :
+                          type === 'error' ? 'fa-solid fa-circle-exclamation text-red-400 text-lg' :
+                          'fa-solid fa-circle-info text-blue-400 text-lg';
+            t.classList.remove('hide'); t.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { t.classList.remove('show'); t.classList.add('hide'); }, 3000);
+        }
+        function openModal(id) {
+            const m = document.getElementById(id); const c = document.getElementById(id + '-content');
+            m.classList.remove('hidden'); c.classList.remove('modal-leave'); c.classList.add('modal-enter');
+            const f = m.querySelector('input,button'); if (f) setTimeout(() => f.focus(), 50);
+        }
+        function closeModal(id) {
+            const m = document.getElementById(id); const c = document.getElementById(id + '-content');
+            c.classList.remove('modal-enter'); c.classList.add('modal-leave');
+            setTimeout(() => m.classList.add('hidden'), 220);
+        }
         function openLightbox(src) {
-            const lb = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
-            img.src = src;
-            lb.classList.remove('hidden');
+            const lb = document.getElementById('lightbox'); const img = document.getElementById('lightbox-img');
+            img.src = src; lb.classList.remove('hidden');
             setTimeout(() => { lb.classList.remove('opacity-0'); img.classList.remove('scale-95'); }, 10);
             document.body.style.overflow = 'hidden';
         }
         function closeLightbox() {
-            const lb = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
-            lb.classList.add('opacity-0');
-            img.classList.add('scale-95');
-            setTimeout(() => { lb.classList.add('hidden'); document.body.style.overflow = ''; }, 200);
+            const lb = document.getElementById('lightbox'); const img = document.getElementById('lightbox-img');
+            lb.classList.add('opacity-0'); img.classList.add('scale-95');
+            setTimeout(() => { lb.classList.add('hidden'); document.body.style.overflow = ''; }, 220);
         }
 
-        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -40px 0px" };
-        const scrollObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('visible'); scrollObserver.unobserve(entry.target); }
-            });
-        }, observerOptions);
+        const io = new IntersectionObserver((es) => {
+            es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+        }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
 
-        function initTiltEffect() {
-            if (window.innerWidth < 768) return;
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-            document.querySelectorAll('.tilt-card').forEach(card => {
-                card.addEventListener('mousemove', e => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -4;
-                    const rotateY = ((x - centerX) / centerX) * 4;
-                    card.style.transform = 'perspective(900px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
-                });
-            });
-        }
-
-        /* ADMIN ENTRY: hidden gestures */
-        let logoTapCount = 0;
-        let logoTapTimer = null;
-        function handleLogoTap() {
-            logoTapCount++;
-            clearTimeout(logoTapTimer);
-            logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 1500);
-            if (logoTapCount >= 5) {
-                logoTapCount = 0;
-                bukaLogin();
-            }
-        }
-        // Long-press on logo (mobile) opens admin
-        (function setupLongPress() {
-            const el = document.getElementById('logo-wrap');
-            let pressTimer = null;
-            el.addEventListener('touchstart', () => {
-                pressTimer = setTimeout(() => { bukaLogin(); }, 1200);
-            }, { passive: true });
-            el.addEventListener('touchend', () => { clearTimeout(pressTimer); });
-            el.addEventListener('touchmove', () => { clearTimeout(pressTimer); });
-        })();
-
-        function handleAdminTrigger() {
-            // Invisible corner trigger: click 3 times quickly
-            handleLogoTap();
-        }
-
-        function bukaLogin() { openModal('login-modal'); document.getElementById('login-username').value = ''; document.getElementById('login-password').value = ''; }
-
-        function toggleAdmin() {
-            if (isAdminLoggedIn) {
-                isAdminLoggedIn = false;
-                sessionStorage.removeItem(SESSION_TOKEN_KEY);
-                document.getElementById('admin-panel').classList.add('hidden');
-                showToast('Keluar dari mode admin.', 'info');
-                renderKatalog(allProducts);
-            }
-        }
-
+        /* AUTH */
+        function bukaLogin() { openModal('login-modal'); document.getElementById('login-username').value=''; document.getElementById('login-password').value=''; }
         async function prosesLogin(e) {
             e.preventDefault();
             const now = Date.now();
-            if (now < lockUntil) {
-                const sisaTunggu = Math.ceil((lockUntil - now) / 1000);
-                showToast('Terlalu banyak percobaan. Coba lagi dalam ' + sisaTunggu + ' detik.', "error");
-                return;
-            }
-            const btn = document.getElementById('btn-login-submit');
+            if (now < lockUntil) { showToast('Terlalu banyak percobaan. Coba lagi ' + Math.ceil((lockUntil-now)/1000) + ' detik.', 'error'); return; }
+            const btn = document.getElementById('btn-login');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Memeriksa...';
             btn.disabled = true;
-            const userPlain = document.getElementById('login-username').value.toLowerCase().trim();
-            const passPlain = document.getElementById('login-password').value.trim();
+            const u = document.getElementById('login-username').value.toLowerCase().trim();
+            const p = document.getElementById('login-password').value.trim();
             try {
-                const userHash = await hashData(userPlain);
-                const passHash = await hashData(passPlain);
+                const uh = await hashData(u); const ph = await hashData(p);
                 setTimeout(() => {
-                    if (userHash === TARGET_USER_HASH && passHash === TARGET_PASS_HASH) {
+                    if (uh === USER_HASH && ph === PASS_HASH) {
                         loginAttempts = 0; lockUntil = 0; persistLock();
-                        isAdminLoggedIn = true;
-                        sessionStorage.setItem(SESSION_TOKEN_KEY, generateToken());
+                        isAdmin = true; sessionStorage.setItem(SESS_KEY, genToken());
                         closeModal('login-modal');
                         const panel = document.getElementById('admin-panel');
-                        panel.classList.remove('hidden');
-                        setTimeout(() => panel.classList.add('visible'), 50);
-                        showToast('Berhasil masuk. Selamat datang!');
-                        renderKatalog(allProducts);
+                        panel.classList.remove('hidden'); setTimeout(() => panel.classList.add('visible'), 50);
+                        showToast('Berhasil masuk.');
+                        render();
                     } else {
                         loginAttempts++;
                         if (loginAttempts >= 3) { lockUntil = Date.now() + 30000; showToast('Terlalu banyak percobaan. Dikunci 30 detik.', 'error'); }
-                        else { showToast('Username atau password salah. Sisa: ' + (3 - loginAttempts), 'error'); }
+                        else showToast('Username atau password salah. Sisa: ' + (3 - loginAttempts), 'error');
                         persistLock();
                     }
                     btn.innerHTML = '<span>Masuk</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
                     btn.disabled = false;
-                }, 400);
-            } catch (err) {
-                showToast("Terjadi kesalahan. Coba lagi.", "error");
-                btn.disabled = false;
+                }, 350);
+            } catch {
+                showToast('Terjadi kesalahan.', 'error'); btn.disabled = false;
                 btn.innerHTML = '<span>Masuk</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
             }
         }
-
-        if (isAdminLoggedIn) {
+        if (isAdmin) {
             const panel = document.getElementById('admin-panel');
-            panel.classList.remove('hidden');
-            setTimeout(() => panel.classList.add('visible'), 50);
+            panel.classList.remove('hidden'); setTimeout(() => panel.classList.add('visible'), 50);
         }
 
-        /* IMAGE */
-        const processImage = (file, targetSize = 800) => new Promise((resolve, reject) => {
-            if (!file) return reject("Tidak ada file");
-            if (!ALLOWED_IMAGE_TYPES.includes(file.type)) return reject("Format gambar tidak didukung");
-            if (file.size > MAX_IMAGE_BYTES) return reject("Ukuran gambar terlalu besar (maks 5MB)");
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = event => {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = targetSize; canvas.height = targetSize;
-                    const ctx = canvas.getContext('2d');
-                    const size = Math.min(img.width, img.height);
-                    const startX = (img.width - size) / 2;
-                    const startY = (img.height - size) / 2;
-                    ctx.drawImage(img, startX, startY, size, size, 0, 0, targetSize, targetSize);
-                    resolve(canvas.toDataURL('image/jpeg', 0.85));
-                };
-                img.onerror = () => reject(new Error("Gagal memuat gambar"));
-            };
-            reader.onerror = () => reject(new Error("Gagal membaca file"));
-        });
-
-        /* SETTINGS */
-        const applyVisualSettings = (logoData, bgData) => {
-            const customLogoImg = document.getElementById('custom-logo-img');
-            const defaultLogoIcon = document.getElementById('default-logo-icon');
-            const shopLogoContainer = document.getElementById('shop-logo-container');
-            const btnRemoveBg = document.getElementById('btn-remove-bg');
-            if (logoData) {
-                customLogoImg.src = logoData;
-                customLogoImg.classList.remove('hidden');
-                defaultLogoIcon.classList.add('hidden');
-                shopLogoContainer.classList.remove('bg-gradient-to-br');
-                shopLogoContainer.classList.remove('from-pink-500');
-                shopLogoContainer.classList.remove('to-purple-600');
-                shopLogoContainer.classList.add('bg-white');
-            } else {
-                customLogoImg.classList.add('hidden');
-                defaultLogoIcon.classList.remove('hidden');
-                shopLogoContainer.classList.add('bg-gradient-to-br');
-                shopLogoContainer.classList.add('from-pink-500');
-                shopLogoContainer.classList.add('to-purple-600');
-                shopLogoContainer.classList.remove('bg-white');
-            }
-            if (bgData) {
-                document.body.style.backgroundImage = 'url(' + bgData + ')';
-                btnRemoveBg.classList.remove('hidden');
-            } else {
-                document.body.style.backgroundImage = '';
-                btnRemoveBg.classList.add('hidden');
-            }
-        };
-        const loadSettings = async () => {
-            try {
-                const logo = await dbGet(STORE_SETTINGS, 'logo');
-                const bg = await dbGet(STORE_SETTINGS, 'bg');
-                applyVisualSettings(logo ? logo.data : null, bg ? bg.data : null);
-            } catch (e) {}
-        };
-        function bukaPengaturan() {
-            openModal('settings-modal');
-            document.getElementById('settings-logo-preview').classList.add('hidden');
-            document.getElementById('settings-logo-icon').classList.remove('hidden');
-            document.getElementById('settings-form').reset();
+        /* SECRET ADMIN TRIGGERS (hidden) */
+        let logoTaps = 0, logoTimer = null;
+        function handleLogoTap() {
+            logoTaps++;
+            if (logoTimer) clearTimeout(logoTimer);
+            logoTimer = setTimeout(() => { logoTaps = 0; }, 1200);
+            if (logoTaps >= 5) { logoTaps = 0; bukaLogin(); }
+            // long-press not via click; handled separately
         }
-        function previewGambar(input, previewId, iconId) {
-            const file = input.files[0];
-            if (file) {
-                if (!ALLOWED_IMAGE_TYPES.includes(file.type)) { showToast('Format gambar tidak didukung', 'error'); input.value = ''; return; }
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    document.getElementById(previewId).src = e.target.result;
-                    document.getElementById(previewId).classList.remove('hidden');
-                    document.getElementById(iconId).classList.add('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-        async function simpanPengaturan(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-save-settings');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Menyimpan...';
-            btn.disabled = true;
-            try {
-                const fileLogo = document.getElementById('input-shop-logo').files[0];
-                const fileBg = document.getElementById('input-shop-bg').files[0];
-                if (fileLogo) {
-                    const base64Logo = await processImage(fileLogo, 400);
-                    await dbPut(STORE_SETTINGS, { key: 'logo', data: base64Logo });
-                }
-                if (fileBg) {
-                    if (!ALLOWED_IMAGE_TYPES.includes(fileBg.type)) throw new Error('Format gambar tidak didukung');
-                    if (fileBg.size > MAX_IMAGE_BYTES) throw new Error('Ukuran gambar terlalu besar');
-                    const b64Bg = await new Promise(resolve => {
-                        const r = new FileReader(); r.onload = ev => resolve(ev.target.result); r.readAsDataURL(fileBg);
-                    });
-                    await dbPut(STORE_SETTINGS, { key: 'bg', data: b64Bg });
-                }
-                await loadSettings();
-                closeModal('settings-modal');
-                showToast('Tampilan berhasil diperbarui!');
-            } catch (error) {
-                showToast(error && error.message ? error.message : "Gagal menyimpan.", "error");
-            } finally {
-                btn.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i> Simpan';
-                btn.disabled = false;
-            }
-        }
-        async function hapusBackground() {
-            await dbDelete(STORE_SETTINGS, 'bg');
-            document.getElementById('input-shop-bg').value = '';
-            loadSettings();
-            showToast('Wallpaper dihapus.');
-        }
-
-        /* PRODUCTS */
-        const loadProducts = async () => {
-            try {
-                const data = await dbGet(STORE_PRODUCTS);
-                allProducts = (data || []).sort((a, b) => b.id - a.id);
-                renderKatalog(allProducts);
-            } catch (e) {
-                showToast("Gagal memuat produk.", "error");
-            }
-        };
-
-        async function tambahBarang(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-add-product');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Menyimpan...';
-            try {
-                const file = document.getElementById('input-image-file').files[0];
-                const code = sanitizeCode(document.getElementById('input-code').value);
-                if (!code) throw new Error('Kode produk tidak valid');
-                const link = document.getElementById('input-link').value.trim();
-                const safeLink = sanitizeUrl(link);
-                if (!safeLink) throw new Error('Link pembelian tidak valid');
-                const imageBase64 = await processImage(file, 800);
-                const barangBaru = { id: Date.now(), code: code, image: imageBase64, link: safeLink, searchIndex: code.toLowerCase() };
-                await dbPut(STORE_PRODUCTS, barangBaru);
-                document.getElementById('add-product-form').reset();
-                showToast('Produk ' + code + ' berhasil ditambahkan!');
-                loadProducts();
-            } catch (error) {
-                showToast(error && error.message ? error.message : "Gagal menyimpan produk.", "error");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-plus" aria-hidden="true"></i> Tambah';
-            }
-        }
-
-        async function hapusBarang(id, code) {
-            if (confirm('Hapus produk ' + code + ' dari katalog?')) {
-                await dbDelete(STORE_PRODUCTS, Number(id));
-                showToast('Produk ' + code + ' dihapus.');
-                loadProducts();
-            }
-        }
-
-        // Search submit (ecommerce style): filter + scroll
-        function doSearch(e) {
-            if (e) e.preventDefault();
-            const val = document.getElementById('search-input').value;
-            cariBarang(val);
-            const grid = document.getElementById('product-grid');
-            if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        function clearSearch() {
-            const inp = document.getElementById('search-input');
-            inp.value = '';
-            document.getElementById('clear-btn').classList.add('hidden');
-            cariBarang('');
-        }
-
-        function cariBarang(keyword) {
-            const term = String(keyword).toLowerCase().trim().slice(0, 64);
-            const clearBtn = document.getElementById('clear-btn');
-            if (term) clearBtn.classList.remove('hidden'); else clearBtn.classList.add('hidden');
-            if (!term) { renderKatalog(allProducts); return; }
-            const filtered = allProducts.filter(p => p.searchIndex.includes(term));
-            renderKatalog(filtered, true);
-        }
-
-        // live show clear button
-        document.addEventListener('DOMContentLoaded', () => {
-            const inp = document.getElementById('search-input');
-            if (inp) inp.addEventListener('input', () => {
-                const cb = document.getElementById('clear-btn');
-                if (inp.value.trim()) cb.classList.remove('hidden'); else cb.classList.add('hidden');
-            });
-        });
-
-        function renderKatalog(dataArray, isSearch = false) {
-            const grid = document.getElementById('product-grid');
-            const emptyState = document.getElementById('empty-state');
-            document.getElementById('item-count').textContent = dataArray.length + ' Produk';
-            document.getElementById('item-count').classList.remove('hidden');
-            grid.innerHTML = '';
-            if (dataArray.length === 0) {
-                emptyState.classList.remove('hidden');
-                setTimeout(() => emptyState.classList.add('visible'), 50);
-                grid.classList.add('hidden');
-                if (isSearch) { document.getElementById('empty-title').textContent = "Produk Tidak Ditemukan"; document.getElementById('empty-desc').textContent = "Coba kata kunci lain."; }
-                else { document.getElementById('empty-title').textContent = "Katalog Masih Kosong"; document.getElementById('empty-desc').textContent = "Belum ada produk yang tersedia saat ini."; }
-                return;
-            }
-            emptyState.classList.add('hidden');
-            emptyState.classList.remove('visible');
-            grid.classList.remove('hidden');
-            dataArray.forEach((product, idx) => {
-                const card = document.createElement('div');
-                card.className = "surface rounded-2xl overflow-hidden flex flex-col group relative fade-in-up card-hover";
-                card.style.transitionDelay = (idx * 30) + 'ms';
-                const deleteBtnHTML = isAdminLoggedIn
-                    ? '<button onclick="hapusBarang(\'' + product.id + '\', \'' + escapeHtml(product.code).replace(/'/g, "\\'") + '\')" class="absolute top-2 right-2 text-white w-9 h-9 rounded-full flex items-center justify-center shadow-md z-20 transition" style="background:#dc2626" aria-label="Hapus produk"><i class="fa-solid fa-trash-can" aria-hidden="true"></i></button>' : '';
-                const safeCode = escapeHtml(product.code);
-                const safeImage = escapeHtml(product.image);
-                const safeLink = escapeHtml(product.link);
-                card.innerHTML = deleteBtnHTML +
-                    '<div class="relative w-full aspect-square overflow-hidden cursor-zoom" style="background:var(--bg)" onclick="openLightbox(\'' + safeImage.replace(/'/g, "\\'") + '\')" role="button" tabindex="0" aria-label="Perbesar gambar">' +
-                        '<img src="' + safeImage + '" alt="' + safeCode + '" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">' +
-                        '<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">' +
-                            '<div class="rounded-full w-10 h-10 flex items-center justify-center shadow-md" style="background:var(--surface); color:var(--ink)"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i></div>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="p-3 sm:p-4 flex flex-col gap-2.5">' +
-                        '<h3 class="font-extrabold text-base sm:text-lg tracking-tight truncate" style="color:var(--ink)">' + safeCode + '</h3>' +
-                        '<a href="' + safeLink + '" target="_blank" rel="noopener noreferrer" class="btn-brand w-full text-center text-sm sm:text-base font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 touch-lg">' +
-                            '<i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Beli Sekarang' +
-                        '</a>' +
-                    '</div>';
-                grid.appendChild(card);
-                scrollObserver.observe(card);
-            });
-            initTiltEffect();
-        }
-
-        /* Keyboard shortcuts */
+        // Long press on logo
+        let pressTimer = null;
+        const logoEl = document.getElementById('logo');
+        logoEl.addEventListener('touchstart', () => { pressTimer = setTimeout(() => { bukaLogin(); }, 1200); }, { passive: true });
+        logoEl.addEventListener('touchend', () => { if (pressTimer) clearTimeout(pressTimer); });
+        logoEl.addEventListener('touchmove', () => { if (pressTimer) clearTimeout(pressTimer); });
+        // URL hash
+        if (location.hash === '#admin') bukaLogin();
+        // Keyboard
         document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
-                e.preventDefault();
-                bukaLogin();
-            }
+            if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) { e.preventDefault(); bukaLogin(); }
             if (e.key === 'Escape') {
                 ['login-modal','settings-modal'].forEach(m => {
                     const el = document.getElementById(m);
@@ -773,21 +494,232 @@
                 const lb = document.getElementById('lightbox');
                 if (lb && !lb.classList.contains('hidden')) closeLightbox();
             }
-            // "/" focuses search (ecommerce-like)
-            if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-                e.preventDefault();
-                document.getElementById('search-input').focus();
-            }
+        });
+        // Triple-tap on footer copyright
+        let footerTaps = 0, footerTimer = null;
+        document.querySelector('footer p').addEventListener('click', () => {
+            footerTaps++;
+            if (footerTimer) clearTimeout(footerTimer);
+            footerTimer = setTimeout(() => { footerTaps = 0; }, 1000);
+            if (footerTaps >= 3) { footerTaps = 0; bukaLogin(); }
         });
 
+        /* IMAGE */
+        function processImage(file, size = 800) {
+            return new Promise((res, rej) => {
+                if (!file) return rej('Tidak ada file');
+                if (!ALLOWED_IMG.includes(file.type)) return rej('Format gambar tidak didukung');
+                if (file.size > MAX_IMG) return rej('Ukuran gambar terlalu besar (maks 5MB)');
+                const r = new FileReader();
+                r.readAsDataURL(file);
+                r.onload = (ev) => {
+                    const img = new Image();
+                    img.src = ev.target.result;
+                    img.onload = () => {
+                        const c = document.createElement('canvas'); c.width = size; c.height = size;
+                        const ctx = c.getContext('2d');
+                        const s = Math.min(img.width, img.height);
+                        const sx = (img.width - s) / 2, sy = (img.height - s) / 2;
+                        ctx.drawImage(img, sx, sy, s, s, 0, 0, size, size);
+                        res(c.toDataURL('image/jpeg', 0.85));
+                    };
+                    img.onerror = () => rej(new Error('Gagal memuat gambar'));
+                };
+                r.onerror = () => rej(new Error('Gagal membaca file'));
+            });
+        }
+
+        /* SETTINGS */
+        function applyVisual(logo, bg) {
+            const img = document.getElementById('logo-img'); const ic = document.getElementById('logo-icon');
+            const box = document.getElementById('logo-box'); const rb = document.getElementById('btn-remove-bg');
+            if (logo) { img.src = logo; img.classList.remove('hidden'); ic.classList.add('hidden'); box.classList.remove('ig-gradient'); box.classList.add('bg-white'); }
+            else { img.classList.add('hidden'); ic.classList.remove('hidden'); box.classList.add('ig-gradient'); box.classList.remove('bg-white'); }
+            if (bg) { document.body.style.backgroundImage = `url(${bg})`; rb.classList.remove('hidden'); }
+            else { document.body.style.backgroundImage = ''; rb.classList.add('hidden'); }
+        }
+        async function loadSettings() {
+            try { const l = await dbGet(STS, 'logo'); const b = await dbGet(STS, 'bg'); applyVisual(l ? l.data : null, b ? b.data : null); } catch {}
+        }
+        function bukaPengaturan() {
+            openModal('settings-modal');
+            document.getElementById('settings-logo-preview').classList.add('hidden');
+            document.getElementById('settings-logo-icon').classList.remove('hidden');
+            document.getElementById('settings-form').reset();
+        }
+        function previewGambar(input, pid, iid) {
+            const f = input.files[0];
+            if (f) {
+                if (!ALLOWED_IMG.includes(f.type)) { showToast('Format gambar tidak didukung', 'error'); input.value=''; return; }
+                const r = new FileReader();
+                r.onload = (e) => { document.getElementById(pid).src = e.target.result; document.getElementById(pid).classList.remove('hidden'); document.getElementById(iid).classList.add('hidden'); };
+                r.readAsDataURL(f);
+            }
+        }
+        async function simpanPengaturan(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Menyimpan...';
+            btn.disabled = true;
+            try {
+                const fl = document.getElementById('input-logo').files[0];
+                const fb = document.getElementById('input-bg').files[0];
+                if (fl) { const b = await processImage(fl, 400); await dbPut(STS, { key: 'logo', data: b }); }
+                if (fb) {
+                    if (!ALLOWED_IMG.includes(fb.type)) throw new Error('Format gambar tidak didukung');
+                    if (fb.size > MAX_IMG) throw new Error('Ukuran gambar terlalu besar');
+                    const b = await new Promise(res => { const r = new FileReader(); r.onload = ev => res(ev.target.result); r.readAsDataURL(fb); });
+                    await dbPut(STS, { key: 'bg', data: b });
+                }
+                await loadSettings(); closeModal('settings-modal'); showToast('Tampilan berhasil diperbarui!');
+            } catch (err) {
+                showToast(err && err.message ? err.message : 'Gagal menyimpan.', 'error');
+            } finally {
+                btn.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i> Simpan';
+                btn.disabled = false;
+            }
+        }
+        async function hapusBackground() {
+            await dbDel(STS, 'bg'); document.getElementById('input-bg').value = '';
+            loadSettings(); showToast('Wallpaper dihapus.');
+        }
+
+        /* PRODUCTS */
+        async function loadProducts() {
+            try { const d = await dbGet(STP); products = (d || []).sort((a,b) => b.id - a.id); render(); } catch { showToast('Gagal memuat produk.', 'error'); }
+        }
+        async function tambahBarang(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-add');
+            btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Menyimpan...';
+            try {
+                const file = document.getElementById('input-image').files[0];
+                const code = sanitizeCode(document.getElementById('input-code').value);
+                if (!code) throw new Error('Kode produk tidak valid');
+                const link = document.getElementById('input-link').value.trim();
+                const safeLink = sanitizeUrl(link);
+                if (!safeLink) throw new Error('Link pembelian tidak valid');
+                const img = await processImage(file, 800);
+                await dbPut(STP, { id: Date.now(), code, image: img, link: safeLink, searchIndex: code.toLowerCase() });
+                document.getElementById('add-form').reset();
+                showToast(`Produk ${code} berhasil ditambahkan!`);
+                loadProducts();
+            } catch (err) {
+                showToast(err && err.message ? err.message : 'Gagal menyimpan produk.', 'error');
+            } finally {
+                btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-plus" aria-hidden="true"></i> Tambah';
+            }
+        }
+        async function hapusBarang(id, code) {
+            if (confirm(`Hapus produk ${code} dari katalog?`)) {
+                await dbDel(STP, Number(id)); showToast(`Produk ${code} dihapus.`); loadProducts();
+            }
+        }
+
+        /* SEARCH (ecommerce style) */
+        let searchTimer = null;
+        function liveSearch(val) {
+            const clear = document.getElementById('search-clear');
+            clear.classList.toggle('hidden', !val);
+            const sug = document.getElementById('search-suggestions');
+            const term = val.trim().toLowerCase();
+            if (!term) { sug.classList.add('hidden'); render(); return; }
+            // debounce
+            if (searchTimer) clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+                const matches = products.filter(p => p.searchIndex.includes(term)).slice(0, 8);
+                if (matches.length) {
+                    sug.innerHTML = matches.map(p => `
+                        <button type="button" onclick="pickSuggestion('${escapeHtml(p.code)}')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 border-b last:border-b-0" style="border-color:var(--border)">
+                            <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm" aria-hidden="true"></i>
+                            <span class="font-medium" style="color:var(--text)">${escapeHtml(p.code)}</span>
+                        </button>`).join('');
+                    sug.classList.remove('hidden');
+                } else {
+                    sug.innerHTML = '<div class="px-4 py-3 text-sm" style="color:var(--muted)">Tidak ada hasil</div>';
+                    sug.classList.remove('hidden');
+                }
+                render(true);
+            }, 120);
+        }
+        function pickSuggestion(code) {
+            document.getElementById('search-input').value = code;
+            document.getElementById('search-suggestions').classList.add('hidden');
+            liveSearch(code);
+        }
+        function submitSearch(e) {
+            e.preventDefault();
+            const v = document.getElementById('search-input').value.trim();
+            document.getElementById('search-suggestions').classList.add('hidden');
+            liveSearch(v);
+        }
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-clear').classList.add('hidden');
+            document.getElementById('search-suggestions').classList.add('hidden');
+            render();
+            document.getElementById('search-input').focus();
+        }
+        // close suggestions on outside click
+        document.addEventListener('click', (e) => {
+            const sug = document.getElementById('search-suggestions');
+            if (!e.target.closest('.search-wrap')) sug.classList.add('hidden');
+        });
+
+        /* RENDER */
+        function render(isSearch = false) {
+            const grid = document.getElementById('product-grid');
+            const empty = document.getElementById('empty-state');
+            const sk = document.getElementById('skeleton');
+            sk.classList.add('hidden');
+            const term = document.getElementById('search-input').value.trim().toLowerCase();
+            const list = term ? products.filter(p => p.searchIndex.includes(term)) : products;
+            document.getElementById('item-count').textContent = list.length + ' Produk';
+            document.getElementById('item-count').classList.toggle('hidden', false);
+            grid.innerHTML = '';
+            if (list.length === 0) {
+                empty.classList.remove('hidden'); setTimeout(() => empty.classList.add('visible'), 50);
+                grid.classList.add('hidden');
+                document.getElementById('empty-title').textContent = isSearch || term ? 'Produk Tidak Ditemukan' : 'Katalog Masih Kosong';
+                document.getElementById('empty-desc').textContent = isSearch || term ? 'Coba kata kunci lain.' : 'Belum ada produk yang tersedia saat ini.';
+                return;
+            }
+            empty.classList.add('hidden'); empty.classList.remove('visible');
+            grid.classList.remove('hidden');
+            list.forEach((p, i) => {
+                const card = document.createElement('div');
+                card.className = 'card overflow-hidden flex flex-col fade-in';
+                card.style.transitionDelay = (i * 25) + 'ms';
+                const del = isAdmin ? `
+                    <button onclick="hapusBarang(${p.id}, '${escapeHtml(p.code)}')" class="absolute top-2 right-2 w-9 h-9 rounded-full flex items-center justify-center shadow-md z-20 transition" style="background:#ef4444;color:#fff" aria-label="Hapus produk">
+                        <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+                    </button>` : '';
+                card.innerHTML = `
+                    ${del}
+                    <div class="relative w-full aspect-square overflow-hidden cursor-zoom bg-slate-100" onclick="openLightbox('${escapeHtml(p.image)}')" role="button" tabindex="0" aria-label="Perbesar gambar">
+                        <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.code)}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
+                            <span class="bg-white/90 rounded-full w-10 h-10 flex items-center justify-center shadow-md"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                    <div class="p-3 sm:p-4 flex flex-col gap-2.5">
+                        <h3 class="font-extrabold text-base sm:text-lg tracking-tight truncate" style="color:var(--text)">${escapeHtml(p.code)}</h3>
+                        <a href="${escapeHtml(p.link)}" target="_blank" rel="noopener noreferrer" class="btn-primary w-full text-center py-2.5 sm:py-3 rounded-xl flex items-center justify-center gap-2 touch-lg">
+                            <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Beli Sekarang
+                        </a>
+                    </div>`;
+                grid.appendChild(card);
+                io.observe(card);
+            });
+        }
+
+        /* INIT */
         window.addEventListener('DOMContentLoaded', async () => {
             try {
                 await initDB();
                 await loadSettings();
                 await loadProducts();
-            } catch (e) {
-                showToast("Gagal memuat data.", "error");
-            }
+            } catch { showToast('Gagal memuat data.', 'error'); }
         });
     </script>
 </body>
