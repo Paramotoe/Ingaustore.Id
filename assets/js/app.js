@@ -256,7 +256,6 @@ async function terapkanSesi(sesi) {
         footerLB.classList.remove('hidden');
         footerLBAdmin.classList.remove('hidden');
         logoutUser.classList.remove('hidden');
-        logoutUser.textContent = '— Admin';
         logo.classList.remove('ig-gradient');
         logo.classList.add('bg-white');
         logoImg.classList.remove('hidden');
