@@ -21,6 +21,9 @@ const SEMUA_KATEGORI = 'Semua';
 
 let daftarFoto = [];
 let urlPreviewFoto = [];
+let fotoUbah = [];
+let fotoUbahAsal = [];
+let urlPreviewUbah = [];
 
 let sb = null;
 let isAdmin = false;
@@ -572,7 +575,73 @@ function bukaUbah(p) {
     document.getElementById('edit-category').value = p.category || '';
     document.getElementById('edit-code').value = p.code;
     document.getElementById('edit-link').value = p.link;
+    fotoUbahAsal = (p.image_paths || []).slice();
+    fotoUbah = fotoUbahAsal.map(path => ({ path }));
+    document.getElementById('edit-images').value = '';
+    renderPreviewFotoUbah();
     openModal('edit-modal');
+}
+
+function bersihkanPreviewUbah() {
+    urlPreviewUbah.forEach(url => URL.revokeObjectURL(url));
+    urlPreviewUbah = [];
+}
+
+function renderPreviewFotoUbah() {
+    bersihkanPreviewUbah();
+    const wrap = document.getElementById('edit-preview-foto');
+    wrap.innerHTML = '';
+    fotoUbah.forEach((item, i) => {
+        const kotak = document.createElement('div');
+        kotak.className = 'relative rounded-xl overflow-hidden border aspect-square';
+        kotak.style.borderColor = 'var(--border)';
+        const img = document.createElement('img');
+        img.alt = 'Foto produk ' + (i + 1);
+        img.className = 'w-full h-full object-cover';
+        if (item.path) {
+            img.src = urlGambar(item.path);
+        } else {
+            const url = URL.createObjectURL(item.file);
+            urlPreviewUbah.push(url);
+            img.src = url;
+        }
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'absolute top-1 right-1 w-7 h-7 rounded-full flex items-center justify-center shadow';
+        btn.style.background = '#ef4444';
+        btn.style.color = '#fff';
+        btn.setAttribute('aria-label', 'Hapus foto ' + (i + 1));
+        btn.innerHTML = '<i class="fa-solid fa-xmark text-xs" aria-hidden="true"></i>';
+        btn.addEventListener('click', () => {
+            fotoUbah.splice(i, 1);
+            renderPreviewFotoUbah();
+        });
+        kotak.append(img, btn);
+        wrap.appendChild(kotak);
+    });
+    document.getElementById('edit-foto-info').textContent = fotoUbah.length + ' dari ' + MAX_FOTO + ' foto';
+}
+
+function tanganiPilihFotoUbah(input) {
+    for (const f of input.files) {
+        if (fotoUbah.length >= MAX_FOTO) {
+            showToast('Maksimal ' + MAX_FOTO + ' foto per produk.', 'error');
+            break;
+        }
+        if (!ALLOWED_IMG.includes(f.type)) {
+            showToast('Format gambar harus PNG, JPG, atau WEBP.', 'error');
+            continue;
+        }
+        if (f.size > MAX_IMG) {
+            showToast('Ukuran gambar maksimal 5 MB.', 'error');
+            continue;
+        }
+        if (!fotoUbah.some(x => x.file && x.file.name === f.name && x.file.size === f.size && x.file.lastModified === f.lastModified)) {
+            fotoUbah.push({ file: f });
+        }
+    }
+    input.value = '';
+    renderPreviewFotoUbah();
 }
 
 async function simpanUbahProduk(e) {
