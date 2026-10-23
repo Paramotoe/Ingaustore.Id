@@ -80,7 +80,6 @@ body.has-wallpaper {
     background: linear-gradient(135deg, #ec4899, #db2777);
     color: #fff;
     font-weight: 700;
-    border-radius: 0.75rem;
     transition: filter 0.15s, transform 0.15s;
 }
 .btn-primary:hover { filter: brightness(1.06); }
@@ -106,7 +105,7 @@ body.has-wallpaper {
 /* Target sentuh minimal 44px (kecuali file/checkbox/radio) */
 button, a, input:not([type="file"]):not([type="checkbox"]):not([type="radio"]), select, textarea { min-height: 44px; }
 .touch-lg { min-height: 52px; font-size: 1.05rem; }
-.cursor-zoom { cursor: zoom-in; }
+.search-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); min-height: 0; width: 28px; height: 28px; }
 
 /* Dropdown saran pencarian */
 .search-wrap { position: relative; }

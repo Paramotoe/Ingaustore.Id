@@ -222,6 +222,7 @@ let sudahIngatkanBukanAdmin = false;
 async function terapkanSesi(sesi) {
     const email = (sesi && sesi.user) ? (sesi.user.email || '') : '';
     let admin = false;
+    let pesanSekali = '';
 
     if (sesi && sesi.user) {
         try {
