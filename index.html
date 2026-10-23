@@ -144,7 +144,7 @@
                     <button onclick="bukaPengaturan()" class="text-sm font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 touch-lg" style="background:var(--border);color:var(--text)">
                         <i class="fa-solid fa-palette" aria-hidden="true"></i> Atur Tampilan
                     </button>
-                    <button onclick="prosesLogout()" class="text-sm font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 touch-lg" style="background:#fee2e2;color:#dc2626">
+                    <button id="btn-logout-admin" class="text-sm font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 touch-lg" style="background:#ef4444;color:#fff" onclick="prosesLogout()">
                         <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Keluar
                     </button>
                 </div>
@@ -219,7 +219,7 @@
         <div id="category-bar" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 mb-4" role="group" aria-label="Filter kategori"></div>
 
         <!-- Daftar produk -->
-        <div id="product-grid" class="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-5" aria-live="polite"></div>
+        <div id="product-grid" class="w-full flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-5" aria-live="polite"></div>
 
         <!-- Kondisi kosong -->
         <div id="empty-state" class="hidden flex-col items-center justify-center py-14 text-center card mt-4 fade-in">
@@ -231,7 +231,7 @@
         </div>
 
         <!-- Kerangka pemuatan -->
-        <div id="skeleton" class="hidden w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-5 mt-2">
+        <div id="skeleton" class="hidden w-full flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-5 mt-2">
             <div class="card overflow-hidden"><div class="aspect-square skeleton"></div><div class="p-3 space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-9 skeleton rounded"></div></div></div>
             <div class="card overflow-hidden"><div class="aspect-square skeleton"></div><div class="p-3 space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-9 skeleton rounded"></div></div></div>
             <div class="card overflow-hidden"><div class="aspect-square skeleton"></div><div class="p-3 space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-9 skeleton rounded"></div></div></div>
@@ -248,7 +248,7 @@
             <p>&copy; <span id="year"></span> <strong style="color:var(--text)">Ingaustore.id</strong>. Semua hak dilindungi.</p>
             <p class="text-xs">Katalog Produk Online</p>
         </div>
-        <button id="secret-admin" class="admin-secret" onclick="bukaLogin()" aria-hidden="true" tabindex="-1">.</button>
+        <button id="btn-logout" class="text-xs font-bold rounded-lg px-3 py-2 hidden flex items-center gap-2 transition" style="background:#ef4444;color:#fff" onclick="prosesLogout()" aria-label="Keluar sebagai admin"><i class="fa-solid fa-right-from-bracket text-sm" aria-hidden="true"></i> Keluar</button>
     </footer>
 
     <!-- Modal masuk -->
@@ -381,7 +381,8 @@
                             </div>
                         <div id="settings-bg-preview-wrap" class="hidden rounded-xl overflow-hidden border mb-2" style="border-color:var(--border)">
                             <img id="settings-bg-preview" class="w-full h-28 object-cover" alt="Pratinjau wallpaper">
-                        </div>2 rounded-xl" style="background:#fee2e2;color:#dc2626">
+                        </div>
+                        <button type="button" onclick="hapusBackground()" id="btn-remove-bg" class="w-full text-sm font-bold hidden flex items-center justify-center gap-2 py-2 rounded-xl" style="background:#fee2e2;color:#dc2626">
                             <i class="fa-solid fa-trash-can" aria-hidden="true"></i> Hapus Wallpaper
                         </button>
                     </div>

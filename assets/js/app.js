@@ -222,7 +222,6 @@ let sudahIngatkanBukanAdmin = false;
 async function terapkanSesi(sesi) {
     const email = (sesi && sesi.user) ? (sesi.user.email || '') : '';
     let admin = false;
-    let pesanSekali = '';
 
     if (sesi && sesi.user) {
         try {
@@ -245,16 +244,37 @@ async function terapkanSesi(sesi) {
     document.getElementById('admin-email').textContent = admin ? email : '';
     panel.classList.toggle('hidden', !admin);
 
+    const footerLB = document.getElementById('btn-logout');
+    const footerLBAdmin = document.getElementById('btn-logout-admin');
+    const logoutUser = document.getElementById('logout-user');
+    const logo = document.getElementById('logo');
+    const logoImg = document.getElementById('logo-img');
+    const logoIcon = document.getElementById('logo-icon');
+
     if (admin) {
-        requestAnimationFrame(() => panel.classList.add('visible'));
+        footerLB.classList.remove('hidden');
+        footerLBAdmin.classList.remove('hidden');
+        logoutUser.classList.remove('hidden');
+        logoutUser.textContent = '— Admin';
+        logo.classList.remove('ig-gradient');
+        logo.classList.add('bg-white');
+        logoImg.classList.remove('hidden');
+        logoIcon.classList.add('hidden');
         muatStatistik();
     } else {
-        panel.classList.remove('visible');
+        footerLB.classList.add('hidden');
+        footerLBAdmin.classList.add('hidden');
+        logoutUser.classList.add('hidden');
+        logo.classList.add('ig-gradient');
+        logo.classList.remove('bg-white');
+        logoImg.classList.add('hidden');
+        logoIcon.classList.remove('hidden');
         if (sesi && sesi.user && !sudahIngatkanBukanAdmin) {
             sudahIngatkanBukanAdmin = true;
             showToast(pesanSekali || 'Akun ini bukan admin toko. Hubungi pemilik untuk didaftarkan.', 'error');
         }
     }
+
     render();
 }
 
@@ -1133,7 +1153,8 @@ function kartuProduk(p, i) {
     card.style.transitionDelay = (i * 25) + 'ms';
 
     const gambar = document.createElement('div');
-    gambar.className = 'relative w-full aspect-square overflow-hidden cursor-zoom bg-slate-100';
+    gambar.className = 'relative aspect-square overflow-hidden cursor-zoom bg-slate-100';
+    gambar.style.width = '100%';
     gambar.setAttribute('role', 'button');
     gambar.setAttribute('tabindex', '0');
     gambar.setAttribute('aria-label', 'Perbesar foto ' + namaProduk(p));
