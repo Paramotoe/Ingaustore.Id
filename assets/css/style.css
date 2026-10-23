@@ -106,10 +106,6 @@ body.has-wallpaper {
 button, a, input:not([type="file"]):not([type="checkbox"]):not([type="radio"]), select, textarea { min-height: 44px; }
 .touch-lg { min-height: 52px; font-size: 1.05rem; }
 .search-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); min-height: 0; width: 28px; height: 28px; }
-
-/* Dropdown saran pencarian */
-.search-wrap { position: relative; }
-.search-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
 .search-suggestions {
     position: absolute; top: calc(100% + 6px); left: 0; right: 0;
     background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem;
@@ -122,5 +118,24 @@ button, a, input:not([type="file"]):not([type="checkbox"]):not([type="radio"]), 
 
 :focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; border-radius: 8px; }
 
-/* Pintu masuk admin yang tidak terlihat */
-.admin-secret { opacity: 0; width: 1px; height: 1px; overflow: hidden; position: absolute; pointer-events: none; }
+/* --------------------------------------------------------------------------
+   Panel admin: rapikan jarak, target sentuh, dan tombol kecil
+   -------------------------------------------------------------------------- */
+
+/* Judul panel: rapikan vertikal (iikon + judul + subjudul) */
+#admin-panel h2 { display: flex; align-items: center; gap: 0.5rem; }
+#admin-panel h2 > span { flex: none; }
+
+/* Tombol kecil di kartu produk (ubah / hapus) tetap target sentuh */
+.card .w-9 { min-height: 36px; }
+
+/* Tombol aksi panel: samakan tinggi & radius */
+#admin-panel .btn-primary,
+#admin-panel button[onclick],
+#admin-panel label { border-radius: 0.75rem; }
+
+/* Form tambah produk: label & input sejajar rapi */
+#add-form .form-field { font-size: 0.95rem; }
+
+/* Statistik klik: jangan terlalu besar di mobile */
+#stat-klik { font-size: 0.875rem; line-height: 1.25rem; }
