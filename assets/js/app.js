@@ -66,8 +66,10 @@ function pesanKesalahan(err) {
     const m = (err && err.message) ? err.message : 'Terjadi kesalahan. Silakan coba lagi.';
     if (/Invalid login credentials/i.test(m)) return 'Email atau password salah.';
     if (/Email not confirmed/i.test(m)) return 'Email admin belum dikonfirmasi.';
+    if (/Password should be at least|weak_password|Password is too weak/i.test(m)) return 'Password terlalu lemah. Gunakan minimal 8 karakter.';
+    if (/should be different from the old password/i.test(m)) return 'Password baru harus berbeda dari yang lama.';
     if (/duplicate key|already exists/i.test(m)) return 'Kode produk tersebut sudah dipakai.';
-    if (/row-level security|JWT|not authenticated/i.test(m)) return 'Sesi berakhir. Silakan masuk ulang sebagai admin.';
+    if (/row-level security|JWT|not authenticated/i.test(m)) return 'Akun ini tidak memiliki hak admin.';
     if (/Failed to fetch|NetworkError|Load failed/i.test(m)) return 'Tidak dapat menghubungi server. Periksa koneksi internet.';
     if (/maximum allowed size|Payload too large|exceeded/i.test(m)) return 'Ukuran berkas melebihi batas penyimpanan.';
     return m;
@@ -209,15 +211,43 @@ async function hapusBerkas(paths) {
    Sesi admin
    -------------------------------------------------------------------------- */
 
-function setAdmin(aktif) {
-    isAdmin = aktif;
+let sudahIngatkanBukanAdmin = false;
+
+async function terapkanSesi(sesi) {
+    const email = (sesi && sesi.user) ? (sesi.user.email || '') : '';
+    let admin = false;
+    let pesanSekali = '';
+
+    if (sesi && sesi.user) {
+        try {
+            const { data, error } = await sb.rpc('is_admin');
+            if (error) {
+                console.error(error);
+                pesanSekali = 'Konfigurasi keamanan belum lengkap. Jalankan supabase/migrate-keamanan-admin.sql di SQL Editor Supabase.';
+            } else {
+                admin = data === true;
+            }
+        } catch (err) {
+            console.error(err);
+            admin = false;
+            pesanSekali = 'Tidak dapat memverifikasi hak admin. Periksa koneksi lalu muat ulang.';
+        }
+    }
+
+    isAdmin = admin;
     const panel = document.getElementById('admin-panel');
-    panel.classList.toggle('hidden', !aktif);
-    if (aktif) {
+    document.getElementById('admin-email').textContent = admin ? email : '';
+    panel.classList.toggle('hidden', !admin);
+
+    if (admin) {
         requestAnimationFrame(() => panel.classList.add('visible'));
         muatStatistik();
     } else {
         panel.classList.remove('visible');
+        if (sesi && sesi.user && !sudahIngatkanBukanAdmin) {
+            sudahIngatkanBukanAdmin = true;
+            showToast(pesanSekali || 'Akun ini bukan admin toko. Hubungi pemilik untuk didaftarkan.', 'error');
+        }
     }
     render();
 }
@@ -286,6 +316,35 @@ async function prosesLogout() {
         showToast('Anda telah keluar.');
     } catch (err) {
         showToast(pesanKesalahan(err), 'error');
+    }
+}
+
+async function ubahPassword(e) {
+    e.preventDefault();
+    if (!isAdmin) {
+        showToast('Sesi berakhir. Silakan masuk ulang sebagai admin.', 'error');
+        return;
+    }
+    const baru = document.getElementById('pass-baru').value;
+    const ulang = document.getElementById('pass-ulang').value;
+    if (baru.length < 8) { showToast('Password minimal 8 karakter.', 'error'); return; }
+    if (baru !== ulang) { showToast('Konfirmasi password tidak sama.', 'error'); return; }
+
+    const btn = document.getElementById('btn-password');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Memproses...';
+    try {
+        const { error } = await sb.auth.updateUser({ password: baru });
+        if (error) throw error;
+        document.getElementById('password-form').reset();
+        closeModal('settings-modal');
+        showToast('Password berhasil diperbarui.');
+    } catch (err) {
+        showToast(pesanKesalahan(err), 'error');
+        console.error(err);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-key" aria-hidden="true"></i> Perbarui Password';
     }
 }
 
@@ -1153,11 +1212,11 @@ async function init() {
     });
 
     sb.auth.onAuthStateChange((_event, session) => {
-        setAdmin(Boolean(session));
+        setTimeout(() => terapkanSesi(session), 0);
     });
 
     const { data } = await sb.auth.getSession();
-    setAdmin(Boolean(data && data.session));
+    await terapkanSesi(data && data.session);
 
     await Promise.all([muatPengaturan(), muatProduk()]);
 }

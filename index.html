@@ -138,6 +138,7 @@
                         Kelola Produk
                     </h2>
                     <p class="text-sm mt-1" style="color:var(--muted)">Tambah, ubah, atau hapus produk di katalog.</p>
+                    <p class="text-xs mt-1" style="color:var(--muted)">Masuk sebagai <span id="admin-email" class="font-bold" style="color:var(--text)"></span></p>
                 </div>
                 <div class="flex items-center gap-2">
                     <button onclick="bukaPengaturan()" class="text-sm font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 touch-lg" style="background:var(--border);color:var(--text)">
@@ -360,6 +361,25 @@
                         <i class="fa-solid fa-check" aria-hidden="true"></i> Simpan
                     </button>
                 </form>
+
+                <div class="mt-5 pt-4" style="border-top:1px solid var(--border)">
+                    <h3 class="text-sm font-extrabold mb-2 flex items-center gap-2" style="color:var(--text)">
+                        <i class="fa-solid fa-key" aria-hidden="true"></i> Ubah Password
+                    </h3>
+                    <form id="password-form" onsubmit="ubahPassword(event)" class="space-y-2">
+                        <div>
+                            <label for="pass-baru" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Password Baru</label>
+                            <input type="password" id="pass-baru" required minlength="8" maxlength="72" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Minimal 8 karakter">
+                        </div>
+                        <div>
+                            <label for="pass-ulang" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Ulangi Password Baru</label>
+                            <input type="password" id="pass-ulang" required minlength="8" maxlength="72" autocomplete="new-password" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Ulangi password">
+                        </div>
+                        <button type="submit" id="btn-password" class="w-full py-2.5 rounded-xl font-bold flex items-center justify-center gap-2" style="background:var(--border);color:var(--text)">
+                            <i class="fa-solid fa-key" aria-hidden="true"></i> Perbarui Password
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

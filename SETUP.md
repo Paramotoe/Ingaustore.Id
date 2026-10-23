@@ -83,6 +83,9 @@ Kedua nilai ini memang untuk publik; batas aksesnya dijaga RLS di database. Yang
 2. Isi email dan password admin.
 3. Centang **Auto Confirm User**.
 4. **Create user**.
+5. **SQL Editor** > **New query** > tempel seluruh isi `supabase/migrate-keamanan-admin.sql` > **Run**.
+
+Tahap nomor 5 wajib. Tanpa daftar putih admin, akun Anda tetap bisa login tetapi **tidak bisa menulis** apa pun, dan halaman akan menampilkan peringatan "Konfigurasi keamanan belum lengkap". Migrasi tersebut juga membatasi laju pencatatan klik.
 
 Masuk lewat pintu tersembunyi: ketuk logo 5 kali, tahan logo 1,2 detik, tekan `Ctrl+Shift+A`, atau buka `/#admin`.
 
@@ -124,8 +127,16 @@ Tidak ada build step di Vercel. Semua berkas disajikan apa adanya.
 | **Ikon tempat sampah** | Hapus produk beserta seluruh fotonya dari Storage |
 | **Ekspor CSV** | Unduh seluruh produk sebagai `code,name,price,category,link` |
 | **Impor CSV** | Tambah atau perbarui produk massal berdasarkan `code`. Baris tanpa foto akan tampil "Tanpa foto" |
-| **Atur Tampilan** | Ganti logo dan wallpaper toko |
+| **Atur Tampilan** | Ganti logo dan wallpaper toko, ubah password admin |
 | **Statistik** | Jumlah klik "Beli" dalam 7 hari terakhir |
+
+Menambah admin lain: jalankan perintah berikut di SQL Editor Supabase, ganti emailnya sesuai kebutuhan.
+
+```sql
+insert into public.admins (user_id)
+select id from auth.users where email = 'akun-baru@contoh.com'
+on conflict (user_id) do nothing;
+```
 
 Catatan CSV:
 
@@ -168,7 +179,9 @@ Tanpa langkah ini, kelas baru tidak akan muncul di halaman.
 
 ## Keamanan
 
-- Hak baca publik, hak tulis hanya untuk pengguna terautentikasi. Aturan ditegakkan di database, bukan di JavaScript.
+- Hak baca katalog publik. Hak tulis hanya untuk akun yang tercatat di `public.admins`. Pemeriksaan memakai fungsi `public.is_admin()` di dalam database, bukan di JavaScript, sehingga tidak bisa dilewati dari browser.
+- Pendaftaran publik Supabase tetap aktif, tetapi akun yang mendaftar sendiri tidak punya hak apa pun sampai dimasukkan ke daftar putih. Untuk menutup pendaftaran sama sekali: **Authentication** > **Sign In / Providers** > **Email** > matikan **Sign up**.
+- Pembatas laju pada tabel `buy_clicks` (300 baris per menit) mencegah statistik dibanjiri.
 - Validasi dua lapis: form dan constraint database (`code` hanya `A-Z0-9-`, `link` wajib `http/https`, harga tidak negatif, maksimal 4 foto).
 - URL divalidasi protokolnya, sehingga `javascript:` ditolak.
 - Semua teks dirender sebagai teks (`textContent`), bukan HTML, sehingga aman dari injeksi.
@@ -186,6 +199,8 @@ Produk yang tersimpan di IndexedDB browser versi sebelumnya **tidak** ikut pinda
 | --- | --- | --- |
 | Banner kuning tetap muncul | `config.js` kosong atau URL tidak berakhiran `.supabase.co` | Periksa isi berkas, muat ulang dengan `Ctrl+F5` |
 | "Email atau password salah" padahal benar | User belum dikonfirmasi | Authentication > Users > pilih user > **Confirm email** |
+| Panel admin tidak muncul setelah berhasil login | Akun belum ada di `public.admins` | Jalankan `supabase/migrate-keamanan-admin.sql` di SQL Editor |
+| Peringatan "Konfigurasi keamanan belum lengkap" | Fungsi `public.is_admin()` belum dibuat | Jalankan `supabase/migrate-keamanan-admin.sql` di SQL Editor |
 | `new row violates row-level security policy` | Belum login, atau policy belum dibuat | Jalankan ulang `supabase/schema.sql` |
 | Foto produk tidak muncul (ikon rusak) | Bucket `media` tidak publik | `update storage.buckets set public = true where id = 'media';` |
 | `permission denied for table products` | Grant belum terpasang | Jalankan ulang bagian grant di `schema.sql` |
