@@ -1,0 +1,6 @@
+/* Sumber Tailwind. Bangun ulang dengan:
+   npx tailwindcss@3.4.19 -c tailwind.config.js -i src/tailwind.css -o assets/css/tailwind.css --minify
+*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

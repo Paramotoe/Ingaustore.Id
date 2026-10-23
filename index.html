@@ -5,137 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ec4899">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'">
-    <title>Ingaustore.id - Katalog Produk</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://*.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co; base-uri 'self'; form-action 'self'; object-src 'none'">
+
+    <title>Ingaustore.id — Katalog Produk Pilihan</title>
+    <meta name="description" content="Katalog produk Ingaustore.id. Lihat foto, harga, dan kategori produk, lalu beli langsung melalui tautan toko resmi. Diperbarui setiap hari.">
+    <meta name="author" content="Ingaustore.id">
+    <link rel="canonical" href="https://ingaustore.id/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ingaustore.id">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:title" content="Ingaustore.id — Katalog Produk Pilihan">
+    <meta property="og:description" content="Katalog produk Ingaustore.id. Lihat foto, harga, dan kategori produk, lalu beli langsung melalui tautan toko resmi.">
+    <meta property="og:url" content="https://ingaustore.id/">
+    <meta property="og:image" content="https://ingaustore.id/assets/img/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Katalog produk Ingaustore.id">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ingaustore.id — Katalog Produk Pilihan">
+    <meta name="twitter:description" content="Katalog produk Ingaustore.id. Lihat foto, harga, dan kategori produk, lalu beli langsung melalui tautan toko resmi.">
+    <meta name="twitter:image" content="https://ingaustore.id/assets/img/og-image.png">
+
+    <link rel="icon" href="/assets/img/icon-192.png" sizes="192x192" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/icon-192.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
-                    colors: {
-                        brand: { 50: '#fdf2f8', 100: '#fce7f3', 500: '#ec4899', 600: '#db2777', 700: '#be185d' },
-                        ink: { 900: '#0f172a', 700: '#334155', 500: '#64748b', 400: '#94a3b8' }
-                    }
-                }
-            }
-        }
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Store",
+        "name": "Ingaustore.id",
+        "url": "https://ingaustore.id/",
+        "description": "Katalog produk pilihan dengan foto, harga, dan tautan pembelian resmi.",
+        "image": "https://ingaustore.id/assets/img/og-image.png",
+        "priceRange": "Rp",
+        "currenciesAccepted": "IDR",
+        "areaServed": "ID"
+    }
     </script>
-
-    <style>
-        :root {
-            --brand: #ec4899;
-            --brand-dark: #db2777;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #0f172a;
-            --muted: #64748b;
-            --border: #e2e8f0;
-        }
-        @media (prefers-color-scheme: dark) {
-            :root { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --muted: #94a3b8; --border: #334155; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-        }
-
-        html { font-size: 17px; scroll-behavior: smooth; }
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            background-image: radial-gradient(var(--border) 1px, transparent 1px);
-            background-size: 24px 24px;
-            transition: background-color 0.4s, color 0.4s;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.4); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.7); }
-
-        .glass-nav {
-            background: rgba(255,255,255,0.88);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid var(--border);
-        }
-        @media (prefers-color-scheme: dark) {
-            .glass-nav { background: rgba(15,23,42,0.88); }
-        }
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            transition: transform 0.18s ease, box-shadow 0.18s ease;
-        }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px -8px rgba(0,0,0,0.12); }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #ec4899, #db2777);
-            color: #fff;
-            font-weight: 700;
-            border-radius: 0.75rem;
-            transition: filter 0.15s, transform 0.15s;
-        }
-        .btn-primary:hover { filter: brightness(1.06); }
-        .btn-primary:active { transform: scale(0.98); }
-
-        .modal-enter { animation: modalIn 0.3s cubic-bezier(0.16,1,0.3,1) forwards; }
-        .modal-leave { animation: modalOut 0.22s cubic-bezier(0.16,1,0.3,1) forwards; }
-        @keyframes modalIn { from { opacity:0; transform: scale(0.94) translateY(12px); } to { opacity:1; transform: scale(1) translateY(0); } }
-        @keyframes modalOut { from { opacity:1; transform: scale(1) translateY(0); } to { opacity:0; transform: scale(0.96) translateY(8px); } }
-
-        .fade-in { opacity:0; transform: translateY(16px); transition: opacity 0.45s ease, transform 0.45s ease; }
-        .fade-in.visible { opacity:1; transform: translateY(0); }
-
-        .toast { transition: transform 0.35s cubic-bezier(0.68,-0.55,0.265,1.55), opacity 0.35s; }
-        .toast.show { transform: translate(-50%,0); opacity:1; }
-        .toast.hide { transform: translate(-50%,120px); opacity:0; }
-
-        .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-        /* Tap targets */
-        button, a, input, select, textarea { min-height: 44px; }
-        .touch-lg { min-height: 52px; font-size: 1.05rem; }
-
-        /* Search dropdown */
-        .search-wrap { position: relative; }
-        .search-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
-        .search-suggestions {
-            position: absolute; top: calc(100% + 6px); left: 0; right: 0;
-            background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem;
-            box-shadow: 0 12px 32px -8px rgba(0,0,0,0.15); z-index: 60;
-            max-height: 320px; overflow-y: auto;
-        }
-
-        /* Hide scrollbar utility */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { scrollbar-width: none; }
-
-        :focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; border-radius: 8px; }
-
-        /* Admin secret entry: invisible */
-        .admin-secret { opacity: 0; width: 1px; height: 1px; overflow: hidden; position: absolute; pointer-events: none; }
-    </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Toast -->
+    <!-- Notifikasi -->
     <div id="toast" role="status" aria-live="polite"
         class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[100] bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 font-semibold text-base toast hide pointer-events-none">
         <i id="toast-icon" class="fa-solid fa-bell text-brand-400 text-lg" aria-hidden="true"></i>
         <span id="toast-msg">Notifikasi</span>
     </div>
 
-    <!-- Lightbox -->
-    <div id="lightbox" class="fixed inset-0 z-[70] hidden bg-slate-950/92 backdrop-blur-md flex items-center justify-center opacity-0 transition-opacity duration-250" onclick="closeLightbox()" role="dialog" aria-modal="true" aria-label="Perbesar gambar">
-        <img id="lightbox-img" class="max-w-[92%] max-h-[88vh] rounded-2xl shadow-2xl scale-95 transition-transform duration-250" alt="Preview produk">
-        <button onclick="closeLightbox()" class="absolute top-4 right-4 bg-white/15 hover:bg-white/25 text-white w-11 h-11 rounded-full flex items-center justify-center text-lg" aria-label="Tutup">
+    <!-- Peringatan konfigurasi -->
+    <div id="config-warning" class="hidden bg-amber-50 border-b border-amber-200 text-amber-900 text-sm">
+        <div class="max-w-[1280px] mx-auto px-4 sm:px-6 py-3 flex items-start gap-3">
+            <i class="fa-solid fa-triangle-exclamation mt-0.5" aria-hidden="true"></i>
+            <p>Database belum terhubung. Isi <code class="font-mono font-bold">assets/js/config.js</code> lalu muat ulang halaman. Panduan ada di <code class="font-mono font-bold">SETUP.md</code>.</p>
+        </div>
+    </div>
+
+    <!-- Pratinjau gambar -->
+    <div id="lightbox" class="fixed inset-0 z-[70] hidden bg-slate-950/95 backdrop-blur-md flex-col items-center justify-center opacity-0 transition-opacity duration-300" onclick="closeLightbox()" role="dialog" aria-modal="true" aria-label="Pratinjau foto produk">
+        <div class="relative flex items-center justify-center w-full px-4">
+            <button type="button" id="lb-prev" onclick="event.stopPropagation(); geserGaleri(-1)" class="absolute left-2 sm:left-6 z-10 bg-white/15 hover:bg-white/25 text-white w-11 h-11 rounded-full flex items-center justify-center text-lg" aria-label="Foto sebelumnya">
+                <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+            </button>
+            <img id="lightbox-img" class="max-w-[92%] max-h-[80vh] rounded-2xl shadow-2xl scale-95 transition-transform duration-300 object-contain" alt="Pratinjau produk">
+            <button type="button" id="lb-next" onclick="event.stopPropagation(); geserGaleri(1)" class="absolute right-2 sm:right-6 z-10 bg-white/15 hover:bg-white/25 text-white w-11 h-11 rounded-full flex items-center justify-center text-lg" aria-label="Foto berikutnya">
+                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+            </button>
+        </div>
+        <p id="lb-caption" class="mt-4 px-4 text-center text-white/90 font-semibold"></p>
+        <span id="lb-counter" class="mt-1 text-white/60 text-sm"></span>
+        <button onclick="event.stopPropagation(); closeLightbox()" class="absolute top-4 right-4 bg-white/15 hover:bg-white/25 text-white w-11 h-11 rounded-full flex items-center justify-center text-lg" aria-label="Tutup">
             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
     </div>
@@ -143,8 +96,7 @@
     <!-- Header -->
     <header class="sticky top-0 z-50 w-full glass-nav">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center gap-3 sm:gap-5">
-            <!-- Logo (secret admin trigger: long press / 5 taps) -->
-            <div id="logo" class="flex items-center gap-2.5 sm:gap-3 shrink-0 cursor-pointer select-none" onclick="handleLogoTap()" role="button" tabindex="0" aria-label="Ingaustore">
+            <div id="logo" class="flex items-center gap-2.5 sm:gap-3 shrink-0 cursor-pointer select-none" role="button" tabindex="0" aria-label="Ingaustore">
                 <div id="logo-box" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl ig-gradient shadow-md flex items-center justify-center text-white overflow-hidden shrink-0 transition-transform">
                     <i id="logo-icon" class="fa-brands fa-instagram text-lg sm:text-xl" aria-hidden="true"></i>
                     <img id="logo-img" src="" class="w-full h-full object-cover hidden" alt="Logo toko">
@@ -155,12 +107,11 @@
                 </div>
             </div>
 
-            <!-- Search (ecommerce style) -->
             <div class="flex-1 search-wrap">
-                <form id="search-form" onsubmit="submitSearch(event)" class="flex items-center gap-2">
+                <form id="search-form" onsubmit="submitSearch(event)" class="flex items-center gap-2" role="search">
                     <div class="relative flex-1">
                         <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" aria-hidden="true"></i>
-                        <input type="search" id="search-input" oninput="liveSearch(this.value)" placeholder="Cari produk..." aria-label="Cari produk"
+                        <input type="search" id="search-input" oninput="liveSearch(this.value)" placeholder="Cari nama atau kode produk..." aria-label="Cari produk"
                             class="w-full bg-slate-100 border border-slate-200 text-base rounded-full py-2.5 sm:py-3 pl-11 pr-10 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white font-medium transition" style="color:var(--text)">
                         <button type="button" id="search-clear" onclick="clearSearch()" class="search-clear hidden text-slate-400 hover:text-slate-600 w-7 h-7 rounded-full flex items-center justify-center" aria-label="Hapus pencarian">
                             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
@@ -178,7 +129,7 @@
 
     <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 sm:px-6 py-5 sm:py-8 flex flex-col">
 
-        <!-- Admin Panel (hidden until login) -->
+        <!-- Panel admin -->
         <div id="admin-panel" class="hidden mb-6 card p-5 sm:p-6 fade-in">
             <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-3 border-b pb-4" style="border-color:var(--border)">
                 <div>
@@ -186,49 +137,89 @@
                         <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:#fce7f3;color:#db2777"><i class="fa-solid fa-gear" aria-hidden="true"></i></span>
                         Kelola Produk
                     </h2>
-                    <p class="text-sm mt-1" style="color:var(--muted)">Tambah atau hapus produk di katalog.</p>
+                    <p class="text-sm mt-1" style="color:var(--muted)">Tambah, ubah, atau hapus produk di katalog.</p>
                 </div>
-                <button onclick="bukaPengaturan()" class="text-sm font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 touch-lg" style="background:var(--border);color:var(--text)">
-                    <i class="fa-solid fa-palette" aria-hidden="true"></i> Atur Tampilan
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="bukaPengaturan()" class="text-sm font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 touch-lg" style="background:var(--border);color:var(--text)">
+                        <i class="fa-solid fa-palette" aria-hidden="true"></i> Atur Tampilan
+                    </button>
+                    <button onclick="prosesLogout()" class="text-sm font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 touch-lg" style="background:#fee2e2;color:#dc2626">
+                        <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Keluar
+                    </button>
+                </div>
             </div>
+
             <form id="add-form" onsubmit="tambahBarang(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-end">
                 <div class="lg:col-span-3">
-                    <label class="block text-sm font-bold mb-1.5" style="color:var(--muted)">1. Foto Produk</label>
-                    <input type="file" id="input-image" accept="image/png,image/jpeg,image/webp" required class="w-full text-sm file:mr-0 file:w-full file:py-2.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-100 file:text-slate-700 cursor-pointer border rounded-xl px-2 py-1.5" style="border-color:var(--border);background:var(--card);color:var(--text)">
+                    <label for="input-images" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">1. Foto (maks. 4)</label>
+                    <input type="file" id="input-images" accept="image/png,image/jpeg,image/webp" multiple required class="w-full text-sm file:mr-0 file:w-full file:py-2.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-100 file:text-slate-700 cursor-pointer border rounded-xl px-2 py-1.5" style="border-color:var(--border);background:var(--card);color:var(--text)">
                 </div>
                 <div class="lg:col-span-3">
-                    <label class="block text-sm font-bold mb-1.5" style="color:var(--muted)">2. Kode Produk</label>
-                    <input type="text" id="input-code" required maxlength="32" pattern="[A-Za-z0-9\\-]+" class="w-full px-3 py-2.5 rounded-xl font-bold uppercase focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="IG-001">
-                </div>
-                <div class="lg:col-span-4">
-                    <label class="block text-sm font-bold mb-1.5" style="color:var(--muted)">3. Link Pembelian</label>
-                    <input type="url" id="input-link" required class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="https://shopee.co.id/...">
+                    <label for="input-name" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">2. Nama Produk</label>
+                    <input type="text" id="input-name" required maxlength="80" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Kaos Katun Premium">
                 </div>
                 <div class="lg:col-span-2">
+                    <label for="input-price" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">3. Harga (Rp)</label>
+                    <input type="number" id="input-price" min="0" max="999999999" step="500" inputmode="numeric" class="w-full px-3 py-2.5 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="150000">
+                </div>
+                <div class="lg:col-span-2">
+                    <label for="input-category" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">4. Kategori</label>
+                    <input type="text" id="input-category" maxlength="32" list="category-list" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Atasan">
+                    <datalist id="category-list"></datalist>
+                </div>
+                <div class="lg:col-span-2">
+                    <label for="input-code" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">5. Kode</label>
+                    <input type="text" id="input-code" required maxlength="32" pattern="[A-Za-z0-9\-]+" class="w-full px-3 py-2.5 rounded-xl font-bold uppercase focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="IG-001">
+                </div>
+                <div class="lg:col-span-8">
+                    <label for="input-link" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">6. Link Pembelian</label>
+                    <input type="url" id="input-link" required class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="https://shopee.co.id/...">
+                </div>
+                <div class="lg:col-span-4">
                     <button type="submit" id="btn-add" class="btn-primary w-full py-2.5 rounded-xl flex items-center justify-center gap-2 touch-lg">
-                        <i class="fa-solid fa-plus" aria-hidden="true"></i> Tambah
+                        <i class="fa-solid fa-plus" aria-hidden="true"></i> Tambah Produk
                     </button>
                 </div>
             </form>
+
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 mt-4 pt-4 border-t" style="border-color:var(--border)">
+                <button type="button" onclick="eksporCSV()" class="text-sm font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2" style="background:var(--border);color:var(--text)">
+                    <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Ekspor CSV
+                </button>
+                <label class="text-sm font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 cursor-pointer" style="background:var(--border);color:var(--text)">
+                    <i class="fa-solid fa-file-arrow-up" aria-hidden="true"></i> Impor CSV
+                    <input type="file" id="input-csv" accept=".csv,text/csv" onchange="imporCSV(this)" class="hidden">
+                </label>
+                <p id="stat-klik" class="text-sm sm:ml-auto" style="color:var(--muted)">Memuat statistik...</p>
+            </div>
         </div>
 
-        <!-- Catalog header -->
-        <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-2">
+        <!-- Judul katalog -->
+        <div class="flex flex-col sm:flex-row justify-between sm:items-end mb-3 gap-2">
             <div>
                 <h2 class="text-xl sm:text-2xl font-extrabold" style="color:var(--text)">Katalog Produk</h2>
-                <p class="text-sm mt-0.5" style="color:var(--muted)">Pilih produk yang Anda inginkan. Ketuk foto untuk memperbesar.</p>
+                <p class="text-sm mt-0.5" style="color:var(--muted)">Pilih produk yang Anda inginkan, lalu lanjutkan ke toko resmi.</p>
             </div>
-            <div id="item-count" class="hidden sm:inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold" style="background:var(--border);color:var(--text)">
-                0 Produk
+            <div class="flex items-center gap-2">
+                <div id="item-count" class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold" style="background:var(--border);color:var(--text)">0 Produk</div>
+                <label for="sort-select" class="sr-only">Urutkan produk</label>
+                <select id="sort-select" onchange="render()" class="text-sm font-bold px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" style="background:var(--card);border:1px solid var(--border);color:var(--text)">
+                    <option value="baru">Terbaru</option>
+                    <option value="termurah">Harga terendah</option>
+                    <option value="termahal">Harga tertinggi</option>
+                    <option value="nama">Nama A–Z</option>
+                </select>
             </div>
         </div>
 
-        <!-- Product Grid -->
+        <!-- Filter kategori -->
+        <div id="category-bar" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 mb-4" role="group" aria-label="Filter kategori"></div>
+
+        <!-- Daftar produk -->
         <div id="product-grid" class="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-5" aria-live="polite"></div>
 
-        <!-- Empty state -->
-        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-14 text-center card mt-4 fade-in">
+        <!-- Kondisi kosong -->
+        <div id="empty-state" class="hidden flex-col items-center justify-center py-14 text-center card mt-4 fade-in">
             <div class="w-24 h-24 rounded-full flex items-center justify-center mb-4" style="background:#fce7f3;color:#db2777">
                 <i class="fa-solid fa-box-open text-4xl" aria-hidden="true"></i>
             </div>
@@ -236,7 +227,7 @@
             <p class="text-sm mt-1.5 max-w-sm px-4" style="color:var(--muted)" id="empty-desc">Belum ada produk yang tersedia saat ini.</p>
         </div>
 
-        <!-- Skeleton loading (shown briefly) -->
+        <!-- Kerangka pemuatan -->
         <div id="skeleton" class="hidden w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-5 mt-2">
             <div class="card overflow-hidden"><div class="aspect-square skeleton"></div><div class="p-3 space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-9 skeleton rounded"></div></div></div>
             <div class="card overflow-hidden"><div class="aspect-square skeleton"></div><div class="p-3 space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-9 skeleton rounded"></div></div></div>
@@ -245,22 +236,19 @@
         </div>
     </main>
 
-    <!-- Back to top -->
     <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-5 right-5 z-[60] w-11 h-11 rounded-full shadow-lg flex items-center justify-center hidden" style="background:var(--brand);color:#fff" aria-label="Kembali ke atas">
         <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
     </button>
 
-    <!-- Footer (minimal, no conspicuous admin) -->
     <footer class="py-6 mt-auto" style="border-top:1px solid var(--border)">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm" style="color:var(--muted)">
             <p>&copy; <span id="year"></span> <strong style="color:var(--text)">Ingaustore.id</strong>. Semua hak dilindungi.</p>
             <p class="text-xs">Katalog Produk Online</p>
         </div>
-        <!-- Secret admin tap target: invisible -->
         <button id="secret-admin" class="admin-secret" onclick="bukaLogin()" aria-hidden="true" tabindex="-1">.</button>
     </footer>
 
-    <!-- Login Modal -->
+    <!-- Modal masuk -->
     <div id="login-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="login-title">
         <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md" onclick="closeModal('login-modal')"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm px-4">
@@ -270,16 +258,16 @@
                         <i class="fa-solid fa-lock text-xl" aria-hidden="true"></i>
                     </div>
                     <h2 id="login-title" class="text-xl font-extrabold" style="color:var(--text)">Masuk Admin</h2>
-                    <p class="text-sm mt-1" style="color:var(--muted)">Masukkan username dan password.</p>
+                    <p class="text-sm mt-1" style="color:var(--muted)">Gunakan email dan password akun admin.</p>
                 </div>
-                <form onsubmit="prosesLogin(event)" class="space-y-3" autocomplete="off">
+                <form onsubmit="prosesLogin(event)" class="space-y-3" autocomplete="on">
                     <div>
-                        <label class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Username</label>
-                        <input type="text" id="login-username" required maxlength="32" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Username">
+                        <label for="login-email" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Email</label>
+                        <input type="email" id="login-email" required maxlength="254" autocomplete="username" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="admin@ingaustore.id">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Password</label>
-                        <input type="password" id="login-password" required maxlength="64" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Password">
+                        <label for="login-password" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Password</label>
+                        <input type="password" id="login-password" required maxlength="72" autocomplete="current-password" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)" placeholder="Password">
                     </div>
                     <button type="submit" id="btn-login" class="btn-primary w-full py-3 rounded-xl flex justify-center items-center gap-2 touch-lg">
                         <span>Masuk</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
@@ -290,7 +278,53 @@
         </div>
     </div>
 
-    <!-- Settings Modal -->
+    <!-- Modal ubah produk -->
+    <div id="edit-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="edit-title">
+        <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md" onclick="closeModal('edit-modal')"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md px-4">
+            <div class="rounded-3xl p-6 shadow-2xl" style="background:var(--card)" id="edit-modal-content">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 id="edit-title" class="text-lg font-extrabold flex items-center gap-2" style="color:var(--text)">
+                        <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:#fce7f3;color:#db2777"><i class="fa-solid fa-pen" aria-hidden="true"></i></span>
+                        Ubah Produk
+                    </h2>
+                    <button onclick="closeModal('edit-modal')" class="w-9 h-9 rounded-full flex items-center justify-center" style="background:var(--border);color:var(--text)" aria-label="Tutup">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <form id="edit-form" onsubmit="simpanUbahProduk(event)" class="space-y-3">
+                    <input type="hidden" id="edit-id">
+                    <div>
+                        <label for="edit-name" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Nama Produk</label>
+                        <input type="text" id="edit-name" required maxlength="80" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label for="edit-price" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Harga (Rp)</label>
+                            <input type="number" id="edit-price" min="0" max="999999999" step="500" inputmode="numeric" class="w-full px-3 py-2.5 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)">
+                        </div>
+                        <div>
+                            <label for="edit-category" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Kategori</label>
+                            <input type="text" id="edit-category" maxlength="32" list="category-list" class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="edit-code" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Kode</label>
+                        <input type="text" id="edit-code" required maxlength="32" pattern="[A-Za-z0-9\-]+" class="w-full px-3 py-2.5 rounded-xl font-bold uppercase focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)">
+                    </div>
+                    <div>
+                        <label for="edit-link" class="block text-sm font-bold mb-1.5" style="color:var(--muted)">Link Pembelian</label>
+                        <input type="url" id="edit-link" required class="w-full px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500" style="border:1px solid var(--border);background:var(--card);color:var(--text)">
+                    </div>
+                    <button type="submit" id="btn-edit" class="btn-primary w-full py-3 rounded-xl flex items-center justify-center gap-2 touch-lg">
+                        <i class="fa-solid fa-check" aria-hidden="true"></i> Simpan Perubahan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pengaturan tampilan -->
     <div id="settings-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title">
         <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md" onclick="closeModal('settings-modal')"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md px-4">
@@ -306,18 +340,18 @@
                 </div>
                 <form id="settings-form" onsubmit="simpanPengaturan(event)" class="space-y-4">
                     <div class="p-4 rounded-2xl" style="background:var(--bg);border:1px solid var(--border)">
-                        <label class="block text-sm font-bold mb-2" style="color:var(--muted)">Logo Toko (Kotak)</label>
+                        <label for="input-logo" class="block text-sm font-bold mb-2" style="color:var(--muted)">Logo Toko (Kotak)</label>
                         <div class="flex items-center gap-3">
                             <div class="w-14 h-14 rounded-xl border flex items-center justify-center overflow-hidden shrink-0" style="border-color:var(--border);background:var(--card)">
-                                <img id="settings-logo-preview" class="w-full h-full object-cover hidden" alt="Preview logo">
+                                <img id="settings-logo-preview" class="w-full h-full object-cover hidden" alt="Pratinjau logo">
                                 <i id="settings-logo-icon" class="fa-solid fa-image text-xl" style="color:var(--muted)" aria-hidden="true"></i>
                             </div>
-                            <input type="file" id="input-logo" accept="image/*" onchange="previewGambar(this,'settings-logo-preview','settings-logo-icon')" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-pink-50 file:text-pink-600 cursor-pointer">
+                            <input type="file" id="input-logo" accept="image/png,image/jpeg,image/webp" onchange="previewGambar(this,'settings-logo-preview','settings-logo-icon')" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-pink-50 file:text-pink-600 cursor-pointer">
                         </div>
                     </div>
                     <div class="p-4 rounded-2xl" style="background:var(--bg);border:1px solid var(--border)">
-                        <label class="block text-sm font-bold mb-2" style="color:var(--muted)">Wallpaper Latar Belakang</label>
-                        <input type="file" id="input-bg" accept="image/*" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-200 file:text-slate-700 cursor-pointer mb-2">
+                        <label for="input-bg" class="block text-sm font-bold mb-2" style="color:var(--muted)">Wallpaper Latar Belakang</label>
+                        <input type="file" id="input-bg" accept="image/png,image/jpeg,image/webp" class="w-full text-sm file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-slate-200 file:text-slate-700 cursor-pointer mb-2">
                         <button type="button" onclick="hapusBackground()" id="btn-remove-bg" class="w-full text-sm font-bold hidden flex items-center justify-center gap-2 py-2 rounded-xl" style="background:#fee2e2;color:#dc2626">
                             <i class="fa-solid fa-trash-can" aria-hidden="true"></i> Hapus Wallpaper
                         </button>
@@ -330,452 +364,8 @@
         </div>
     </div>
 
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        /* SECURITY UTILS */
-        const escapeHtml = (s) => {
-            if (s === null || s === undefined) return '';
-            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-        };
-        const sanitizeUrl = (u) => { try { const x = new URL(u); return (x.protocol === 'http:' || x.protocol === 'https:') ? x.href : null; } catch { return null; } };
-        const sanitizeCode = (c) => { const v = String(c).trim().toUpperCase(); return /^[A-Z0-9\-]{1,32}$/.test(v) ? v : null; };
-        const MAX_IMG = 5 * 1024 * 1024;
-        const ALLOWED_IMG = ['image/png','image/jpeg','image/webp','image/gif'];
-
-        /* AUTH */
-        const USER_HASH = '9aecdc2473eec89ec840c869547e036362b11b7b095e8cc1353f8393c6c3f670';
-        const PASS_HASH = 'e522248dc219d9257348dc2d54f94300d544f86f05e642d19c67a640aa51dc3f';
-        const SESS_KEY = 'ingau_session_token';
-        const LOCK_KEY = 'ingau_lock_until';
-        const ATT_KEY = 'ingau_attempts';
-
-        async function hashData(t) {
-            const b = new TextEncoder().encode(t.trim());
-            const h = await crypto.subtle.digest('SHA-256', b);
-            return Array.from(new Uint8Array(h)).map(x => x.toString(16).padStart(2,'0')).join('');
-        }
-        function genToken() { const a = new Uint8Array(32); crypto.getRandomValues(a); return Array.from(a).map(x=>x.toString(16).padStart(2,'0')).join(''); }
-
-        let loginAttempts = parseInt(sessionStorage.getItem(ATT_KEY) || '0', 10) || 0;
-        let lockUntil = parseInt(sessionStorage.getItem(LOCK_KEY) || '0', 10) || 0;
-        function persistLock() { sessionStorage.setItem(ATT_KEY, String(loginAttempts)); sessionStorage.setItem(LOCK_KEY, String(lockUntil)); }
-
-        let isAdmin = false;
-        if (sessionStorage.getItem(SESS_KEY) && /^[a-f0-9]{64}$/.test(sessionStorage.getItem(SESS_KEY))) isAdmin = true;
-
-        /* DB */
-        let products = [];
-        const DB = 'IngauEnterpriseDB', DBV = 1, STP = 'products_store', STS = 'settings_store';
-        let db;
-        const initDB = () => new Promise((res, rej) => {
-            const r = indexedDB.open(DB, DBV);
-            r.onupgradeneeded = (e) => {
-                db = e.target.result;
-                if (!db.objectStoreNames.contains(STP)) db.createObjectStore(STP, { keyPath: 'id' });
-                if (!db.objectStoreNames.contains(STS)) db.createObjectStore(STS, { keyPath: 'key' });
-            };
-            r.onsuccess = (e) => { db = e.target.result; res(); };
-            r.onerror = (e) => rej(e.target.error);
-        });
-        const dbPut = (store, data) => new Promise((res, rej) => {
-            const tx = db.transaction(store, 'readwrite'); tx.objectStore(store).put(data);
-            tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
-        });
-        const dbGet = (store, key) => new Promise((res, rej) => {
-            const tx = db.transaction(store, 'readonly');
-            const req = key ? tx.objectStore(store).get(key) : tx.objectStore(store).getAll();
-            req.onsuccess = () => res(req.result); req.onerror = () => rej(req.error);
-        });
-        const dbDel = (store, key) => new Promise((res, rej) => {
-            const tx = db.transaction(store, 'readwrite'); tx.objectStore(store).delete(key);
-            tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
-        });
-
-        /* UI */
-        let toastTimer;
-        function showToast(msg, type = 'success') {
-            const t = document.getElementById('toast');
-            document.getElementById('toast-msg').textContent = msg;
-            const ic = document.getElementById('toast-icon');
-            ic.className = type === 'success' ? 'fa-solid fa-circle-check text-green-400 text-lg' :
-                          type === 'error' ? 'fa-solid fa-circle-exclamation text-red-400 text-lg' :
-                          'fa-solid fa-circle-info text-blue-400 text-lg';
-            t.classList.remove('hide'); t.classList.add('show');
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => { t.classList.remove('show'); t.classList.add('hide'); }, 3000);
-        }
-        function openModal(id) {
-            const m = document.getElementById(id); const c = document.getElementById(id + '-content');
-            m.classList.remove('hidden'); c.classList.remove('modal-leave'); c.classList.add('modal-enter');
-            const f = m.querySelector('input,button'); if (f) setTimeout(() => f.focus(), 50);
-        }
-        function closeModal(id) {
-            const m = document.getElementById(id); const c = document.getElementById(id + '-content');
-            c.classList.remove('modal-enter'); c.classList.add('modal-leave');
-            setTimeout(() => m.classList.add('hidden'), 220);
-        }
-        function openLightbox(src) {
-            const lb = document.getElementById('lightbox'); const img = document.getElementById('lightbox-img');
-            img.src = src; lb.classList.remove('hidden');
-            setTimeout(() => { lb.classList.remove('opacity-0'); img.classList.remove('scale-95'); }, 10);
-            document.body.style.overflow = 'hidden';
-        }
-        function closeLightbox() {
-            const lb = document.getElementById('lightbox'); const img = document.getElementById('lightbox-img');
-            lb.classList.add('opacity-0'); img.classList.add('scale-95');
-            setTimeout(() => { lb.classList.add('hidden'); document.body.style.overflow = ''; }, 220);
-        }
-
-        const io = new IntersectionObserver((es) => {
-            es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-        }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-
-        /* AUTH */
-        function bukaLogin() { openModal('login-modal'); document.getElementById('login-username').value=''; document.getElementById('login-password').value=''; }
-        async function prosesLogin(e) {
-            e.preventDefault();
-            const now = Date.now();
-            if (now < lockUntil) { showToast('Terlalu banyak percobaan. Coba lagi ' + Math.ceil((lockUntil-now)/1000) + ' detik.', 'error'); return; }
-            const btn = document.getElementById('btn-login');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Memeriksa...';
-            btn.disabled = true;
-            const u = document.getElementById('login-username').value.toLowerCase().trim();
-            const p = document.getElementById('login-password').value.trim();
-            try {
-                const uh = await hashData(u); const ph = await hashData(p);
-                setTimeout(() => {
-                    if (uh === USER_HASH && ph === PASS_HASH) {
-                        loginAttempts = 0; lockUntil = 0; persistLock();
-                        isAdmin = true; sessionStorage.setItem(SESS_KEY, genToken());
-                        closeModal('login-modal');
-                        const panel = document.getElementById('admin-panel');
-                        panel.classList.remove('hidden'); setTimeout(() => panel.classList.add('visible'), 50);
-                        showToast('Berhasil masuk.');
-                        render();
-                    } else {
-                        loginAttempts++;
-                        if (loginAttempts >= 3) { lockUntil = Date.now() + 30000; showToast('Terlalu banyak percobaan. Dikunci 30 detik.', 'error'); }
-                        else showToast('Username atau password salah. Sisa: ' + (3 - loginAttempts), 'error');
-                        persistLock();
-                    }
-                    btn.innerHTML = '<span>Masuk</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
-                    btn.disabled = false;
-                }, 350);
-            } catch {
-                showToast('Terjadi kesalahan.', 'error'); btn.disabled = false;
-                btn.innerHTML = '<span>Masuk</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
-            }
-        }
-        if (isAdmin) {
-            const panel = document.getElementById('admin-panel');
-            panel.classList.remove('hidden'); setTimeout(() => panel.classList.add('visible'), 50);
-        }
-
-        /* SECRET ADMIN TRIGGERS (hidden) */
-        let logoTaps = 0, logoTimer = null;
-        function handleLogoTap() {
-            logoTaps++;
-            if (logoTimer) clearTimeout(logoTimer);
-            logoTimer = setTimeout(() => { logoTaps = 0; }, 1200);
-            if (logoTaps >= 5) { logoTaps = 0; bukaLogin(); }
-            // long-press not via click; handled separately
-        }
-        // Long press on logo
-        let pressTimer = null;
-        const logoEl = document.getElementById('logo');
-        logoEl.addEventListener('touchstart', () => { pressTimer = setTimeout(() => { bukaLogin(); }, 1200); }, { passive: true });
-        logoEl.addEventListener('touchend', () => { if (pressTimer) clearTimeout(pressTimer); });
-        logoEl.addEventListener('touchmove', () => { if (pressTimer) clearTimeout(pressTimer); });
-        // URL hash
-        if (location.hash === '#admin') bukaLogin();
-        // Keyboard
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) { e.preventDefault(); bukaLogin(); }
-            if (e.key === 'Escape') {
-                ['login-modal','settings-modal'].forEach(m => {
-                    const el = document.getElementById(m);
-                    if (el && !el.classList.contains('hidden')) closeModal(m);
-                });
-                const lb = document.getElementById('lightbox');
-                if (lb && !lb.classList.contains('hidden')) closeLightbox();
-            }
-        });
-        // Triple-tap on footer copyright
-        let footerTaps = 0, footerTimer = null;
-        document.querySelector('footer p').addEventListener('click', () => {
-            footerTaps++;
-            if (footerTimer) clearTimeout(footerTimer);
-            footerTimer = setTimeout(() => { footerTaps = 0; }, 1000);
-            if (footerTaps >= 3) { footerTaps = 0; bukaLogin(); }
-        });
-
-        /* IMAGE */
-        function processImage(file, size = 800) {
-            return new Promise((res, rej) => {
-                if (!file) return rej('Tidak ada file');
-                if (!ALLOWED_IMG.includes(file.type)) return rej('Format gambar tidak didukung');
-                if (file.size > MAX_IMG) return rej('Ukuran gambar terlalu besar (maks 5MB)');
-                const r = new FileReader();
-                r.readAsDataURL(file);
-                r.onload = (ev) => {
-                    const img = new Image();
-                    img.src = ev.target.result;
-                    img.onload = () => {
-                        const c = document.createElement('canvas'); c.width = size; c.height = size;
-                        const ctx = c.getContext('2d');
-                        const s = Math.min(img.width, img.height);
-                        const sx = (img.width - s) / 2, sy = (img.height - s) / 2;
-                        ctx.drawImage(img, sx, sy, s, s, 0, 0, size, size);
-                        res(c.toDataURL('image/jpeg', 0.85));
-                    };
-                    img.onerror = () => rej(new Error('Gagal memuat gambar'));
-                };
-                r.onerror = () => rej(new Error('Gagal membaca file'));
-            });
-        }
-
-        /* SETTINGS */
-        function applyVisual(logo, bg) {
-            const img = document.getElementById('logo-img'); const ic = document.getElementById('logo-icon');
-            const box = document.getElementById('logo-box'); const rb = document.getElementById('btn-remove-bg');
-            if (logo) { img.src = logo; img.classList.remove('hidden'); ic.classList.add('hidden'); box.classList.remove('ig-gradient'); box.classList.add('bg-white'); }
-            else { img.classList.add('hidden'); ic.classList.remove('hidden'); box.classList.add('ig-gradient'); box.classList.remove('bg-white'); }
-            if (bg) { document.body.style.backgroundImage = `url(${bg})`; rb.classList.remove('hidden'); }
-            else { document.body.style.backgroundImage = ''; rb.classList.add('hidden'); }
-        }
-        async function loadSettings() {
-            try { const l = await dbGet(STS, 'logo'); const b = await dbGet(STS, 'bg'); applyVisual(l ? l.data : null, b ? b.data : null); } catch {}
-        }
-        function bukaPengaturan() {
-            openModal('settings-modal');
-            document.getElementById('settings-logo-preview').classList.add('hidden');
-            document.getElementById('settings-logo-icon').classList.remove('hidden');
-            document.getElementById('settings-form').reset();
-        }
-        function previewGambar(input, pid, iid) {
-            const f = input.files[0];
-            if (f) {
-                if (!ALLOWED_IMG.includes(f.type)) { showToast('Format gambar tidak didukung', 'error'); input.value=''; return; }
-                const r = new FileReader();
-                r.onload = (e) => { document.getElementById(pid).src = e.target.result; document.getElementById(pid).classList.remove('hidden'); document.getElementById(iid).classList.add('hidden'); };
-                r.readAsDataURL(f);
-            }
-        }
-        async function simpanPengaturan(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-save');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Menyimpan...';
-            btn.disabled = true;
-            try {
-                const fl = document.getElementById('input-logo').files[0];
-                const fb = document.getElementById('input-bg').files[0];
-                if (fl) { const b = await processImage(fl, 400); await dbPut(STS, { key: 'logo', data: b }); }
-                if (fb) {
-                    if (!ALLOWED_IMG.includes(fb.type)) throw new Error('Format gambar tidak didukung');
-                    if (fb.size > MAX_IMG) throw new Error('Ukuran gambar terlalu besar');
-                    const b = await new Promise(res => { const r = new FileReader(); r.onload = ev => res(ev.target.result); r.readAsDataURL(fb); });
-                    await dbPut(STS, { key: 'bg', data: b });
-                }
-                await loadSettings(); closeModal('settings-modal'); showToast('Tampilan berhasil diperbarui!');
-            } catch (err) {
-                showToast(err && err.message ? err.message : 'Gagal menyimpan.', 'error');
-            } finally {
-                btn.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i> Simpan';
-                btn.disabled = false;
-            }
-        }
-        async function hapusBackground() {
-            await dbDel(STS, 'bg'); document.getElementById('input-bg').value = '';
-            loadSettings(); showToast('Wallpaper dihapus.');
-        }
-
-        /* PRODUCTS */
-        async function loadProducts() {
-            try { const d = await dbGet(STP); products = (d || []).sort((a,b) => b.id - a.id); render(); } catch { showToast('Gagal memuat produk.', 'error'); }
-        }
-        async function tambahBarang(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-add');
-            btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Menyimpan...';
-            try {
-                const file = document.getElementById('input-image').files[0];
-                const code = sanitizeCode(document.getElementById('input-code').value);
-                if (!code) throw new Error('Kode produk tidak valid');
-                const link = document.getElementById('input-link').value.trim();
-                const safeLink = sanitizeUrl(link);
-                if (!safeLink) throw new Error('Link pembelian tidak valid');
-                const img = await processImage(file, 800);
-                await dbPut(STP, { id: Date.now(), code, image: img, link: safeLink, searchIndex: code.toLowerCase() });
-                document.getElementById('add-form').reset();
-                showToast(`Produk ${code} berhasil ditambahkan!`);
-                loadProducts();
-            } catch (err) {
-                showToast(err && err.message ? err.message : 'Gagal menyimpan produk.', 'error');
-            } finally {
-                btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-plus" aria-hidden="true"></i> Tambah';
-            }
-        }
-        async function hapusBarang(id, code) {
-            if (confirm(`Hapus produk ${code} dari katalog?`)) {
-                await dbDel(STP, Number(id)); showToast(`Produk ${code} dihapus.`); loadProducts();
-            }
-        }
-
-        /* SEARCH (ecommerce style) */
-        let searchTimer = null;
-        function liveSearch(val) {
-            const clear = document.getElementById('search-clear');
-            clear.classList.toggle('hidden', !val);
-            const sug = document.getElementById('search-suggestions');
-            const term = val.trim().toLowerCase();
-            if (!term) { sug.classList.add('hidden'); render(); return; }
-            // debounce
-            if (searchTimer) clearTimeout(searchTimer);
-            searchTimer = setTimeout(() => {
-                const matches = products.filter(p => p.searchIndex.includes(term)).slice(0, 8);
-                if (matches.length) {
-                    sug.innerHTML = '';
-                    matches.forEach(p => {
-                        const btn = document.createElement('button');
-                        btn.type = 'button';
-                        btn.className = 'w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 border-b last:border-b-0';
-                        btn.style.borderColor = 'var(--border)';
-                        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass text-slate-400 text-sm" aria-hidden="true"></i>';
-                        const span = document.createElement('span');
-                        span.className = 'font-medium';
-                        span.style.color = 'var(--text)';
-                        span.textContent = p.code;
-                        btn.appendChild(span);
-                        btn.addEventListener('click', () => pickSuggestion(p.code));
-                        sug.appendChild(btn);
-                    });
-                    sug.classList.remove('hidden');
-                } else {
-                    sug.innerHTML = '<div class="px-4 py-3 text-sm" style="color:var(--muted)">Tidak ada hasil</div>';
-                    sug.classList.remove('hidden');
-                }
-                render(true);
-            }, 120);
-        }
-        function pickSuggestion(code) {
-            document.getElementById('search-input').value = code;
-            document.getElementById('search-suggestions').classList.add('hidden');
-            liveSearch(code);
-        }
-        function submitSearch(e) {
-            e.preventDefault();
-            const v = document.getElementById('search-input').value.trim();
-            document.getElementById('search-suggestions').classList.add('hidden');
-            liveSearch(v);
-        }
-        function clearSearch() {
-            document.getElementById('search-input').value = '';
-            document.getElementById('search-clear').classList.add('hidden');
-            document.getElementById('search-suggestions').classList.add('hidden');
-            render();
-            document.getElementById('search-input').focus();
-        }
-        // close suggestions on outside click
-        document.addEventListener('click', (e) => {
-            const sug = document.getElementById('search-suggestions');
-            if (!e.target.closest('.search-wrap')) sug.classList.add('hidden');
-        });
-
-        /* RENDER */
-        function render(isSearch = false) {
-            const grid = document.getElementById('product-grid');
-            const empty = document.getElementById('empty-state');
-            const sk = document.getElementById('skeleton');
-            sk.classList.add('hidden');
-            const term = document.getElementById('search-input').value.trim().toLowerCase();
-            const list = term ? products.filter(p => p.searchIndex.includes(term)) : products;
-            document.getElementById('item-count').textContent = list.length + ' Produk';
-            document.getElementById('item-count').classList.toggle('hidden', false);
-            grid.innerHTML = '';
-            if (list.length === 0) {
-                empty.classList.remove('hidden'); setTimeout(() => empty.classList.add('visible'), 50);
-                grid.classList.add('hidden');
-                document.getElementById('empty-title').textContent = isSearch || term ? 'Produk Tidak Ditemukan' : 'Katalog Masih Kosong';
-                document.getElementById('empty-desc').textContent = isSearch || term ? 'Coba kata kunci lain.' : 'Belum ada produk yang tersedia saat ini.';
-                return;
-            }
-            empty.classList.add('hidden'); empty.classList.remove('visible');
-            grid.classList.remove('hidden');
-            list.forEach((p, i) => {
-                const card = document.createElement('div');
-                card.className = 'card overflow-hidden flex flex-col fade-in relative';
-                card.style.transitionDelay = (i * 25) + 'ms';
-
-                if (isAdmin) {
-                    const del = document.createElement('button');
-                    del.className = 'absolute top-2 right-2 w-9 h-9 rounded-full flex items-center justify-center shadow-md z-20 transition';
-                    del.style.cssText = 'background:#ef4444;color:#fff';
-                    del.setAttribute('aria-label', 'Hapus produk ' + p.code);
-                    del.innerHTML = '<i class="fa-solid fa-trash-can" aria-hidden="true"></i>';
-                    del.addEventListener('click', (ev) => { ev.stopPropagation(); hapusBarang(p.id, p.code); });
-                    card.appendChild(del);
-                }
-
-                const imgWrap = document.createElement('div');
-                imgWrap.className = 'relative w-full aspect-square overflow-hidden cursor-zoom bg-slate-100';
-                imgWrap.setAttribute('role', 'button');
-                imgWrap.setAttribute('tabindex', '0');
-                imgWrap.setAttribute('aria-label', 'Perbesar gambar ' + p.code);
-                imgWrap.addEventListener('click', () => openLightbox(p.image));
-                imgWrap.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openLightbox(p.image); } });
-
-                const img = document.createElement('img');
-                img.src = p.image;
-                img.alt = p.code;
-                img.className = 'w-full h-full object-cover transition-transform duration-500 hover:scale-105';
-                img.loading = 'lazy';
-
-                const zoomIcon = document.createElement('div');
-                zoomIcon.className = 'absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity pointer-events-none';
-                zoomIcon.innerHTML = '<span class="bg-white/90 rounded-full w-10 h-10 flex items-center justify-center shadow-md"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i></span>';
-
-                imgWrap.appendChild(img);
-                imgWrap.appendChild(zoomIcon);
-                card.appendChild(imgWrap);
-
-                const body = document.createElement('div');
-                body.className = 'p-3 sm:p-4 flex flex-col gap-2.5';
-                const title = document.createElement('h3');
-                title.className = 'font-extrabold text-base sm:text-lg tracking-tight truncate';
-                title.style.color = 'var(--text)';
-                title.textContent = p.code;
-
-                const buyLink = document.createElement('a');
-                buyLink.href = p.link;
-                buyLink.target = '_blank';
-                buyLink.rel = 'noopener noreferrer';
-                buyLink.className = 'btn-primary w-full text-center py-2.5 sm:py-3 rounded-xl flex items-center justify-center gap-2 touch-lg';
-                buyLink.innerHTML = '<i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Beli Sekarang';
-
-                body.appendChild(title);
-                body.appendChild(buyLink);
-                card.appendChild(body);
-
-                grid.appendChild(card);
-                io.observe(card);
-            });
-        }
-
-        /* BACK TO TOP */
-        window.addEventListener('scroll', () => {
-            const b = document.getElementById('back-top');
-            if (window.scrollY > 400) b.classList.remove('hidden'); else b.classList.add('hidden');
-        }, { passive: true });
-
-        /* INIT */
-        window.addEventListener('DOMContentLoaded', async () => {
-            try {
-                await initDB();
-                await loadSettings();
-                await loadProducts();
-            } catch { showToast('Gagal memuat data.', 'error'); }
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/app.js"></script>
 </body>
 </html>
