@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ec4899">
     <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'">
     <title>Ingaustore.id - Katalog Produk</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -243,6 +244,11 @@
             <div class="card overflow-hidden"><div class="aspect-square skeleton"></div><div class="p-3 space-y-2"><div class="h-4 skeleton rounded"></div><div class="h-9 skeleton rounded"></div></div></div>
         </div>
     </main>
+
+    <!-- Back to top -->
+    <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-5 right-5 z-[60] w-11 h-11 rounded-full shadow-lg flex items-center justify-center hidden" style="background:var(--brand);color:#fff" aria-label="Kembali ke atas">
+        <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+    </button>
 
     <!-- Footer (minimal, no conspicuous admin) -->
     <footer class="py-6 mt-auto" style="border-top:1px solid var(--border)">
@@ -629,11 +635,21 @@
             searchTimer = setTimeout(() => {
                 const matches = products.filter(p => p.searchIndex.includes(term)).slice(0, 8);
                 if (matches.length) {
-                    sug.innerHTML = matches.map(p => `
-                        <button type="button" onclick="pickSuggestion('${escapeHtml(p.code)}')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 border-b last:border-b-0" style="border-color:var(--border)">
-                            <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm" aria-hidden="true"></i>
-                            <span class="font-medium" style="color:var(--text)">${escapeHtml(p.code)}</span>
-                        </button>`).join('');
+                    sug.innerHTML = '';
+                    matches.forEach(p => {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 border-b last:border-b-0';
+                        btn.style.borderColor = 'var(--border)';
+                        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass text-slate-400 text-sm" aria-hidden="true"></i>';
+                        const span = document.createElement('span');
+                        span.className = 'font-medium';
+                        span.style.color = 'var(--text)';
+                        span.textContent = p.code;
+                        btn.appendChild(span);
+                        btn.addEventListener('click', () => pickSuggestion(p.code));
+                        sug.appendChild(btn);
+                    });
                     sug.classList.remove('hidden');
                 } else {
                     sug.innerHTML = '<div class="px-4 py-3 text-sm" style="color:var(--muted)">Tidak ada hasil</div>';
@@ -688,30 +704,69 @@
             grid.classList.remove('hidden');
             list.forEach((p, i) => {
                 const card = document.createElement('div');
-                card.className = 'card overflow-hidden flex flex-col fade-in';
+                card.className = 'card overflow-hidden flex flex-col fade-in relative';
                 card.style.transitionDelay = (i * 25) + 'ms';
-                const del = isAdmin ? `
-                    <button onclick="hapusBarang(${p.id}, '${escapeHtml(p.code)}')" class="absolute top-2 right-2 w-9 h-9 rounded-full flex items-center justify-center shadow-md z-20 transition" style="background:#ef4444;color:#fff" aria-label="Hapus produk">
-                        <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
-                    </button>` : '';
-                card.innerHTML = `
-                    ${del}
-                    <div class="relative w-full aspect-square overflow-hidden cursor-zoom bg-slate-100" onclick="openLightbox('${escapeHtml(p.image)}')" role="button" tabindex="0" aria-label="Perbesar gambar">
-                        <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.code)}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy">
-                        <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
-                            <span class="bg-white/90 rounded-full w-10 h-10 flex items-center justify-center shadow-md"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i></span>
-                        </div>
-                    </div>
-                    <div class="p-3 sm:p-4 flex flex-col gap-2.5">
-                        <h3 class="font-extrabold text-base sm:text-lg tracking-tight truncate" style="color:var(--text)">${escapeHtml(p.code)}</h3>
-                        <a href="${escapeHtml(p.link)}" target="_blank" rel="noopener noreferrer" class="btn-primary w-full text-center py-2.5 sm:py-3 rounded-xl flex items-center justify-center gap-2 touch-lg">
-                            <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Beli Sekarang
-                        </a>
-                    </div>`;
+
+                if (isAdmin) {
+                    const del = document.createElement('button');
+                    del.className = 'absolute top-2 right-2 w-9 h-9 rounded-full flex items-center justify-center shadow-md z-20 transition';
+                    del.style.cssText = 'background:#ef4444;color:#fff';
+                    del.setAttribute('aria-label', 'Hapus produk ' + p.code);
+                    del.innerHTML = '<i class="fa-solid fa-trash-can" aria-hidden="true"></i>';
+                    del.addEventListener('click', (ev) => { ev.stopPropagation(); hapusBarang(p.id, p.code); });
+                    card.appendChild(del);
+                }
+
+                const imgWrap = document.createElement('div');
+                imgWrap.className = 'relative w-full aspect-square overflow-hidden cursor-zoom bg-slate-100';
+                imgWrap.setAttribute('role', 'button');
+                imgWrap.setAttribute('tabindex', '0');
+                imgWrap.setAttribute('aria-label', 'Perbesar gambar ' + p.code);
+                imgWrap.addEventListener('click', () => openLightbox(p.image));
+                imgWrap.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openLightbox(p.image); } });
+
+                const img = document.createElement('img');
+                img.src = p.image;
+                img.alt = p.code;
+                img.className = 'w-full h-full object-cover transition-transform duration-500 hover:scale-105';
+                img.loading = 'lazy';
+
+                const zoomIcon = document.createElement('div');
+                zoomIcon.className = 'absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity pointer-events-none';
+                zoomIcon.innerHTML = '<span class="bg-white/90 rounded-full w-10 h-10 flex items-center justify-center shadow-md"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i></span>';
+
+                imgWrap.appendChild(img);
+                imgWrap.appendChild(zoomIcon);
+                card.appendChild(imgWrap);
+
+                const body = document.createElement('div');
+                body.className = 'p-3 sm:p-4 flex flex-col gap-2.5';
+                const title = document.createElement('h3');
+                title.className = 'font-extrabold text-base sm:text-lg tracking-tight truncate';
+                title.style.color = 'var(--text)';
+                title.textContent = p.code;
+
+                const buyLink = document.createElement('a');
+                buyLink.href = p.link;
+                buyLink.target = '_blank';
+                buyLink.rel = 'noopener noreferrer';
+                buyLink.className = 'btn-primary w-full text-center py-2.5 sm:py-3 rounded-xl flex items-center justify-center gap-2 touch-lg';
+                buyLink.innerHTML = '<i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Beli Sekarang';
+
+                body.appendChild(title);
+                body.appendChild(buyLink);
+                card.appendChild(body);
+
                 grid.appendChild(card);
                 io.observe(card);
             });
         }
+
+        /* BACK TO TOP */
+        window.addEventListener('scroll', () => {
+            const b = document.getElementById('back-top');
+            if (window.scrollY > 400) b.classList.remove('hidden'); else b.classList.add('hidden');
+        }, { passive: true });
 
         /* INIT */
         window.addEventListener('DOMContentLoaded', async () => {
