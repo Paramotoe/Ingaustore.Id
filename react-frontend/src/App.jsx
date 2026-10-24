@@ -182,7 +182,6 @@ export default function App() {
     })
   }, [products, search, category, sortBy])
 
-// App.jsx render
   return (
     <div className="app">
       <Header
