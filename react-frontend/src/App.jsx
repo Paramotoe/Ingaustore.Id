@@ -31,6 +31,7 @@ export default function App() {
   const [toast, setToast] = useState(null)
 
   const toastTimer = useRef(null)
+  const urutanAuth = useRef(0)
   const isAdmin = admin.masuk && !admin.cek
   const logoRef = useRef(null)
 
@@ -48,8 +49,13 @@ export default function App() {
   // bukan oleh keberadaan sesi. Siapa pun bisa punya sesi Supabase, tetapi
   // hanya akun di daftar putih admins yang bernilai true.
   const refreshAdmin = useCallback(async () => {
+    // Setiap pemeriksaan mendapat nomor urut. Jawaban yang tertinggal
+    // (mis. setelah pengguna keluar) diabaikan, sehingga sesi yang sudah
+    // berakhir tidak bisa mengembalikan status admin.
+    const urutan = (urutanAuth.current += 1)
     setAdmin((a) => ({ ...a, cek: true }))
     const { data, error } = await supabase.rpc('is_admin')
+    if (urutan !== urutanAuth.current) return
     if (error) {
       setAdmin({ cek: false, masuk: false })
       return
@@ -128,6 +134,7 @@ export default function App() {
   }
 
   const handleLogout = async () => {
+    urutanAuth.current += 1
     await supabase.auth.signOut()
     setAdmin({ cek: false, masuk: false })
     setSettingsOpen(false)

@@ -9,6 +9,8 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { supabase } from '../services/supabase'
+import { useDialog } from '../services/useDialog'
+import { urlAman } from '../services/urlAman'
 
 const KOSONG = { name: '', url: '' }
 
@@ -20,14 +22,15 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
   const [price, setPrice] = useState(product?.price ?? '')
   const [category, setCategory] = useState(product?.category || '')
   const [links, setLinks] = useState(() => {
-    if (Array.isArray(product?.links) && product.links.length) {
-      return product.links.filter((l) => l && l.url)
-    }
-    if (product?.link) return [{ name: 'Beli', url: product.link }]
-    return []
+    const ada = Array.isArray(product?.links) ? product.links : []
+    if (ada.length) return ada.filter((l) => urlAman(l && l.url))
+    return product?.link && urlAman(product.link) ? [{ name: 'Beli', url: product.link }] : []
   })
   const [files, setFiles] = useState([])
   const [saving, setSaving] = useState(false)
+
+  // Dialog aksesibilitas: focus trap, Escape, fokus awal, pulihkan fokus.
+  const refDialog = useDialog(true, onClose, isEdit ? 'judul-ubah' : 'judul-tambah')
 
   // Satu object URL per file, dicabut saat file berubah atau modal tutup.
   const previews = useMemo(() => files.map((f) => URL.createObjectURL(f)), [files])
@@ -82,9 +85,19 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
       showToast('Tambahkan minimal satu link marketplace.', 'error')
       return
     }
-    if (links.some((l) => !l.url.trim() || !/^https?:\/\/.+/i.test(l.url.trim()))) {
-      showToast('Semua link harus diisi dengan URL valid (http:// atau https://).', 'error')
+    if (links.some((l) => !l.url.trim() || !urlAman(l.url))) {
+      showToast('Semua link harus diisi dengan URL valid (http:// atau https:// tanpa skrip berbahaya).', 'error')
       return
+    }
+
+    let hargaAngka = null
+    if (price !== '') {
+      const n = Number(price)
+      if (!Number.isFinite(n) || n < 0) {
+        showToast('Harga harus berupa angka positif yang valid.', 'error')
+        return
+      }
+      hargaAngka = Math.round(n)
     }
 
     setSaving(true)
@@ -96,9 +109,9 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
       const payload = {
         name: name.trim(),
         code: code.trim().toUpperCase(),
-        price: price === '' ? null : parseInt(price, 10),
+        price: hargaAngka,
         category: category.trim() || null,
-        link: linkPertama,
+        link: urlAman(linkPertama),
         links: links.map((l) => ({ name: l.name.trim() || 'Beli', url: l.url.trim() })),
         image_paths,
       }
@@ -130,9 +143,9 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal" ref={refDialog} role="dialog" aria-modal="true" aria-labelledby={isEdit ? 'judul-ubah' : 'judul-tambah'} onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>{isEdit ? 'Ubah Produk' : 'Tambah Produk'}</h2>
+          <h2 id={isEdit ? 'judul-ubah' : 'judul-tambah'}>{isEdit ? 'Ubah Produk' : 'Tambah Produk'}</h2>
           <button className="modal-close" onClick={onClose} aria-label="Tutup">
             <i className="fa-solid fa-xmark"></i>
           </button>
@@ -168,12 +181,14 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
                 <div key={i} className="link-row">
                   <input
                     className="form-input link-name"
+                    aria-label={`Nama marketplace tautan ${i + 1}`}
                     value={l.name}
                     onChange={(e) => setLink(i, 'name', e.target.value)}
                     placeholder="Shopee"
                   />
                   <input
                     className="form-input link-url"
+                    aria-label={`URL marketplace tautan ${i + 1}`}
                     value={l.url}
                     onChange={(e) => setLink(i, 'url', e.target.value)}
                     placeholder="https://shopee.co.id/..."

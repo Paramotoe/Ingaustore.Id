@@ -4,13 +4,9 @@
  * Katalog publik: pelanggan melihat produk lalu ditekan tombol marketplace.
  */
 
-function linkList(product) {
-  if (Array.isArray(product.links) && product.links.length > 0) {
-    return product.links.filter((l) => l && l.url)
-  }
-  if (product.link) return [{ name: 'Beli', url: product.link }]
-  return []
-}
+// Tautan marketplace dinilai oleh satu sumber keamanan, bukan di sini,
+// supaya baris lama dengan skema berbahaya tidak pernah menjadi href.
+import { daftarTautan } from '../services/urlAman'
 
 const formatHarga = (nilai) => {
   const angka = Number(nilai)
@@ -47,7 +43,7 @@ export function ProductGrid({ products, loading, isAdmin, onEdit, onDelete, onBe
   return (
     <div className="product-grid">
       {products.map((product, i) => {
-        const links = linkList(product)
+        const links = daftarTautan(product)
         const foto = product.image_paths && product.image_paths[0]
         const harga = formatHarga(product.price)
 

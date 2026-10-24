@@ -4,8 +4,9 @@
  * Pengaturan toko (logo & wallpaper) untuk admin.
  */
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../services/supabase'
+import { useDialog } from '../services/useDialog'
 
 export function SettingsModal({ onClose, showToast, onSaved }) {
   const [logoFile, setLogoFile] = useState(null)
@@ -14,28 +15,45 @@ export function SettingsModal({ onClose, showToast, onSaved }) {
   const [bgPreview, setBgPreview] = useState('')
   const [saving, setSaving] = useState(false)
 
+  const refDialog = useDialog(true, onClose, 'judul-pengaturan')
+
+  // Pratinjau memakai blob URL. Cabut saat diganti atau saat modal tutup,
+  // kalau tidak memori bocor setiap kali admin memilih ulang berkas.
+  const blobUrl = useRef([])
+
+  const buatPratinjau = (file) => {
+    const url = URL.createObjectURL(file)
+    blobUrl.current.push(url)
+    return url
+  }
+
+  const lepasPratinjau = () => {
+    for (const url of blobUrl.current) URL.revokeObjectURL(url)
+    blobUrl.current = []
+  }
+
+  useEffect(() => lepasPratinjau, [])
+
   const handleLogo = (e) => {
     const f = e.target.files?.[0]
-    if (f) {
-      if (!['image/jpeg', 'image/png', 'image/webp'].includes(f.type) || f.size > 5 * 1024 * 1024) {
-        showToast('Hanya file JPG, PNG, atau WebP (maks. 5MB).', 'error')
-        return
-      }
-      setLogoFile(f)
-      setLogoPreview(URL.createObjectURL(f))
+    if (!f) return
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(f.type) || f.size > 5 * 1024 * 1024) {
+      showToast('Hanya file JPG, PNG, atau WebP (maks. 5MB).', 'error')
+      return
     }
+    setLogoFile(f)
+    setLogoPreview(buatPratinjau(f))
   }
 
   const handleBg = (e) => {
     const f = e.target.files?.[0]
-    if (f) {
-      if (!['image/jpeg', 'image/png', 'image/webp'].includes(f.type) || f.size > 5 * 1024 * 1024) {
-        showToast('Hanya file JPG, PNG, atau WebP (maks. 5MB).', 'error')
-        return
-      }
-      setBgFile(f)
-      setBgPreview(URL.createObjectURL(f))
+    if (!f) return
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(f.type) || f.size > 5 * 1024 * 1024) {
+      showToast('Hanya file JPG, PNG, atau WebP (maks. 5MB).', 'error')
+      return
     }
+    setBgFile(f)
+    setBgPreview(buatPratinjau(f))
   }
 
   const simpan = async (key, file) => {
@@ -67,12 +85,12 @@ export function SettingsModal({ onClose, showToast, onSaved }) {
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={() => { lepasPratinjau(); onClose() }}>
+      <div className="modal" ref={refDialog} role="dialog" aria-modal="true" aria-labelledby="judul-pengaturan" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Pengaturan Toko</h2>
-          <button className="modal-close" onClick={onClose} aria-label="Tutup">
-            <i className="fa-solid fa-xmark"></i>
+          <h2 id="judul-pengaturan">Pengaturan Toko</h2>
+          <button className="modal-close" onClick={() => { lepasPratinjau(); onClose() }} aria-label="Tutup">
+            <i className="fa-solid fa-xmark" aria-hidden="true"></i>
           </button>
         </div>
 

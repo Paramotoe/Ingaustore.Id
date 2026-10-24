@@ -6,6 +6,7 @@
 
 import { useState } from 'react'
 import { cekJeda, catatGagal, bersihkan, bolehMasukServer, catatPercobaanServer } from '../services/adminGate'
+import { useDialog } from '../services/useDialog'
 
 export function LoginModal({ onClose, onSuccess }) {
   const [email, setEmail] = useState('')
@@ -15,6 +16,7 @@ export function LoginModal({ onClose, onSuccess }) {
   const [error, setError] = useState('')
   const [jeda, setJeda] = useState(() => cekJeda())
 
+  const refDialog = useDialog(true, onClose, 'judul-login')
   const terkunci = jeda !== null
 
   const handleSubmit = async (e) => {
@@ -60,16 +62,20 @@ export function LoginModal({ onClose, onSuccess }) {
     <div className="modal-overlay" onClick={onClose} style={{ animation: 'fadeIn 0.2s ease' }}>
       <div
         className="modal"
+        ref={refDialog}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="judul-login"
         onClick={(e) => e.stopPropagation()}
         style={{ animation: 'scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1)' }}
       >
         <div className="modal-header">
           <div className="modal-title-wrap">
             <div className="modal-icon-badge">
-              <i className="fa-solid fa-shield-halved"></i>
+              <i className="fa-solid fa-shield-halved" aria-hidden="true"></i>
             </div>
             <div>
-              <h2>Portal Pengelola</h2>
+              <h2 id="judul-login">Portal Pengelola</h2>
               <p className="modal-subtitle">Khusus pengelola resmi Ingaustore.id</p>
             </div>
           </div>
@@ -125,7 +131,7 @@ export function LoginModal({ onClose, onSuccess }) {
 
           {error && (
             <div className="form-error-box" role="alert">
-              <i className="fa-solid fa-triangle-exclamation"></i>
+              <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
               <span>{error}</span>
             </div>
           )}
