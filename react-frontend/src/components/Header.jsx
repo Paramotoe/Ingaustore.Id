@@ -4,13 +4,17 @@
  * Logo tanpa background putih, tombol admin hanya untuk pemilik toko.
  */
 
-export function Header({ isAdmin, logoRef, onLogout, onSettings }) {
+export function Header({ isAdmin, logoRef, onLogout, onSettings, logoUrl }) {
   return (
     <header className="header">
       <div className="header-inner">
         <div ref={logoRef} className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} title="Kembali ke atas">
           <div className="logo-icon">
-            <img src="/favicon.svg" alt="" />
+            {logoUrl ? (
+              <img src={logoUrl} alt="Logo Ingaustore.id" />
+            ) : (
+              <i className="fa-solid fa-bag-shopping"></i>
+            )}
           </div>
           <div className="logo-text">
             <h1>Ingaustore.id</h1>

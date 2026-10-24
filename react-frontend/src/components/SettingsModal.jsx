@@ -7,7 +7,7 @@
 import { useState } from 'react'
 import { supabase } from '../services/supabase'
 
-export function SettingsModal({ onClose, showToast }) {
+export function SettingsModal({ onClose, showToast, onSaved }) {
   const [logoFile, setLogoFile] = useState(null)
   const [bgFile, setBgFile] = useState(null)
   const [logoPreview, setLogoPreview] = useState('')
@@ -39,11 +39,16 @@ export function SettingsModal({ onClose, showToast }) {
   }
 
   const simpan = async (key, file) => {
-    const path = `branding/${key}-${Date.now()}`
-    const { error } = await supabase.storage.from('media').upload(path, file, { upsert: true })
+    const ext = (file.name.split('.').pop() || 'png').toLowerCase().replace(/[^a-z0-9]/g, '')
+    const path = `branding/${key}-${Date.now()}.${ext}`
+    const { error } = await supabase.storage.from('media').upload(path, file, {
+      upsert: true,
+      contentType: file.type
+    })
     if (error) throw error
     const { data } = supabase.storage.from('media').getPublicUrl(path)
-    await supabase.from('settings').upsert({ key, value: data.publicUrl })
+    const { error: dbError } = await supabase.from('settings').upsert({ key, value: data.publicUrl })
+    if (dbError) throw new Error(dbError.message)
   }
 
   const handleSave = async (e) => {
@@ -52,7 +57,8 @@ export function SettingsModal({ onClose, showToast }) {
     try {
       if (logoFile) await simpan('logo', logoFile)
       if (bgFile) await simpan('wallpaper', bgFile)
-      showToast('Tampilan tersimpan.', 'success')
+      loadBranding()
+      onSaved?.()
       onClose()
     } catch (err) {
       showToast('Gagal menyimpan: ' + err.message, 'error')

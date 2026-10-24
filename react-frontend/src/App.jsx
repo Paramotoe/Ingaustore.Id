@@ -19,6 +19,7 @@ export default function App() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [admin, setAdmin] = useState({ cek: false, masuk: false })
+  const [branding, setBranding] = useState({ logo: '', wallpaper: '' })
 
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('all')
@@ -72,8 +73,24 @@ export default function App() {
     setLoading(false)
   }, [showToast])
 
+  // Tampilan toko diambil dari tabel settings (logo & wallpaper).
+  const loadBranding = useCallback(async () => {
+    const { data, error } = await supabase.from('settings').select('key, value')
+    if (error) {
+      console.warn('[Ingaustore] branding tidak termuat:', error.message)
+      return
+    }
+    const hasil = { logo: '', wallpaper: '' }
+    for (const baris of data || []) {
+      if (baris.key === 'logo') hasil.logo = baris.value
+      if (baris.key === 'wallpaper') hasil.wallpaper = baris.value
+    }
+    setBranding(hasil)
+  }, [])
+
   useEffect(() => {
     loadProducts()
+    loadBranding()
 
     // Cek sesi yang tersimpan tanpa pernah mengubah status admin.
     supabase.auth.getSession().then(({ data }) => {
@@ -97,7 +114,7 @@ export default function App() {
       sub.subscription.unsubscribe()
       lepasPintu()
     }
-  }, [loadProducts, refreshAdmin])
+  }, [loadProducts, loadBranding, refreshAdmin])
 
   const handleLogin = async (email, password) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
@@ -164,11 +181,12 @@ export default function App() {
       <Header
         isAdmin={isAdmin}
         logoRef={logoRef}
+        logoUrl={branding.logo}
         onLogout={handleLogout}
         onSettings={() => setSettingsOpen(true)}
       />
 
-      <main className="main-content">
+      <main className="main-content" style={branding.wallpaper ? { backgroundImage: `linear-gradient(rgba(248,250,252,0.92), rgba(248,250,252,0.92)), url(${branding.wallpaper})`, backgroundSize: 'cover', backgroundAttachment: 'fixed' } : {}}>
         <section className="catalog-head">
           <h2>Katalog Produk</h2>
           <p>{products.length} produk tersedia</p>
@@ -247,7 +265,7 @@ export default function App() {
       )}
 
       {settingsOpen && (
-        <SettingsModal onClose={() => setSettingsOpen(false)} showToast={showToast} />
+        <SettingsModal onClose={() => setSettingsOpen(false)} showToast={showToast} onSaved={loadBranding} />
       )}
     </div>
   )
