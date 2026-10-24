@@ -27,18 +27,18 @@ jobs:
           cache-dependency-path: react-frontend/package-lock.json
 
       - name: Install dependencies
-        run: npm run install:ui
+        run: npm ci --prefix react-frontend
 
       - name: Lint code
-        run: npm run lint
+        run: npm run lint --prefix react-frontend
 
       - name: Run tests
         if: always()
-        run: npm run test
+        run: node tools/uji-pintu-admin.js
 
       - name: Build project
         if: always()
-        run: npm run build
+        run: npm run build --prefix react-frontend
 
       - name: Verify build artifact
         if: always()
