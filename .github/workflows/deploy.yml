@@ -28,9 +28,6 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-
       - name: Deploy Project Artifacts to Vercel
         run: |
           # Workflow membutuhkan 3 GitHub Secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
@@ -48,20 +45,20 @@ jobs:
           fi
           
           # Retry loop untuk memastikan server merespons (maksimal 5 kali percobaan, jeda 5 detik)
-          HTTP_STATUS=0
+          HTTP_STATUS=000
           for i in {1..5}; do
             HTTP_STATUS=$(curl -s -o response.html -w "%{http_code}" "$DEPLOY_URL" || echo "000")
             echo "Attempt $i: HTTP Status $HTTP_STATUS"
-            if [ "$HTTP_STATUS" -eq 200 ]; then
+            if [ "$HTTP_STATUS" = "200" ]; then
               break
             fi
             sleep 5
           done
           
-          if [ "$HTTP_STATUS" -ne 200 ]; then
+          if [ "$HTTP_STATUS" != "200" ]; then
             echo "Error: Deployment returned HTTP status $HTTP_STATUS"
             exit 1
-          }
+          fi
           
           if grep -q "Katalog Produk" response.html; then
             echo "Verifikasi sukses: Penanda 'Katalog Produk' ditemukan pada HTML."
