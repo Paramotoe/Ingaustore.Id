@@ -1391,6 +1391,7 @@ function pasangPintasanAdmin() {
    -------------------------------------------------------------------------- */
 
 async function init() {
+    console.log('[Ingaustore] init() called, supabase:', typeof supabase);
     document.getElementById('year').textContent = new Date().getFullYear();
     pasangPintasanAdmin();
 
@@ -1431,6 +1432,8 @@ async function init() {
         }
     });
 
+    console.log('[Ingaustore] sb created:', sb ? 'yes' : 'NO', 'type:', typeof sb);
+    
     sb.auth.onAuthStateChange((_event, session) => {
         setTimeout(() => terapkanSesi(session), 0);
     });
@@ -1438,8 +1441,10 @@ async function init() {
     cekPenyediaMasuk();
 
     const { data } = await sb.auth.getSession();
+    console.log('[Ingaustore] session data:', data ? 'yes' : 'NO');
     await terapkanSesi(data && data.session);
 
+    console.log('[Ingaustore] init complete, isAdmin:', isAdmin);
     await Promise.all([muatPengaturan(), muatProduk()]);
 }
 
