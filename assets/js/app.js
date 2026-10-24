@@ -245,26 +245,16 @@ async function terapkanSesi(sesi) {
     document.getElementById('admin-email').textContent = admin ? email : '';
     panel.classList.toggle('hidden', !admin);
 
-    const footerLB = document.getElementById('btn-logout');
-    const footerLBAdmin = document.getElementById('btn-logout-admin');
-    const logoutUser = document.getElementById('logout-user');
     const logo = document.getElementById('logo');
     const logoImg = document.getElementById('logo-img');
     const logoIcon = document.getElementById('logo-icon');
-
     if (admin) {
-        footerLB.classList.remove('hidden');
-        footerLBAdmin.classList.remove('hidden');
-        logoutUser.classList.remove('hidden');
         logo.classList.remove('ig-gradient');
         logo.classList.add('bg-white');
         logoImg.classList.remove('hidden');
         logoIcon.classList.add('hidden');
         muatStatistik();
     } else {
-        footerLB.classList.add('hidden');
-        footerLBAdmin.classList.add('hidden');
-        logoutUser.classList.add('hidden');
         logo.classList.add('ig-gradient');
         logo.classList.remove('bg-white');
         logoImg.classList.add('hidden');
@@ -275,7 +265,6 @@ async function terapkanSesi(sesi) {
         }
     }
 
-    render();
 }
 
 function bukaLogin() {
@@ -541,6 +530,18 @@ function tanganiPilihFoto(input) {
     renderPreviewFoto();
 }
 
+
+function pratinjauFoto() {
+    const images = [];
+    for (const file of daftarFoto) {
+        images.push(URL.createObjectURL(file));
+    }
+    if (!images.length) {
+        showToast('Belum ada foto yang dipilih.', 'info');
+        return;
+    }
+    bukaGaleri(images, 0, 'Pratinjau foto produk');
+}
 function resetFoto() {
     daftarFoto = [];
     sinkronInputFoto();
@@ -664,6 +665,22 @@ function tanganiPilihFotoUbah(input) {
     renderPreviewFotoUbah();
 }
 
+
+function pratinjauFotoUbah() {
+    const images = [];
+    for (const item of fotoUbah) {
+        if (item.path) {
+            images.push(urlGambar(item.path));
+        } else if (item.file) {
+            images.push(URL.createObjectURL(item.file));
+        }
+    }
+    if (!images.length) {
+        showToast('Belum ada foto yang dipilih.', 'info');
+        return;
+    }
+    bukaGaleri(images, 0, 'Pratinjau foto produk');
+}
 async function simpanUbahProduk(e) {
     e.preventDefault();
     if (!isAdmin) return;

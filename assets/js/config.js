@@ -15,6 +15,8 @@
  * tersebut melewati seluruh aturan RLS.
  */
 window.INGAU_CONFIG = {
-    supabaseUrl: 'https://aptftowtjmkbyejzkvrj.supabase.co',
-    supabaseAnonKey: 'sb_publishable_9br1lbz3uyWZCDzqyK8dhg_z8DcpuGK'
+    supabaseUrl: process.env.SUPABASE_URL || 'https://aptftowtjmkbyejzkvrj.supabase.co',
+    supabaseAnonKey: process.env.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_9br1lbz3uyWZCDzqyK8dhg_z8DcpuGK',
+    supabaseSecretKey: process.env.SUPABASE_SECRET_KEY || '',
+    supabaseJwksUrl: process.env.SUPABASE_JWKS_URL || 'https://aptftowtjmkbyejzkvrj.supabase.co/auth/v1/.well-known/jwks.json'
 };
