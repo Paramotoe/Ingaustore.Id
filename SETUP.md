@@ -1,6 +1,6 @@
 # SETUP — Ingaustore.id
 
-Panduan lengkap dari repo kosong sampai katalog online. Sekali jalan, sekitar 15 menit.
+Panduan lengkap dari repo kosong sampai katalog online. Sekali jalan, sekitar 15 menit. Struktur repo: build dari `react-frontend/`, hasilnya disalin ke root untuk deploy statis Vercel.
 
 ## Ringkasan
 

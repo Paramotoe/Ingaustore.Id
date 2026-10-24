@@ -47,25 +47,47 @@ export function useDialog(open, onClose, labelId) {
       }
       if (e.key !== 'Tab') return
 
-      const dapat = root.querySelectorAll(DIPILIH)
+      const dapat = Array.from(root.querySelectorAll(DIPILIH))
       if (dapat.length === 0) return
 
       const pertama = dapat[0]
       const terakhir = dapat[dapat.length - 1]
+      const aktif = document.activeElement
 
-      if (e.shiftKey && document.activeElement === pertama) {
+      // Fokus bocor ke latar (di luar dialog, mis. ke pandangan) → tarik
+      // kembali ke kendali pertama, agar tab tidak meninggalkan dialog.
+      if (!root.contains(aktif) || !dapat.includes(aktif)) {
+        e.preventDefault()
+        pertama.focus()
+        return
+      }
+
+      if (e.shiftKey && aktif === pertama) {
         e.preventDefault()
         terakhir.focus()
-      } else if (!e.shiftKey && document.activeElement === terakhir) {
+      } else if (!e.shiftKey && aktif === terakhir) {
         e.preventDefault()
         pertama.focus()
       }
     }
 
-    root.addEventListener('keydown', onKey)
+    // Dengarkan di dokumen, bukan di root. Pendengar di root tidak akan
+    // menerima keydown kalau fokus sudah pindah ke elemen di luar dialog
+    // (root tidak pernah mendapat event Tab), sehingga jebakan fokus
+    // bocor. Di dokumen, tab selalu tertangkap.
+    document.addEventListener('keydown', onKey)
+
+    // Kunci latar supaya pembaca layar tidak membaca konten di balik dialog.
+    const pembungkus = root.parentElement?.parentElement
+    const latar = pembungkus
+      ? Array.from(pembungkus.children).filter((el) => el !== root.parentElement)
+      : []
+    for (const el of latar) el.inert = true
+
     return () => {
       cancelAnimationFrame(tunda)
-      root.removeEventListener('keydown', onKey)
+      document.removeEventListener('keydown', onKey)
+      for (const el of latar) el.inert = false
       if (pemicu.current && typeof pemicu.current.focus === 'function') {
         pemicu.current.focus()
       }

@@ -155,7 +155,7 @@ export function cekJeda() {
 }
 
 export function catatGagal() {
-  const { n, pada } = baca()
+  const { n } = baca()
   tulis({ n: n + 1, pada: Date.now() })
   return n + 1
 }
