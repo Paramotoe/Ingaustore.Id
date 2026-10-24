@@ -91,9 +91,19 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
         image_paths,
       }
 
-      const { error } = isEdit
-        ? await supabase.from('products').update(payload).eq('id', product.id)
-        : await supabase.from('products').insert([payload])
+      const kirim = async (data) =>
+        isEdit
+          ? await supabase.from('products').update(data).eq('id', product.id)
+          : await supabase.from('products').insert([data])
+
+      let { error } = await kirim(payload)
+
+      // Fallback: sebelum migrasi links dijalankan, kolom `links` belum ada.
+      if (error && /links|column/i.test(error.message)) {
+        const { links, ...tanpaLinks } = payload
+        const coba = await kirim(tanpaLinks)
+        error = coba.error
+      }
 
       if (error) throw error
 
