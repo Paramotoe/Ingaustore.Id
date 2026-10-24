@@ -112,7 +112,7 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
         price: hargaAngka,
         category: category.trim() || null,
         link: urlAman(linkPertama),
-        links: links.map((l) => ({ name: l.name.trim() || 'Beli', url: l.url.trim() })),
+        links: links.map((l) => ({ name: l.name.trim() || 'Beli', url: urlAman(l.url) })),
         image_paths,
       }
 
