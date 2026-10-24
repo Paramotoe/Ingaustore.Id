@@ -169,18 +169,20 @@ export function bersihkan() {
 }
 
 /**
- * Server-side limiter: returns remaining attempts (0 = locked).
+ * Server-side limiter. Migrasi final-hardening menutup sisa_percobaan_masuk()
+ * untuk anon (membocorkan sisa percobaan dan mengizinkan banjir tabel), lalu
+ * menggantinya dengan boleh_masuk() yang hanya menjawab ya/tidak.
  * Never throws — network failure must not lock the owner out.
  */
-export async function sisaPercobaanServer(email) {
+export async function bolehMasukServer(email) {
   const alamat = (email || '').trim().toLowerCase()
   if (!alamat) return null
-  const { data, error } = await supabase.rpc('sisa_percobaan_masuk', {
+  const { data, error } = await supabase.rpc('boleh_masuk', {
     p_alamat: alamat,
     p_jendela_menit: 10,
     p_batas: 8
   })
-  if (error || typeof data !== 'number') return null
+  if (error || typeof data !== 'boolean') return null
   return data
 }
 

@@ -57,7 +57,6 @@ export function SettingsModal({ onClose, showToast, onSaved }) {
     try {
       if (logoFile) await simpan('logo', logoFile)
       if (bgFile) await simpan('wallpaper', bgFile)
-      loadBranding()
       onSaved?.()
       onClose()
     } catch (err) {
@@ -79,26 +78,26 @@ export function SettingsModal({ onClose, showToast, onSaved }) {
 
         <form className="modal-body" onSubmit={handleSave}>
           <div className="form-group">
-            <label className="form-label">Logo Toko</label>
+            <label className="form-label" htmlFor="set-logo">Logo Toko</label>
             <div className="image-upload">
               {logoPreview ? (
-                <img className="logo-preview" src={logoPreview} alt="Logo" />
+                <img className="logo-preview" src={logoPreview} alt="Pratinjau logo" />
               ) : (
-                <i className="fa-solid fa-image"></i>
+                <i className="fa-solid fa-image" aria-hidden="true"></i>
               )}
-              <input className="form-file" type="file" accept="image/png,image/jpeg,image/webp" onChange={handleLogo} />
+              <input id="set-logo" className="form-file" type="file" accept="image/png,image/jpeg,image/webp" onChange={handleLogo} />
             </div>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Wallpaper Toko</label>
+            <label className="form-label" htmlFor="set-bg">Wallpaper Toko</label>
             <div className="image-upload">
               {bgPreview ? (
-                <img className="bg-preview" src={bgPreview} alt="Wallpaper" />
+                <img className="bg-preview" src={bgPreview} alt="Pratinjau wallpaper" />
               ) : (
-                <i className="fa-solid fa-image"></i>
+                <i className="fa-solid fa-image" aria-hidden="true"></i>
               )}
-              <input className="form-file" type="file" accept="image/png,image/jpeg,image/webp" onChange={handleBg} />
+              <input id="set-bg" className="form-file" type="file" accept="image/png,image/jpeg,image/webp" onChange={handleBg} />
             </div>
           </div>
 

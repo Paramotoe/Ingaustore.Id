@@ -5,7 +5,7 @@
  */
 
 import { useState } from 'react'
-import { cekJeda, catatGagal, bersihkan, sisaPercobaanServer, catatPercobaanServer } from '../services/adminGate'
+import { cekJeda, catatGagal, bersihkan, bolehMasukServer, catatPercobaanServer } from '../services/adminGate'
 
 export function LoginModal({ onClose, onSuccess }) {
   const [email, setEmail] = useState('')
@@ -19,6 +19,7 @@ export function LoginModal({ onClose, onSuccess }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (loading) return
     const sisa = cekJeda()
     if (sisa !== null) {
       setJeda(sisa)
@@ -27,8 +28,8 @@ export function LoginModal({ onClose, onSuccess }) {
     }
 
     const emailBersih = email.trim()
-    const sisaServer = await sisaPercobaanServer(emailBersih)
-    if (sisaServer !== null && sisaServer <= 0) {
+    const bolehServer = await bolehMasukServer(emailBersih)
+    if (bolehServer === false) {
       setError('Akses dikunci sementara karena terlalu banyak percobaan salah.')
       return
     }
@@ -115,7 +116,6 @@ export function LoginModal({ onClose, onSuccess }) {
                 type="button"
                 className="password-toggle"
                 onClick={() => setShowPassword((v) => !v)}
-                tabIndex={-1}
                 aria-label={showPassword ? 'Sembunyikan sandi' : 'Tampilkan sandi'}
               >
                 <i className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>

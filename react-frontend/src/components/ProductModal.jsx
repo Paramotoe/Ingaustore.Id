@@ -7,7 +7,7 @@
  * - foto dengan pratinjau sebelum disimpan
  */
 
-import { useState } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { supabase } from '../services/supabase'
 
 const KOSONG = { name: '', url: '' }
@@ -28,6 +28,10 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
   })
   const [files, setFiles] = useState([])
   const [saving, setSaving] = useState(false)
+
+  // Satu object URL per file, dicabut saat file berubah atau modal tutup.
+  const previews = useMemo(() => files.map((f) => URL.createObjectURL(f)), [files])
+  useEffect(() => () => previews.forEach((u) => URL.revokeObjectURL(u)), [previews])
 
   const setLink = (i, key, value) => {
     setLinks((prev) => prev.map((l, idx) => (idx === i ? { ...l, [key]: value } : l)))
@@ -55,7 +59,7 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
   const uploadFiles = async () => {
     const hasil = []
     for (const file of files) {
-      const ekstensi = file.name.split('.').pop().toLowerCase() || 'jpg'
+      const ekstensi = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '')
       const path = `products/${Date.now()}-${Math.random().toString(36).slice(2)}.${ekstensi}`
 
       const { error } = await supabase.storage.from('media').upload(path, file, { upsert: false })
@@ -137,23 +141,23 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
         <form className="modal-body" onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Nama Produk</label>
-              <input className="form-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Kaos Katun Premium" maxLength={80} />
+              <label className="form-label" htmlFor="prod-name">Nama Produk</label>
+              <input id="prod-name" className="form-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Kaos Katun Premium" maxLength={80} required />
             </div>
             <div className="form-group">
-              <label className="form-label">Kode</label>
-              <input className="form-input" value={code} onChange={(e) => setCode(e.target.value)} placeholder="IG-001" maxLength={32} pattern="[A-Za-z0-9-]+" />
+              <label className="form-label" htmlFor="prod-code">Kode</label>
+              <input id="prod-code" className="form-input" value={code} onChange={(e) => setCode(e.target.value)} placeholder="IG-001" maxLength={32} pattern="[A-Za-z0-9-]+" required />
             </div>
           </div>
 
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Harga (Rp)</label>
-              <input className="form-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="150000" min="0" step="500" />
+              <label className="form-label" htmlFor="prod-price">Harga (Rp)</label>
+              <input id="prod-price" className="form-input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="150000" min="0" step="500" />
             </div>
             <div className="form-group">
-              <label className="form-label">Kategori</label>
-              <input className="form-input" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Atasan" maxLength={32} />
+              <label className="form-label" htmlFor="prod-cat">Kategori</label>
+              <input id="prod-cat" className="form-input" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Atasan" maxLength={32} />
             </div>
           </div>
 
@@ -186,13 +190,13 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Foto Produk (maks. 4)</label>
-            <input className="form-file" type="file" accept="image/png,image/jpeg,image/webp" multiple onChange={handleFiles} />
+            <label className="form-label" htmlFor="prod-photo">Foto Produk (maks. 4)</label>
+            <input id="prod-photo" className="form-file" type="file" accept="image/png,image/jpeg,image/webp" multiple onChange={handleFiles} />
             {files.length > 0 && (
               <div className="image-preview">
                 {files.map((file, i) => (
                   <div key={i} className="image-preview-item">
-                    <img src={URL.createObjectURL(file)} alt={`Foto ${i + 1}`} />
+                    <img src={previews[i]} alt={`Foto ${i + 1}`} />
                     <button type="button" className="btn-remove" onClick={() => removeFile(i)} aria-label="Hapus foto">
                       <i className="fa-solid fa-xmark"></i>
                     </button>
