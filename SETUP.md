@@ -12,8 +12,8 @@ Panduan lengkap dari repo kosong sampai katalog online. Sekali jalan, sekitar 15
 | Hak tulis | Tidak ada pembatas | Row Level Security: tulis hanya untuk admin terdaftar di `public.admins` |
 | Data produk | Kode + link saja | Nama, harga, kategori, kode, link, banyak foto |
 | Tampilan | 1 berkas 781 baris | React + Vite + Tailwind, konfigurasi terpisah |
-| SEO | Tanpa meta deskripsi | Meta lengkap, Open Graph, Twitter Card, JSON-LD, sitemap, robots |
-| Performa | Tailwind CDN (JS di browser) | React 18 + Vite, bundle 129 kB gzip |
+| SEO | Tanpa meta deskripsi | Meta lengkap, Open Graph, Twitter Card, sitemap, robots |
+| Performa | Tailwind CDN (JS di browser) | React 19 + Vite, bundle 129 kB gzip |
 | PWA | Tidak ada | Manifest, ikon, service worker |
 | Statistik | Tidak ada | Jumlah klik "Beli" (per-IP rate limiting) |
 
@@ -22,11 +22,14 @@ Panduan lengkap dari repo kosong sampai katalog online. Sekali jalan, sekitar 15
 ```
 react-frontend/           Aplikasi React + Vite
   src/
+    main.jsx              Titik masuk aplikasi
     App.jsx               Logika utama aplikasi
     components/           Komponen antarmuka
     services/             Autentikasi, sanitasi URL, dialog aksesibilitas
-  index.html              Kerangka HTML
-  vite.config.js          Konfigurasi Vite (build, CSP)
+  index.html              Kerangka HTML (meta SEO)
+  vite.config.js          Konfigurasi Vite
+  public/                 favicon.svg, icons.svg
+  dist/                   Hasil build (disalin ke root untuk deploy)
 
 supabase/
   schema.sql              Skema database utama
@@ -34,9 +37,13 @@ supabase/
   migrate-keamanan-lanjut.sql   Penguatan lanjutan
   migrate-final-hardening.sql    Tambalan keamanan final
   migrate-final-2.sql           Tambalan audit lanjutan
+  migrate-links-marketplace.sql  Tambalan tautan marketplace
 
 index.html                Shell statis Vercel (hasil build Vite)
 assets/                   Berkas hasil build Vite
+favicon.svg, icons.svg    Ikon root
+src/tailwind.css          Sumber Tailwind (dipakai build terpisah ke assets/css/)
+tools/gen-images.js       Skrip pembuat aset gambar
 manifest.webmanifest      Metadata PWA
 sw.js                     Service worker (saat ini: cache-busting mode)
 robots.txt                Arahan crawler
@@ -123,7 +130,6 @@ cd react-frontend
 VITE_SUPABASE_URL=https://xxxxxxxx.supabase.co VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxx npm run build
 cd ..
 cp -rf react-frontend/dist/* .
-cp react-frontend/dist/index.html index.html
 ```
 
 Deploy ke Vercel:

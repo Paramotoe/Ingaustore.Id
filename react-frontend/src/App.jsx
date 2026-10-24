@@ -15,9 +15,8 @@ import { LoginModal } from './components/LoginModal'
 import { SettingsModal } from './components/SettingsModal'
 import './index.css'
 
-const TAHUN_INI = new Date().getFullYear()
-
 export default function App() {
+  const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [admin, setAdmin] = useState({ cek: false, masuk: false })
   const [branding, setBranding] = useState({ logo: '', wallpaper: '' })
@@ -241,7 +240,9 @@ export default function App() {
         />
       </main>
 
-      <span>© {new Date().getFullYear()} Ingaustore.id — Katalog Produk Online</span>
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} Ingaustore.id — Katalog Produk Online</span>
+      </footer>
 
       {isAdmin && (
         <button className="fab" onClick={() => setModal({ open: true, product: null })}>
