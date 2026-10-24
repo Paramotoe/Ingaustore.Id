@@ -169,9 +169,11 @@ Sudah terpasang:
 - `title`, `description`, `canonical`, Open Graph, dan Twitter Card.
 - `robots.txt` dan `sitemap.xml`.
 
+Tidak ada JSON-LD: `script-src` di `vercel.json` tidak punya `'unsafe-inline'` maupun nonce, jadi `<script type="application/ld+json">` inline diblokir browser. Markup terstruktur berbasis script inline sengaja tidak dipasang.
+
 Batasannya: katalog dirender di browser, jadi crawler yang tidak menjalankan JavaScript hanya melihat meta halaman. Untuk hasil SEO maksimal per produk (URL sendiri, markup lengkap), perlu halaman produk terpisah — bisa dikerjakan sebagai tahap lanjutan.
 
-Setelah deploy, daftarkan situs di [Google Search Console](https://search.google.com/search-console) dan kirim `https://ingaustore.id/sitemap.xml`.
+Setelah deploy, daftarkan situs di [Google Search Console](https://search.google.com/search-console) dan kirim `https://ingaustoreid-beta.vercel.app/sitemap.xml`.
 
 ## PWA dan mode offline
 
