@@ -2,3 +2,6 @@
 .env
 .env.local
 .env.pull
+node_modules/
+react-frontend/dist/
+react-frontend/node_modules/

@@ -1,0 +1,71 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: react-frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm run install:ui
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Project Artifacts to Vercel
+        run: |
+          # Workflow membutuhkan 3 GitHub Secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
+          # Nilai orgId dan projectId diambil dari .vercel/project.json (orgId: team_ZSsvtzurANpWoUpSA0xuWAeI, projectId: prj_eIyNIchNAdXL7Wg70L309dSlKBmE).
+          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} > deployment-url.txt
+          cat deployment-url.txt
+
+      - name: Verifikasi deployment
+        run: |
+          DEPLOY_URL=$(cat deployment-url.txt | tail -n 1 | tr -d '[:space:]')
+          echo "Checking URL: $DEPLOY_URL"
+          if [ -z "$DEPLOY_URL" ]; then
+            echo "Error: Deployment URL not found."
+            exit 1
+          fi
+          
+          # Retry loop untuk memastikan server merespons (maksimal 5 kali percobaan, jeda 5 detik)
+          HTTP_STATUS=0
+          for i in {1..5}; do
+            HTTP_STATUS=$(curl -s -o response.html -w "%{http_code}" "$DEPLOY_URL" || echo "000")
+            echo "Attempt $i: HTTP Status $HTTP_STATUS"
+            if [ "$HTTP_STATUS" -eq 200 ]; then
+              break
+            fi
+            sleep 5
+          done
+          
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "Error: Deployment returned HTTP status $HTTP_STATUS"
+            exit 1
+          }
+          
+          if grep -q "Katalog Produk" response.html; then
+            echo "Verifikasi sukses: Penanda 'Katalog Produk' ditemukan pada HTML."
+          else
+            echo "Error: Penanda 'Katalog Produk' TIDAK ditemukan pada HTML."
+            exit 1
+          fi

@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: react-frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm run install:ui
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Run tests
+        if: always()
+        run: npm run test
+
+      - name: Build project
+        if: always()
+        run: npm run build
+
+      - name: Verify build artifact
+        if: always()
+        run: test -f react-frontend/dist/index.html
