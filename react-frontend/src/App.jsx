@@ -1,63 +1,68 @@
-import { useState, useEffect } from 'react'
+/**
+ * App — Ingaustore.id
+ *
+ * Satu sumber kebenaran: daftar produk, status admin, pencarian,
+ * filter kategori, urutan, dan semua modal.
+ */
+
+import { useState, useEffect, useMemo } from 'react'
 import { supabase } from './services/supabase'
 import { Header } from './components/Header'
 import { ProductGrid } from './components/ProductGrid'
-import { AdminPanel } from './components/AdminPanel'
+import { ProductModal } from './components/ProductModal'
 import { LoginModal } from './components/LoginModal'
 import { SettingsModal } from './components/SettingsModal'
-import { EditProductModal } from './components/EditProductModal'
 import './index.css'
 
-function App() {
+export default function App() {
   const [products, setProducts] = useState([])
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [isLoginOpen, setIsLoginOpen] = useState(false)
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-  const [isEditOpen, setIsEditOpen] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState('')
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  const [search, setSearch] = useState('')
   const [category, setCategory] = useState('all')
   const [sortBy, setSortBy] = useState('newest')
-  const [toast, setToast] = useState({ show: false, message: '', type: 'info' })
 
-  useEffect(() => {
-    const init = async () => {
-      await loadProducts()
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session) {
-        const { data } = await supabase.rpc('is_admin')
-        setIsAdmin(data === true)
-      }
-    }
-    init()
-  }, [])
+  const [loginOpen, setLoginOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [modal, setModal] = useState({ open: false, product: null })
+  const [toast, setToast] = useState(null)
 
-  useEffect(() => {
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        setIsAdmin(true)
-      } else {
-        setIsAdmin(false)
-      }
-    })
-  }, [])
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 3000)
+  }
+
+  const refreshAdmin = async () => {
+    const { data, error } = await supabase.rpc('is_admin')
+    if (!error) setIsAdmin(data === true)
+  }
 
   const loadProducts = async () => {
-    try {
-      const { data } = await supabase.from('products').select('*').order('created_at', { ascending: false })
+    setLoading(true)
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      showToast('Gagal memuat produk: ' + error.message, 'error')
+    } else {
       setProducts(data || [])
-    } catch (err) {
-      showToast('Gagal memuat produk: ' + err.message, 'error')
-    } finally {
-      setLoading(false)
     }
+    setLoading(false)
   }
 
-  const showToast = (msg, type = 'info') => {
-    setToast({ show: true, message: msg, type })
-    setTimeout(() => setToast({ show: false, message: '', type: 'info' }), 3000)
-  }
+  useEffect(() => {
+    loadProducts()
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) refreshAdmin()
+    })
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      setIsAdmin(!!session)
+    })
+    return () => sub.subscription.unsubscribe()
+  }, [])
 
   const handleLogin = async (email, password) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
@@ -65,144 +70,136 @@ function App() {
       showToast(error.message, 'error')
       return false
     }
+    await refreshAdmin()
+    showToast('Berhasil masuk.', 'success')
     return true
   }
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
     setIsAdmin(false)
-    showToast('Anda telah keluar.', 'success')
+    showToast('Anda telah keluar.', 'info')
   }
 
-  const handleAddProduct = async (productData, images) => {
-    const { error } = await supabase.from('products').insert([{
-      ...productData,
-      image_paths: images.map(img => img.path)
-    }])
+  const handleDelete = async (product) => {
+    if (!confirm(`Hapus produk "${product.name}"?`)) return
+    const { error } = await supabase.from('products').delete().eq('id', product.id)
     if (error) {
       showToast(error.message, 'error')
-      return false
-    }
-    showToast('Produk berhasil ditambahkan.', 'success')
-    loadProducts()
-    return true
-  }
-
-  const handleDeleteProduct = async (id) => {
-    const { error } = await supabase.from('products').delete().eq('id', id)
-    if (error) {
-      showToast(error.message, 'error')
-      return false
+      return
     }
     showToast('Produk dihapus.', 'success')
     loadProducts()
-    return true
   }
 
-  const handleEditProduct = async (id, productData, images) => {
-    const { error } = await supabase.from('products').update({
-      ...productData,
-      image_paths: images.map(img => img.path)
-    }).eq('id', id)
-    if (error) {
-      showToast(error.message, 'error')
-      return false
-    }
-    showToast('Produk diperbarui.', 'success')
-    loadProducts()
-    return true
-  }
+  const visible = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    const filtered = products.filter((p) => {
+      const hit =
+        !q ||
+        (p.name || '').toLowerCase().includes(q) ||
+        (p.code || '').toLowerCase().includes(q)
+      const cat = category === 'all' || p.category === category
+      return hit && cat
+    })
 
-  // Filter products
-  const filteredProducts = products.filter(p => {
-    const searchLower = searchTerm.toLowerCase()
-    const matchesSearch = !searchTerm ||
-      p.code.toLowerCase().includes(searchLower) ||
-      p.name.toLowerCase().includes(searchLower)
-    const matchesCategory = category === 'all' || p.category === category
-    return matchesSearch && matchesCategory
-  })
-
-  // Sort products
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortBy === 'newest') return new Date(b.created_at) - new Date(a.created_at)
-    if (sortBy === 'termurah') return (a.price || 0) - (b.price || 0)
-    if (sortBy === 'termahal') return (b.price || 0) - (a.price || 0)
-    if (sortBy === 'nama') return (a.name || a.code).localeCompare(b.name || b.code)
-    return 0
-  })
+    return [...filtered].sort((a, b) => {
+      if (sortBy === 'termurah') return (a.price || 0) - (b.price || 0)
+      if (sortBy === 'termahal') return (b.price || 0) - (a.price || 0)
+      if (sortBy === 'nama') return (a.name || '').localeCompare(b.name || '')
+      return new Date(b.created_at) - new Date(a.created_at)
+    })
+  }, [products, search, category, sortBy])
 
   return (
     <div className="app">
       <Header
         isAdmin={isAdmin}
-        onLogin={() => setIsLoginOpen(true)}
+        onLogin={() => setLoginOpen(true)}
         onLogout={handleLogout}
-        onSettings={() => setIsSettingsOpen(true)}
-        onAddProduct={() => {}}
-        onEditProduct={() => {}}
+        onSettings={() => setSettingsOpen(true)}
       />
 
       <main className="main-content">
-        <SearchBar
-          value={searchTerm}
-          onChange={setSearchTerm}
-          category={category}
-          onCategoryChange={setCategory}
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-        />
+        <section className="catalog-head">
+          <h2>Katalog Produk</h2>
+          <p>{products.length} produk tersedia</p>
+        </section>
+
+        <div className="toolbar">
+          <div className="search-wrap">
+            <i className="fa-solid fa-magnifying-glass"></i>
+            <input
+              className="search-input"
+              type="search"
+              placeholder="Cari nama atau kode produk..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            {search && (
+              <button className="search-clear" onClick={() => setSearch('')} aria-label="Hapus">
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            )}
+          </div>
+
+          <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="all">Semua Kategori</option>
+            {[...new Set(products.map((p) => p.category).filter(Boolean))].map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+
+          <select className="form-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <option value="newest">Terbaru</option>
+            <option value="termurah">Termurah</option>
+            <option value="termahal">Termahal</option>
+            <option value="nama">Nama A-Z</option>
+          </select>
+        </div>
+
         <ProductGrid
-          products={sortedProducts}
+          products={visible}
+          loading={loading}
           isAdmin={isAdmin}
-          onEdit={(p) => { setSelectedProduct(p); setIsEditOpen(true) }}
-          onDelete={handleDeleteProduct}
-          isLoading={loading}
-        />
-        <AdminPanel
-          isAdmin={isAdmin}
-          onAddProduct={() => {}}
-          onEditProduct={(p) => { setSelectedProduct(p); setIsEditOpen(true) }}
-          onDeleteProduct={handleDeleteProduct}
-          onPreviewFoto={(images) => {}}
+          onEdit={(p) => setModal({ open: true, product: p })}
+          onDelete={handleDelete}
         />
       </main>
 
-      {/* Toast Notification */}
-      {toast.show && (
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} Ingaustore.id — Katalog Produk Online</span>
+      </footer>
+
+      {isAdmin && (
+        <button className="fab" onClick={() => setModal({ open: true, product: null })}>
+          <i className="fa-solid fa-plus"></i>
+        </button>
+      )}
+
+      {toast && (
         <div className={`toast toast-${toast.type}`}>
-          <i className={`fa-solid fa-${toast.type === 'success' ? 'check' : toast.type === 'error' ? 'exclamation-circle' : 'info-circle'}`}></i>
+          <i className={`fa-solid fa-${toast.type === 'success' ? 'check' : toast.type === 'error' ? 'triangle-exclamation' : 'info'}`}></i>
           <span>{toast.message}</span>
         </div>
       )}
 
-      {/* Login Modal */}
-      {isLoginOpen && (
-        <LoginModal
-          onClose={() => setIsLoginOpen(false)}
-          onSuccess={handleLogin}
+      {modal.open && (
+        <ProductModal
+          product={modal.product}
+          onClose={() => setModal({ open: false, product: null })}
+          onSaved={() => { setModal({ open: false, product: null }); loadProducts() }}
+          showToast={showToast}
         />
       )}
 
-      {/* Settings Modal */}
-      {isSettingsOpen && (
-        <SettingsModal
-          isAdmin={isAdmin}
-          onClose={() => setIsSettingsOpen(false)}
-        />
+      {loginOpen && (
+        <LoginModal onClose={() => setLoginOpen(false)} onSuccess={handleLogin} />
       )}
 
-      {/* Edit Product Modal */}
-      {isEditOpen && selectedProduct && (
-        <EditProductModal
-          product={selectedProduct}
-          isAdmin={isAdmin}
-          onClose={() => { setIsEditOpen(false); setSelectedProduct(null) }}
-          onSave={(data, images) => handleEditProduct(selectedProduct.id, data, images)}
-        />
+      {settingsOpen && (
+        <SettingsModal onClose={() => setSettingsOpen(false)} showToast={showToast} />
       )}
     </div>
   )
 }
-
-export default App

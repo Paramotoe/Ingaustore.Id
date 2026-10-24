@@ -1,7 +1,7 @@
 /**
  * LoginModal — Ingaustore.id
- * 
- * Modal login admin.
+ *
+ * Masuk sebagai admin untuk mengelola katalog.
  */
 
 import { useState } from 'react'
@@ -16,51 +16,33 @@ export function LoginModal({ onClose, onSuccess }) {
     e.preventDefault()
     setLoading(true)
     setError('')
-
-    const success = await onSuccess(email, password)
-
-    if (!success) {
-      setError('Email atau password salah.')
-    }
-
+    const ok = await onSuccess(email, password)
+    if (!ok) setError('Email atau password salah.')
     setLoading(false)
   }
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal">
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>Masuk Admin</h2>
-          <button className="modal-close" onClick={onClose}>
+          <button className="modal-close" onClick={onClose} aria-label="Tutup">
             <i className="fa-solid fa-xmark"></i>
           </button>
         </div>
+
         <form className="modal-body" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              className="form-input"
-              placeholder="admin@ingaustore.id"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <label className="form-label">Email</label>
+            <input className="form-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@ingaustore.id" required />
           </div>
           <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              className="form-input"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <label className="form-label">Password</label>
+            <input className="form-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
           </div>
           {error && <p className="form-error">{error}</p>}
           <button type="submit" className="btn-primary btn-full" disabled={loading}>
-            <i className={loading ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-arrow-right'}></i>
+            <i className={`fa-solid ${loading ? 'fa-spinner fa-spin' : 'fa-arrow-right'}`}></i>
             {loading ? 'Memeriksa...' : 'Masuk'}
           </button>
         </form>
