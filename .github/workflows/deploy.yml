@@ -38,8 +38,7 @@ jobs:
       - name: Build and Deploy to Vercel
         run: |
           npm run build --prefix react-frontend
-          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} > deployment-url.txt
+          vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }} > deployment-url.txt
           cat deployment-url.txt
 
       - name: Verifikasi deployment
