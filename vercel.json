@@ -1,4 +1,10 @@
 {
+  "build": {
+    "env": {
+      "VITE_SUPABASE_URL": "https://aptftowtjmkbyejzkvrj.supabase.co",
+      "VITE_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_9br1lbz3uyWZCDzqyK8dhg_z8DcpuGK"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
