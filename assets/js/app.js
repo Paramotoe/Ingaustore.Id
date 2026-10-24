@@ -286,7 +286,10 @@ function simpanLock(attempts, until) {
 
 async function prosesLogin(e) {
     e.preventDefault();
-    const { until, attempts } = bacaLock();
+    if (!sb) {
+        showToast('Sistem belum siap. Muat ulang halaman.', 'error');
+        return;
+    }
     const now = Date.now();
     if (now < until) {
         showToast('Terlalu banyak percobaan. Coba lagi dalam ' + Math.ceil((until - now) / 1000) + ' detik.', 'error');
@@ -550,6 +553,7 @@ function resetFoto() {
 
 async function tambahBarang(e) {
     e.preventDefault();
+    if (!sb) { showToast('Sistem belum siap.', 'error'); return; }
     if (!isAdmin) return;
 
     const btn = document.getElementById('btn-add');
@@ -683,6 +687,7 @@ function pratinjauFotoUbah() {
 }
 async function simpanUbahProduk(e) {
     e.preventDefault();
+    if (!sb) { showToast('Sistem belum siap.', 'error'); return; }
     if (!isAdmin) return;
 
     const btn = document.getElementById('btn-edit');
@@ -717,6 +722,7 @@ async function simpanUbahProduk(e) {
 }
 
 async function hapusBarang(p) {
+    if (!sb) { showToast('Sistem belum siap.', 'error'); return; }
     if (!isAdmin) return;
     if (!confirm('Hapus produk ' + p.code + ' dari katalog?')) return;
     try {
