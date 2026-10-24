@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { supabase } from './services/supabase'
+import { pasangPintuAdmin } from './services/adminGate'
 import { Header } from './components/Header'
 import { ProductGrid } from './components/ProductGrid'
 import { ProductModal } from './components/ProductModal'
@@ -30,6 +31,7 @@ export default function App() {
 
   const toastTimer = useRef(null)
   const isAdmin = admin.masuk && !admin.cek
+  const logoRef = useRef(null)
 
   const showToast = useCallback((message, type = 'info') => {
     setToast({ message, type })
@@ -86,7 +88,15 @@ export default function App() {
         refreshAdmin()
       }
     })
-    return () => sub.subscription.unsubscribe()
+
+    const lepasPintu = pasangPintuAdmin(logoRef.current, () => {
+      setLoginOpen(true)
+    })
+
+    return () => {
+      sub.subscription.unsubscribe()
+      lepasPintu()
+    }
   }, [loadProducts, refreshAdmin])
 
   const handleLogin = async (email, password) => {
@@ -153,7 +163,7 @@ export default function App() {
     <div className="app">
       <Header
         isAdmin={isAdmin}
-        onLogin={() => setLoginOpen(true)}
+        logoRef={logoRef}
         onLogout={handleLogout}
         onSettings={() => setSettingsOpen(true)}
       />

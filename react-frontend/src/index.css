@@ -569,17 +569,7 @@ body {
 .logo:hover { transform: translateY(-1px); }
 .logo:active { transform: translateY(0) scale(0.98); }
 
-.btn-kelola {
-  border-color: #fbcfe8;
-  color: var(--brand-dark);
-  background: #fff1f7;
-}
-.btn-kelola:hover {
-  border-color: var(--brand);
-  color: var(--brand-dark);
-  background: #ffe4ef;
-  animation: pulseRing 1.6s ease-out infinite;
-}
+.btn-kelola { display: none; }
 .btn-danger-soft { border-color: #fecaca; color: #b91c1c; }
 .btn-danger-soft:hover { border-color: #ef4444; color: #ef4444; }
 
@@ -691,7 +681,6 @@ body {
 /* ---------- Responsif tambahan ---------- */
 @media (max-width: 640px) {
   .modal { max-height: 88vh; border-radius: 0.9rem; }
-  .btn-kelola { width: 100%; justify-content: center; }
   .modal-actions { flex-direction: column-reverse; }
   .modal-actions .btn-primary, .modal-actions .btn-outline { width: 100%; justify-content: center; }
   .fab { right: 1rem; bottom: 1rem; }

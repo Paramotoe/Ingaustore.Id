@@ -4,11 +4,11 @@
  * Logo tanpa background putih, tombol admin hanya untuk pemilik toko.
  */
 
-export function Header({ isAdmin, onLogin, onLogout, onSettings }) {
+export function Header({ isAdmin, logoRef, onLogout, onSettings }) {
   return (
     <header className="header">
       <div className="header-inner">
-        <div className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} title="Kembali ke atas">
+        <div ref={logoRef} className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} title="Kembali ke atas">
           <div className="logo-icon">
             <i className="fa-solid fa-bag-shopping"></i>
           </div>
@@ -19,7 +19,7 @@ export function Header({ isAdmin, onLogin, onLogout, onSettings }) {
         </div>
 
         <div className="header-actions">
-          {isAdmin ? (
+          {isAdmin && (
             <>
               <button className="btn-outline" onClick={onSettings} title="Pengaturan Toko">
                 <i className="fa-solid fa-gear"></i>
@@ -30,11 +30,6 @@ export function Header({ isAdmin, onLogin, onLogout, onSettings }) {
                 <span>Keluar</span>
               </button>
             </>
-          ) : (
-            <button className="btn-outline btn-kelola" onClick={onLogin} title="Masuk Pengelola">
-              <i className="fa-solid fa-shield-halved"></i>
-              <span>Kelola</span>
-            </button>
           )}
         </div>
       </div>
