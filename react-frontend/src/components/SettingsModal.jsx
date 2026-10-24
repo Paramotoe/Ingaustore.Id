@@ -17,6 +17,10 @@ export function SettingsModal({ onClose, showToast }) {
   const handleLogo = (e) => {
     const f = e.target.files?.[0]
     if (f) {
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(f.type) || f.size > 5 * 1024 * 1024) {
+        showToast('Hanya file JPG, PNG, atau WebP (maks. 5MB).', 'error')
+        return
+      }
       setLogoFile(f)
       setLogoPreview(URL.createObjectURL(f))
     }
@@ -25,6 +29,10 @@ export function SettingsModal({ onClose, showToast }) {
   const handleBg = (e) => {
     const f = e.target.files?.[0]
     if (f) {
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(f.type) || f.size > 5 * 1024 * 1024) {
+        showToast('Hanya file JPG, PNG, atau WebP (maks. 5MB).', 'error')
+        return
+      }
       setBgFile(f)
       setBgPreview(URL.createObjectURL(f))
     }

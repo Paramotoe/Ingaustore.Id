@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 640" width="100%" height="100%">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#db2777"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <!-- Card Background -->
+  <rect width="600" height="640" rx="32" fill="#ffffff" filter="url(#shadow)"/>
+  <rect x="24" y="24" width="552" height="490" rx="24" fill="#fff7ed" stroke="#f9a8d4" stroke-width="4" opacity="0.6"/>
+
+  <!-- Shopping Cart & Contents -->
+  <g transform="translate(50, 30)">
+    <!-- Handle -->
+    <path d="M120 260 V220 Q120 190 150 190 H350 Q380 190 380 220 V260" fill="none" stroke="#db2777" stroke-width="18" stroke-linecap="round"/>
+
+    <!-- Products inside Cart: Toy box & Baby Bottle & Clothing -->
+    <!-- Toy Box (Left) -->
+    <g transform="translate(85, 230)">
+      <rect x="0" y="10" width="50" height="60" rx="10" fill="#3b82f6"/>
+      <circle cx="25" cy="25" r="14" fill="#fff7ed"/>
+      <text x="25" y="30" font-family="sans-serif" font-weight="bold" font-size="16" fill="#3b82f6" text-anchor="middle">TOY</text>
+    </g>
+
+    <!-- Baby Bottle / Home item (Right) -->
+    <g transform="translate(365, 220)">
+      <rect x="0" y="15" width="45" height="70" rx="14" fill="#fb923c"/>
+      <rect x="12" y="0" width="21" height="18" rx="6" fill="#fb923c"/>
+    </g>
+
+    <!-- Family Characters inside / behind Cart -->
+    <!-- Boy Kid 1 (Left) -->
+    <g transform="translate(155, 185)">
+      <circle cx="22" cy="20" r="22" fill="#3b82f6"/>
+      <path d="M4 12 Q22 0 40 12 Z" fill="#0f172a"/>
+      <path d="M-2 70 a24 32 0 0 1 48 0 Z" fill="#3b82f6"/>
+    </g>
+
+    <!-- Boy Kid 2 (Right) -->
+    <g transform="translate(305, 185)">
+      <circle cx="22" cy="20" r="22" fill="#fb923c"/>
+      <path d="M4 12 Q22 0 40 12 Z" fill="#0f172a"/>
+      <path d="M-2 70 a24 32 0 0 1 48 0 Z" fill="#fb923c"/>
+    </g>
+
+    <!-- Mother (Center, taller, distinct styling) -->
+    <g transform="translate(225, 150)">
+      <circle cx="25" cy="24" r="28" fill="url(#brandGrad)" stroke="#fff7ed" stroke-width="3"/>
+      <circle cx="25" cy="-6" r="10" fill="url(#brandGrad)"/> <!-- bun -->
+      <path d="M-6 76 a31 38 0 0 1 62 0 Z" fill="url(#brandGrad)"/>
+    </g>
+
+    <!-- Shopping Cart Basket (White/Cream interior so figures pop, pink outline) -->
+    <path d="M60 270 H440 L400 450 Q394 466 376 466 H124 Q106 466 100 450 Z" fill="#ffffff" stroke="#db2777" stroke-width="16" stroke-linejoin="round"/>
+    
+    <!-- Cart Grid lines -->
+    <path d="M84 330 H416 M94 380 H406" stroke="#f9a8d4" stroke-width="10" stroke-linecap="round" opacity="0.6"/>
+
+    <!-- Wheels -->
+    <circle cx="150" cy="495" r="22" fill="#0f172a"/>
+    <circle cx="150" cy="495" r="8" fill="#fff7ed"/>
+    <circle cx="350" cy="495" r="22" fill="#0f172a"/>
+    <circle cx="350" cy="495" r="8" fill="#fff7ed"/>
+  </g>
+
+  <!-- Store Name & Tagline -->
+  <text x="300" y="575" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="44" fill="#0f172a" text-anchor="middle" letter-spacing="1">INGAUSTORE<tspan fill="#ec4899">.ID</tspan></text>
+  <text x="300" y="610" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="15" fill="#64748b" text-anchor="middle" letter-spacing="3">MAINAN • PERABOT • FASHION • ACTION FIGURE</text>
+</svg>

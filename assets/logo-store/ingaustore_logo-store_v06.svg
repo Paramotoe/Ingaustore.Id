@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 660">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ec4899"/><stop offset="1" stop-color="#db2777"/></linearGradient></defs>
+<rect width="600" height="660" rx="30" fill="#ffffff"/>
+<rect x="18" y="18" width="564" height="522" rx="22" fill="#fff7ed"/>
+
+<!-- Shopping Cart Handle -->
+<path d="M120 280 V180 Q120 150 150 150 H370 Q400 150 400 180 V280" fill="none" stroke="#db2777" stroke-width="16" stroke-linecap="round"/>
+
+<!-- Products & Kids inside Cart -->
+<g transform="translate(85,230)">
+      <rect x="0" y="0" width="36" height="46" rx="8" fill="#3b82f6"/>
+      <circle cx="18" cy="-8" r="10" fill="#3b82f6"/>
+      <rect x="6" y="-18" width="6" height="10" rx="3" fill="#3b82f6"/>
+      <rect x="24" y="-18" width="6" height="10" rx="3" fill="#3b82f6"/>
+    </g>
+<g transform="translate(380,220)">
+      <rect x="0" y="10" width="32" height="50" rx="10" fill="#fb923c"/>
+      <rect x="8" y="0" width="16" height="12" rx="4" fill="#fb923c"/>
+    </g>
+
+<g transform="translate(170,225)">
+      <circle cx="0" cy="0" r="24" fill="#3b82f6"/>
+      <path d="M-24 -4.800000000000001 a24 24 0 0 1 48 0 Z" fill="#1e293b"/>
+      <path d="M-14.399999999999999 -20.4 l7.199999999999999 -8.399999999999999 l7.199999999999999 8.399999999999999 Z" fill="#1e293b"/>
+      <path d="M-19.200000000000003 4.800000000000001 h38.400000000000006 v28.799999999999997 h-38.400000000000006 Z" fill="#3b82f6"/>
+    </g>
+<g transform="translate(330,225)">
+      <circle cx="0" cy="0" r="24" fill="#3b82f6"/>
+      <path d="M-24 -4.800000000000001 a24 24 0 0 1 48 0 Z" fill="#1e293b"/>
+      <path d="M-14.399999999999999 -20.4 l7.199999999999999 -8.399999999999999 l7.199999999999999 8.399999999999999 Z" fill="#1e293b"/>
+      <path d="M-19.200000000000003 4.800000000000001 h38.400000000000006 v28.799999999999997 h-38.400000000000006 Z" fill="#3b82f6"/>
+    </g>
+<g transform="translate(250,205)">
+      <circle cx="0" cy="0" r="30" fill="#db2777"/>
+      <path d="M-30 -3.0 a30 30 0 0 1 60 0 Z" fill="#1e293b"/>
+      <circle cx="0" cy="-38" r="10.5" fill="#1e293b"/>
+      <path d="M-33.0 6.0 h66.0 v39.0 h-66.0 Z" fill="#db2777"/>
+    </g>
+
+<!-- Cart Basket -->
+<path d="M62 280 H438 L398 460 Q392 478 374 478 H126 Q108 478 102 460 Z" fill="#ffffff" stroke="#db2777" stroke-width="16" stroke-linejoin="round"/>
+<path d="M92 360 H408" stroke="#f9a8d4" stroke-width="10" stroke-linecap="round"/>
+<path d="M62 280 H438" stroke="#db2777" stroke-width="16" stroke-linecap="round"/>
+
+<!-- Wheels -->
+<circle cx="152" cy="500" r="21" fill="#0f172a"/><circle cx="152" cy="500" r="7" fill="#fff7ed"/>
+<circle cx="348" cy="500" r="21" fill="#0f172a"/><circle cx="348" cy="500" r="7" fill="#fff7ed"/>
+
+<!-- Store Name -->
+<text x="300" y="596" font-family="'Plus Jakarta Sans',system-ui,sans-serif" font-weight="800" font-size="46" fill="#0f172a" text-anchor="middle" letter-spacing="-0.5">INGAUSTORE<tspan fill="#ec4899">.ID</tspan></text>
+<text x="300" y="628" font-family="'Plus Jakarta Sans',system-ui,sans-serif" font-weight="600" font-size="14" fill="#475569" text-anchor="middle" letter-spacing="2.4">MAINAN • PERABOT • FASHION • ACTION FIGURE</text>
+</svg>

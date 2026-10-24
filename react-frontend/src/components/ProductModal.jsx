@@ -39,7 +39,15 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
 
   const handleFiles = (e) => {
     const picked = Array.from(e.target.files || [])
-    setFiles((prev) => [...prev, ...picked].slice(0, 4))
+    const valid = picked.filter((f) => {
+      const allowed = ['image/jpeg', 'image/png', 'image/webp']
+      if (!allowed.includes(f.type) || f.size > 5 * 1024 * 1024) return false
+      return true
+    })
+    if (valid.length !== picked.length) {
+      showToast('Hanya file JPG, PNG, atau WebP (maks. 5MB) yang diizinkan.', 'error')
+    }
+    setFiles((prev) => [...prev, ...valid].slice(0, 4))
   }
 
   const removeFile = (i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))
@@ -70,8 +78,8 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
       showToast('Tambahkan minimal satu link marketplace.', 'error')
       return
     }
-    if (links.some((l) => !l.url.trim())) {
-      showToast('Semua link harus diisi.', 'error')
+    if (links.some((l) => !l.url.trim() || !/^https?:\/\/.+/i.test(l.url.trim()))) {
+      showToast('Semua link harus diisi dengan URL valid (http:// atau https://).', 'error')
       return
     }
 

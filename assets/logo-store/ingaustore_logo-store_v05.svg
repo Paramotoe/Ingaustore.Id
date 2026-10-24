@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 660">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ec4899"/><stop offset="1" stop-color="#db2777"/></linearGradient></defs>
+<rect width="600" height="660" rx="30" fill="#ffffff"/>
+<rect x="18" y="18" width="564" height="522" rx="22" fill="#fff7ed"/>
+
+<path d="M120 314 V196 Q120 166 150 166 H370 Q400 166 400 196 V314" fill="none" stroke="#db2777" stroke-width="17" stroke-linecap="round"/>
+
+<g transform="translate(72,250)">
+<circle cx="25" cy="14" r="14" fill="#3b82f6"/>
+<rect x="20" y="0" width="4" height="9" rx="2" fill="#3b82f6"/>
+<rect x="27" y="0" width="4" height="9" rx="2" fill="#3b82f6"/>
+<rect x="11" y="30" width="28" height="36" rx="8" fill="#3b82f6"/>
+<rect x="0" y="33" width="11" height="26" rx="5" fill="#3b82f6"/>
+<rect x="39" y="33" width="11" height="26" rx="5" fill="#3b82f6"/>
+<rect x="14" y="66" width="9" height="20" rx="4" fill="#3b82f6"/>
+<rect x="27" y="66" width="9" height="20" rx="4" fill="#3b82f6"/>
+</g>
+
+<g transform="translate(378,238)">
+<rect x="14" y="0" width="18" height="12" rx="6" fill="#fb923c"/>
+<rect x="8" y="10" width="30" height="12" rx="5" fill="#fb923c"/>
+<rect x="2" y="20" width="42" height="60" rx="12" fill="#fb923c"/>
+<rect x="10" y="34" width="26" height="26" rx="6" fill="#fff7ed" opacity="0.85"/>
+</g>
+
+<circle cx="164" cy="224" r="23" fill="#3b82f6"/><path d="M141 220.6 a23 23 0 0 1 46 0 Z" fill="#1e293b"/><path d="M149.7 204.2 l5.5 -7.8 l5.5 7.8 Z" fill="#1e293b"/><path d="M161.7 202.4 l5.5 -6.9 l5.5 6.9 Z" fill="#1e293b"/>
+<path d="M134 248 a30 56 0 0 1 60 0 Z" fill="#3b82f6"/>
+<circle cx="336" cy="224" r="23" fill="#fb923c"/><path d="M313 220.6 a23 23 0 0 1 46 0 Z" fill="#1e293b"/><path d="M321.7 204.2 l5.5 -7.8 l5.5 7.8 Z" fill="#1e293b"/><path d="M333.7 202.4 l5.5 -6.9 l5.5 6.9 Z" fill="#1e293b"/>
+<path d="M306 248 a30 56 0 0 1 60 0 Z" fill="#fb923c"/>
+<path d="M217 190 a33 33 0 0 1 66 0 v20 h-66 Z" fill="#1e293b"/><circle cx="250" cy="190" r="29" fill="#db2777"/><path d="M221 187.1 a29 29 0 0 1 58 0 Z" fill="#1e293b"/><circle cx="250" cy="154" r="9" fill="#1e293b"/>
+<path d="M208 222 a42 68 0 0 1 84 0 Z" fill="#db2777"/>
+
+<path d="M62 314 H438 L398 478 Q392 496 374 496 H126 Q108 496 102 478 Z" fill="#ffffff" stroke="#db2777" stroke-width="15" stroke-linejoin="round"/>
+<path d="M92 392 H408" stroke="#f9a8d4" stroke-width="9" stroke-linecap="round"/>
+<path d="M62 314 H438" stroke="#db2777" stroke-width="15" stroke-linecap="round"/>
+<circle cx="152" cy="512" r="20" fill="#0f172a"/><circle cx="152" cy="512" r="7" fill="#fff7ed"/>
+<circle cx="348" cy="512" r="20" fill="#0f172a"/><circle cx="348" cy="512" r="7" fill="#fff7ed"/>
+
+<text x="300" y="606" font-family="'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" font-weight="800" font-size="46" fill="#0f172a" text-anchor="middle" letter-spacing="-0.5">INGAUSTORE<tspan fill="#ec4899">.ID</tspan></text>
+<text x="300" y="636" font-family="'Plus Jakarta Sans',system-ui,sans-serif" font-weight="600" font-size="14" fill="#475569" text-anchor="middle" letter-spacing="2.2">MAINAN • PERABOT • FASHION • ACTION FIGURE</text>
+</svg>

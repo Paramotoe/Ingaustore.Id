@@ -10,7 +10,7 @@ export function Header({ isAdmin, logoRef, onLogout, onSettings }) {
       <div className="header-inner">
         <div ref={logoRef} className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} title="Kembali ke atas">
           <div className="logo-icon">
-            <i className="fa-solid fa-bag-shopping"></i>
+            <img src="/favicon.svg" alt="" />
           </div>
           <div className="logo-text">
             <h1>Ingaustore.id</h1>
