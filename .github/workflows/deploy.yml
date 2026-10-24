@@ -51,25 +51,23 @@ jobs:
             exit 1
           fi
           
-          # Retry loop untuk memastikan server merespons (maksimal 5 kali percobaan, jeda 5 detik)
-          HTTP_STATUS=000
-          for i in $(seq 1 5); do
-            HTTP_STATUS=$(curl -s -o response.html -w "%{http_code}" "$DEPLOY_URL" || echo "000")
-            echo "Percobaan $i: HTTP $HTTP_STATUS"
-            if [ "$HTTP_STATUS" = "200" ]; then
-              break
-            fi
-            sleep 5
-          done
-          
-          if [ "$HTTP_STATUS" != "200" ]; then
-            echo "Error: deployment gagal, HTTP $HTTP_STATUS dari $DEPLOY_URL"
+          # Vercel Deployment Protection (SSO) menutup URL deployment, jadi
+          # status diverifikasi lewat API Vercel, bukan curl ke URL deployment.
+          vercel inspect "$DEPLOY_URL" --wait --timeout=180s --token=${{ secrets.VERCEL_TOKEN }} --json > inspect.json
+          READY=$(python3 -c "import json;print(json.load(open('inspect.json'))['readyState'])")
+          TARGET=$(python3 -c "import json;print(json.load(open('inspect.json'))['target'])")
+          PROD_URL="https://$(python3 -c "import json;print(json.load(open('inspect.json'))['aliases'][0])")"
+          echo "readyState=$READY target=$TARGET produksi=$PROD_URL"
+          if [ "$READY" != "READY" ]; then
+            echo "Error: deployment belum READY (status: $READY)"
             exit 1
           fi
-          
-          if grep -q "Katalog Produk" response.html; then
-            echo "Verifikasi sukses: penanda 'Katalog Produk' ada di HTML $DEPLOY_URL"
-          else
-            echo "Error: penanda 'Katalog Produk' TIDAK ada di HTML $DEPLOY_URL"
+          if [ "$TARGET" != "production" ]; then
+            echo "Error: target deployment bukan production (target: $TARGET)"
             exit 1
           fi
+          if ! curl -fsS "$PROD_URL" | grep -q "Katalog Produk"; then
+            echo "Error: penanda 'Katalog Produk' TIDAK ada di $PROD_URL"
+            exit 1
+          fi
+          echo "Verifikasi sukses: $PROD_URL menayangkan katalog."
