@@ -19,7 +19,7 @@ export function Header({ isAdmin, onLogin, onLogout, onSettings }) {
         </div>
 
         <div className="header-actions">
-          {isAdmin ? (
+          {isAdmin && (
             <>
               <button className="btn-outline" onClick={onSettings} title="Pengaturan">
                 <i className="fa-solid fa-gear"></i>
@@ -30,11 +30,6 @@ export function Header({ isAdmin, onLogin, onLogout, onSettings }) {
                 <span>Keluar</span>
               </button>
             </>
-          ) : (
-            <button className="btn-primary" onClick={onLogin}>
-              <i className="fa-solid fa-lock"></i>
-              <span>Masuk</span>
-            </button>
           )}
         </div>
       </div>

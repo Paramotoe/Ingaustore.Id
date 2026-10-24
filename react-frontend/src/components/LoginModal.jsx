@@ -17,7 +17,11 @@ export function LoginModal({ onClose, onSuccess }) {
     setLoading(true)
     setError('')
     const ok = await onSuccess(email, password)
-    if (!ok) setError('Email atau password salah.')
+    if (!ok) {
+      setError('Email atau password salah.')
+    } else {
+      onClose()
+    }
     setLoading(false)
   }
 

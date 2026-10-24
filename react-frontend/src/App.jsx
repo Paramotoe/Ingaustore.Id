@@ -64,6 +64,21 @@ export default function App() {
     return () => sub.subscription.unsubscribe()
   }, [])
 
+  // Pintu masuk admin tersembunyi: Ctrl+Shift+A atau buka /masuk
+  useEffect(() => {
+    const path = location.pathname.replace(/\/$/, '')
+    if (path === '/masuk' || path === '/admin') setLoginOpen(true)
+
+    const onKey = (e) => {
+      if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault()
+        setLoginOpen(true)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   const handleLogin = async (email, password) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) {
