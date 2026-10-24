@@ -5,7 +5,7 @@
  * filter kategori, urutan, dan semua modal.
  */
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { supabase } from './services/supabase'
 import { Header } from './components/Header'
 import { ProductGrid } from './components/ProductGrid'
@@ -17,7 +17,7 @@ import './index.css'
 export default function App() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [admin, setAdmin] = useState({ cek: false, masuk: false })
 
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('all')
@@ -28,22 +28,39 @@ export default function App() {
   const [modal, setModal] = useState({ open: false, product: null })
   const [toast, setToast] = useState(null)
 
-  const showToast = (message, type = 'info') => {
+  const toastTimer = useRef(null)
+  const isAdmin = admin.masuk && !admin.cek
+
+  const showToast = useCallback((message, type = 'info') => {
     setToast({ message, type })
-    setTimeout(() => setToast(null), 3000)
-  }
+    if (toastTimer.current) clearTimeout(toastTimer.current)
+    toastTimer.current = setTimeout(() => setToast(null), 3200)
+  }, [])
 
-  const refreshAdmin = async () => {
+  useEffect(() => () => {
+    if (toastTimer.current) clearTimeout(toastTimer.current)
+  }, [])
+
+  // Status admin ditetapkan hanya oleh jawaban database (public.is_admin()),
+  // bukan oleh keberadaan sesi. Siapa pun bisa punya sesi Supabase, tetapi
+  // hanya akun di daftar putih admins yang bernilai true.
+  const refreshAdmin = useCallback(async () => {
+    setAdmin((a) => ({ ...a, cek: true }))
     const { data, error } = await supabase.rpc('is_admin')
-    if (!error) setIsAdmin(data === true)
-  }
+    if (error) {
+      setAdmin({ cek: false, masuk: false })
+      return
+    }
+    setAdmin({ cek: false, masuk: data === true })
+  }, [])
 
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     setLoading(true)
     const { data, error } = await supabase
       .from('products')
       .select('*')
       .order('created_at', { ascending: false })
+      .limit(200)
 
     if (error) {
       showToast('Gagal memuat produk: ' + error.message, 'error')
@@ -51,33 +68,26 @@ export default function App() {
       setProducts(data || [])
     }
     setLoading(false)
-  }
+  }, [showToast])
 
   useEffect(() => {
     loadProducts()
+
+    // Cek sesi yang tersimpan tanpa pernah mengubah status admin.
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) refreshAdmin()
     })
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      setIsAdmin(!!session)
+
+    // Hanya reaksi terhadap perubahan autentikasi: kalau sesi hilang, keluar.
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' || !session) {
+        setAdmin({ cek: false, masuk: false })
+      } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        refreshAdmin()
+      }
     })
     return () => sub.subscription.unsubscribe()
-  }, [])
-
-  // Pintu masuk admin tersembunyi: Ctrl+Shift+A atau buka /masuk
-  useEffect(() => {
-    const path = location.pathname.replace(/\/$/, '')
-    if (path === '/masuk' || path === '/admin') setLoginOpen(true)
-
-    const onKey = (e) => {
-      if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
-        e.preventDefault()
-        setLoginOpen(true)
-      }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [])
+  }, [loadProducts, refreshAdmin])
 
   const handleLogin = async (email, password) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
@@ -92,20 +102,32 @@ export default function App() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    setIsAdmin(false)
+    setAdmin({ cek: false, masuk: false })
+    setSettingsOpen(false)
+    setModal({ open: false, product: null })
     showToast('Anda telah keluar.', 'info')
   }
 
   const handleDelete = async (product) => {
-    if (!confirm(`Hapus produk "${product.name}"?`)) return
+    if (!window.confirm(`Hapus produk "${product.name}"? Tindakan ini tidak bisa dibatalkan.`)) return
     const { error } = await supabase.from('products').delete().eq('id', product.id)
     if (error) {
-      showToast(error.message, 'error')
+      showToast('Gagal menghapus: ' + error.message, 'error')
       return
     }
     showToast('Produk dihapus.', 'success')
     loadProducts()
   }
+
+  // Catat klik tombol marketplace. Gagal mencatat tidak mengganggu pelanggan.
+  const handleBeli = useCallback((product) => {
+    supabase
+      .from('buy_clicks')
+      .insert({ product_id: product.id })
+      .then(({ error }) => {
+        if (error) console.warn('[Ingaustore] klik tidak tercatat:', error.message)
+      })
+  }, [])
 
   const visible = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -126,6 +148,7 @@ export default function App() {
     })
   }, [products, search, category, sortBy])
 
+// App.jsx render
   return (
     <div className="app">
       <Header
@@ -179,6 +202,7 @@ export default function App() {
           isAdmin={isAdmin}
           onEdit={(p) => setModal({ open: true, product: p })}
           onDelete={handleDelete}
+          onBeli={handleBeli}
         />
       </main>
 

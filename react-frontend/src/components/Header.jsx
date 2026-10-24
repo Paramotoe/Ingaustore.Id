@@ -8,7 +8,7 @@ export function Header({ isAdmin, onLogin, onLogout, onSettings }) {
   return (
     <header className="header">
       <div className="header-inner">
-        <div className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        <div className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} title="Kembali ke atas">
           <div className="logo-icon">
             <i className="fa-solid fa-bag-shopping"></i>
           </div>
@@ -19,17 +19,22 @@ export function Header({ isAdmin, onLogin, onLogout, onSettings }) {
         </div>
 
         <div className="header-actions">
-          {isAdmin && (
+          {isAdmin ? (
             <>
-              <button className="btn-outline" onClick={onSettings} title="Pengaturan">
+              <button className="btn-outline" onClick={onSettings} title="Pengaturan Toko">
                 <i className="fa-solid fa-gear"></i>
                 <span>Pengaturan</span>
               </button>
-              <button className="btn-outline" onClick={onLogout} title="Keluar">
+              <button className="btn-outline btn-danger-soft" onClick={onLogout} title="Keluar dari Sesi">
                 <i className="fa-solid fa-right-from-bracket"></i>
                 <span>Keluar</span>
               </button>
             </>
+          ) : (
+            <button className="btn-outline btn-kelola" onClick={onLogin} title="Masuk Pengelola">
+              <i className="fa-solid fa-shield-halved"></i>
+              <span>Kelola</span>
+            </button>
           )}
         </div>
       </div>
