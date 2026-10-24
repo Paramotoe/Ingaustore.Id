@@ -17,8 +17,7 @@
 window.INGAU_CONFIG = {
     supabaseUrl: 'https://aptftowtjmkbyejzkvrj.supabase.co',
     supabaseAnonKey: 'sb_publishable_9br1lbz3uyWZCDzqyK8dhg_z8DcpuGK',
-    // Hanya untuk env Node/backend (Vercel serverless). Klien browser tetap pakai
-    // supabaseUrl + supabaseAnonKey saja. Supabase Secret Key tidak boleh di-browser.
-    supabaseSecretKey: process.env.SUPABASE_SECRET_KEY || '',
-    supabaseJwksUrl: process.env.SUPABASE_JWKS_URL || 'https://aptftowtjmkbyejzkvrj.supabase.co/auth/v1/.well-known/jwks.json'
+    // Hanya untuk backend/serverless (Vercel), tak samping di browser
+    supabaseSecretKey: '',
+    supabaseJwksUrl: 'https://aptftowtjmkbyejzkvrj.supabase.co/auth/v1/.well-known/jwks.json'
 };
