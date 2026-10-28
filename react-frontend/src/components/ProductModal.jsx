@@ -81,10 +81,6 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
       showToast('Nama dan kode wajib diisi.', 'error')
       return
     }
-    if (links.length === 0) {
-      showToast('Tambahkan minimal satu link marketplace.', 'error')
-      return
-    }
     if (links.some((l) => !l.url.trim() || !urlAman(l.url))) {
       showToast('Semua link harus diisi dengan URL valid (http:// atau https:// tanpa skrip berbahaya).', 'error')
       return
@@ -104,15 +100,15 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
     try {
       const gambarBaru = await uploadFiles()
       const image_paths = [...(product?.image_paths || []), ...gambarBaru].slice(0, 4)
-      const linkPertama = links[0].url
+      const linkPertama = links[0]?.url
 
       const payload = {
         name: name.trim(),
         code: code.trim().toUpperCase(),
         price: hargaAngka,
         category: category.trim() || null,
-        link: urlAman(linkPertama),
-        links: links.map((l) => ({ name: l.name.trim() || 'Beli', url: urlAman(l.url) })),
+        link: linkPertama && urlAman(linkPertama) || null,
+        links: links.map((l) => ({ name: l.name.trim() || 'Beli', url: urlAman(l.url) })).filter((l) => l.url),
         image_paths,
       }
 
