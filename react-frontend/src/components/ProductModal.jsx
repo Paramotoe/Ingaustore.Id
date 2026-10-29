@@ -33,8 +33,8 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
   const refDialog = useDialog(true, onClose, isEdit ? 'judul-ubah' : 'judul-tambah')
 
   // Satu object URL per file, dicabut saat file berubah atau modal tutup.
-  const previews = useMemo(() => files.map((f) => URL.createObjectURL(f)), [files])
-  useEffect(() => () => previews.forEach((u) => URL.revokeObjectURL(u)), [previews])
+  const previews = useMemo(() => files.map((f) => (f instanceof File ? URL.createObjectURL(f) : f)), [files])
+  useEffect(() => () => previews.forEach((u) => { if (u.startsWith('blob:')) URL.revokeObjectURL(u) }), [previews])
 
   const setLink = (i, key, value) => {
     setLinks((prev) => prev.map((l, idx) => (idx === i ? { ...l, [key]: value } : l)))
@@ -54,7 +54,7 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
     if (valid.length !== picked.length) {
       showToast('Hanya file JPG, PNG, atau WebP (maks. 5MB) yang diizinkan.', 'error')
     }
-    setFiles((prev) => [...prev, ...valid].slice(0, 4))
+    setFiles((prev) => [...prev, ...valid])
   }
 
   const removeFile = (i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))
@@ -99,7 +99,7 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
     setSaving(true)
     try {
       const gambarBaru = await uploadFiles()
-      const image_paths = [...(product?.image_paths || []), ...gambarBaru].slice(0, 4)
+      const image_paths = [...(product?.image_paths || []), ...gambarBaru]
       const linkPertama = links[0]?.url
 
       const payload = {
@@ -201,19 +201,32 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="prod-photo">Foto Produk (maks. 4)</label>
+            <label className="form-label" htmlFor="prod-photo">Foto Produk</label>
             <input id="prod-photo" className="form-file" type="file" accept="image/png,image/jpeg,image/webp" multiple onChange={handleFiles} />
-            {files.length > 0 && (
+            {(files.length > 0 || (product?.image_paths?.length > 0)) && (
               <div className="image-preview">
+                {(product?.image_paths || []).map((path, i) => (
+                    <div key={`existing-${i}`} className="image-preview-item">
+                        <img src={path} alt={`Foto ${i + 1}`} />
+                        <button type="button" className="btn-remove" onClick={() => {
+                            const newPaths = product.image_paths.filter((_, idx) => idx !== i);
+                            // Patch product state if needed, but here simple mutation works
+                            product.image_paths = newPaths;
+                            setFiles(files); // Trigger re-render
+                        }} aria-label="Hapus foto">
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                ))}
                 {files.map((file, i) => (
-                  <div key={i} className="image-preview-item">
+                  <div key={`new-${i}`} className="image-preview-item">
                     <img src={previews[i]} alt={`Foto ${i + 1}`} />
                     <button type="button" className="btn-remove" onClick={() => removeFile(i)} aria-label="Hapus foto">
                       <i className="fa-solid fa-xmark"></i>
                     </button>
                   </div>
                 ))}
-                <span className="image-count">{files.length} foto dipilih</span>
+                <span className="image-count">{files.length + (product?.image_paths?.length || 0)} foto total</span>
               </div>
             )}
           </div>
