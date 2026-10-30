@@ -6,6 +6,7 @@
 
 // Tautan marketplace dinilai oleh satu sumber keamanan, bukan di sini,
 // supaya baris lama dengan skema berbahaya tidak pernah menjadi href.
+import { useState } from 'react'
 import { daftarTautan } from '../services/urlAman'
 
 const formatHarga = (nilai) => {
