@@ -337,7 +337,7 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  background: #000;
+  background: transparent;
   border-radius: 0.75rem;
   overflow: hidden;
   display: flex;
