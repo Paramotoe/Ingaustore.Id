@@ -15,7 +15,7 @@ create extension if not exists pgcrypto;
 -- ----------------------------------------------------------------------------
 create table if not exists public.products (
     id          uuid primary key default gen_random_uuid(),
-    code        text        not null unique,
+    code        text        unique,
     name        text        not null,
     price       numeric(12,2),
     category    text,
@@ -23,7 +23,7 @@ create table if not exists public.products (
     image_paths text[]      not null default '{}',
     created_at  timestamptz not null default now(),
 
-    constraint products_code_format  check (code ~ '^[A-Z0-9-]{1,32}$'),
+    constraint products_code_format  check (code is null or code ~ '^[A-Z0-9-]{1,32}$'),
     constraint products_link_format  check (link ~* '^https?://'),
     constraint products_name_length  check (char_length(name) between 1 and 80),
     constraint products_category_len check (category is null or char_length(category) <= 32),

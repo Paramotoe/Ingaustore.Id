@@ -77,8 +77,8 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!name.trim() || !code.trim()) {
-      showToast('Nama dan kode wajib diisi.', 'error')
+    if (!name.trim()) {
+      showToast('Nama wajib diisi.', 'error')
       return
     }
     if (links.some((l) => !l.url.trim() || !urlAman(l.url))) {
@@ -104,7 +104,7 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
 
       const payload = {
         name: name.trim(),
-        code: code.trim().toUpperCase(),
+        code: code.trim() ? code.trim().toUpperCase() : null,
         price: hargaAngka,
         category: category.trim() || null,
         link: linkPertama && urlAman(linkPertama) || null,
@@ -154,8 +154,8 @@ export function ProductModal({ product, onClose, onSaved, showToast }) {
               <input id="prod-name" className="form-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Kaos Katun Premium" maxLength={80} required />
             </div>
             <div className="form-group">
-              <label className="form-label" htmlFor="prod-code">Kode</label>
-              <input id="prod-code" className="form-input" value={code} onChange={(e) => setCode(e.target.value)} placeholder="IG-001" maxLength={32} pattern="[A-Za-z0-9-]+" required />
+              <label className="form-label" htmlFor="prod-code">Kode (opsional)</label>
+              <input id="prod-code" className="form-input" value={code} onChange={(e) => setCode(e.target.value)} placeholder="IG-001 (opsional)" maxLength={32} />
             </div>
           </div>
 
